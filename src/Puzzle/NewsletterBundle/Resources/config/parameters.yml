@@ -1,0 +1,21 @@
+parameters:
+    newsletter_email: "contact@redeln-inphb.org"
+    newsletter:
+        title: newsletter.title
+        description: newsletter.description
+        icon: newsletter.icon
+        enable: true
+        dependencies: 'media'
+        roles:
+            post_read:
+                label: 'ROLE_BLOG_POST_READ'
+                description: blog.role.post.read
+            post_manage:
+                label: 'ROLE_BLOG_POST_MANAGE'
+                description: blog.role.post.manage
+            category_read:
+                label: 'ROLE_BLOG_CATEGORY_READ'
+                description: blog.role.category.read
+            category_manage:
+                label: 'ROLE_BLOG_CATEGORY_MANAGE'
+                description: blog.role.category.manage

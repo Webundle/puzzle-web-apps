@@ -1,0 +1,64 @@
+{% trans_default_domain 'messages' %}
+    
+<button type="button" class="uk-modal-close uk-close"></button>
+<div class="uk-margin-medium-bottom">
+    <div class="uk-grid" data-uk-grid-margin>
+        <div class="uk-width-1-1">
+            <ul class="uk-tab" data-uk-tab="{connect:'#tabs_1'}">
+                <li class="uk-active"><a href="#">{{ 'media.file.from_computer'|trans }}</a></li>
+                <li><a href="#" id="load_media">{{ 'media.file.from_media'|trans }}</a></li>
+            </ul>
+            
+            <ul id="tabs_1" class="uk-switcher uk-margin">
+                <li id="fromLocal">
+                    <div class="uk-width-large-1-1">
+                        <div id="file_upload_drop" class="uk-file-upload">
+                            <p class="uk-text">{{ 'media.file.drag_and_drop'|trans|upper }}</p>
+                            <p class="uk-text-muted uk-text-small uk-margin-small-bottom">{{ 'media.file.or'|trans|upper }}</p>
+                            <a class="uk-form-file md-btn md-btn-flat md-btn-flat-primary" id="file_upload_label">{{ 'media.file.choose'|trans|upper }}<input id="file_upload_select" type="file" {% if enableMultipleSelect == 1 %}multiple{% endif %}></a>
+                            <input type="hidden" id="enable_mutiple_select" value="{{ enableMultipleSelect|default(0) }}">
+                            <input type="hidden" id="file_filters" value="{{ filters }}">
+                            <input type="hidden" id="file_upload_context" value="{{ context }}">
+                            <input type="hidden" id="file_type" value="{{ type }}">
+                        </div>
+                        <div id="file_upload_progressbar" class="uk-progress uk-hidden">
+                            <div class="uk-progress-bar" style="width:0">0%</div>
+                        </div>
+                    </div>
+                </li>
+                <li id="fromMedia"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% javascripts
+    'bundles/admin/js/common.js'
+    'bundles/admin/js/uikit_custom.js'
+    'bundles/admin/js/forms_file_upload.js'
+
+    output='compiled/js/admin_media_file_modal.min.js'
+%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+    
+    // Load media
+    $("#load_media").click(function(){
+        $("#fromMedia").html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
+
+        var url = Routing.generate('admin_media_file_browse', {
+            'type': $("#file_type").val(), 
+            'context': $("#file_upload_context").val(), 
+            'multiple_select': $("#enable_mutiple_select").val(), 
+            'target': 'modal'
+        });
+        
+        $.get(url, function(response) {
+            $('#fromMedia').html(response);
+        });
+    });
+    
+    altair_form_file_upload.init($("#file_type").val());
+</script>

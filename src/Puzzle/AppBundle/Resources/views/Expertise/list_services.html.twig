@@ -1,0 +1,90 @@
+{% trans_default_domain 'app' %}
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'app.service.title'|trans }}{% endblock %}
+
+{% block content %}
+	<div class="page-title parallax parallax1">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="page-title-content text-center">
+                <div class="page-title-heading ">
+                    <h2 class="title text-white font-weight-700">
+                        {{ 'app.service.title'|trans|upper }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+   	<section class="flat-services style4 pd-top-80 pd-bottom-10">
+        <div class="container">
+            <div class="row">
+            	{% set services = expertise_services({}, {'createdAt': 'DESC'}) %}
+            	{% if services is not empty %}
+            		{% for service in services %}
+		                <div class="col-md-4 mb-5">
+		                	<div>
+                                <a href="{{ url('app_expertise_service_show', {'id': service.id}) }}">
+                                	{% if service.picture is not empty %}
+                                	<img src="{{ service.picture|imagine_filter('thumb', {"thumbnail": {"size": [460, 300] }}) }}">
+                                	{% else %}
+                                		<span class="{{ service.classIcon }}"></span>
+                                	{% endif %}
+                                </a>
+                            </div>
+                            <div class="mt-3">
+	                        	<h4 class="heading"><a href="{{ url('app_expertise_service_show', {'id': service.id}) }}">{{ service.name|capitalize }}</a> </h4>
+                            </div>
+		                </div>
+            		{% endfor %}
+            	{% else %}
+                    <div class="imagebox imagebox-service style4">
+                        <div class="imagebox-border"> 
+                            <div class="imagebox-image">
+                                <a href="#"><img src="images/style4/service-1.png" alt="standell"></a>
+                            </div>
+                            <div class="imagebox-content">
+                                <h4 class="heading"><a href="#">Lorem ipsum</a></h4>
+                                <p>In pretium neque a libero congue. Elit diam lectus, prase lacinia vitae situt mattis. Etiam mollis maximus vehicula purus at tortor maximus ornare.</p>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="imagebox imagebox-service style4">
+                        <div class="imagebox-border"> 
+                            <div class="imagebox-image">
+                                <a href="#"><img src="images/style4/service-1.png" alt="standell"></a>
+                            </div>
+                            <div class="imagebox-content">
+                                <h4 class="heading"><a href="#">Lorem ipsum</a></h4>
+                                <p>In pretium neque a libero congue. Elit diam lectus, prase lacinia vitae situt mattis. Etiam mollis maximus vehicula purus at tortor maximus ornare.</p>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="imagebox imagebox-service style4">
+                        <div class="imagebox-border"> 
+                            <div class="imagebox-image">
+                                <a href="#"><img src="images/style4/service-1.png" alt="standell"></a>
+                            </div>
+                            <div class="imagebox-content">
+                                <h4 class="heading"><a href="#">Lorem ipsum</a></h4>
+                                <p>In pretium neque a libero congue. Elit diam lectus, prase lacinia vitae situt mattis. Etiam mollis maximus vehicula purus at tortor maximus ornare.</p>
+                            </div>
+                        </div> 
+                    </div>
+            	{% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    {% javascripts
+        'bundles/app/js/jquery-fancybox.js'
+        'bundles/app/js/jquery-isotope.js'
+        output="compiled/js/app-service-list.min.js" 
+    %}
+    	<script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

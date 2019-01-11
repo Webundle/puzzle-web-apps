@@ -1,0 +1,115 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "newsletter_groups" %}
+
+{% extends 'NewsletterBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ config.update|trans|capitalize }} {{ group.name|capitalize }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+        'bundles/admin/skins/tinymce/material_design/skin.min.css'
+        'bundles/admin/libs/kendo-ui/styles/kendo.common-material.min.css'
+        'bundles/admin/libs/kendo-ui/styles/kendo.material.min.css'
+        'bundles/admin/libs/materialize-tags/css/materialize-tags.css'
+        filter='cssrewrite' 
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" media="all" />
+    {% endstylesheets %}
+{% endblock %}
+
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            
+            <h1>{{ bundleName|trans|capitalize }} - {{ config.update|trans|capitalize }}</h1>
+            <span class="sub_heading">
+                <a href="{{ url('newsletter_groups') }}">
+                    <i class="material-icons">&#xE5C4;</i>
+                    {{ "button.label.back"|trans }}
+                </a>
+                /
+                <em> {{ group.name|capitalize }} </em>
+            </span>
+        </div>
+        <div id="page_content_inner">
+             <div class="uk-width-large-6-10 uk-container-center">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        {{ form_start(form, {'attr':{ 'class': 'uk-form-stacked'}}) }}
+                            <div class="uk-margin-medium-bottom">
+                                {{ form_label(form.name) }}
+                                {{ form_widget(form.name) }}
+                            </div>
+                            <div class="uk-margin-medium-bottom">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.subscribers) }}
+                                {{ form_widget(form.subscribers, {'id': 'kUI_multiselect_subscribers'}) }}
+                            </div>
+                            <div class="uk-form-row uk-text-center">
+                                {{ form_widget(form.cancel) }}
+                                {{ form_widget(form.save) }}
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        'bundles/admin/js/kendoui_custom.js'
+        'bundles/admin/js/kendoui.js' 
+        'bundles/admin/libs/materialize-tags/js/materialize-tags.min.js'
+        'bundles/admin/libs/typeahead.js/typeahead.bundle.min.js'
+        output="compile/js/newsletter_group_update.min.js" 
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        var $kUI_multiselect_subscribers = $('#kUI_multiselect_subscribers');
+        if($kUI_multiselect_subscribers.length) {
+            $kUI_multiselect_subscribers.kendoMultiSelect();
+        }
+        // AutoComplete
+        $("#autocomplete-subscribers").kendoAutoComplete({
+            minLength: 2,
+            filter : "startsWith",
+            separator: ",",
+            dataValueField : "id",
+            dataTextField : "name",
+            template: 
+                '<div class="k-list-wrapper">'+
+                    '<span class="k-state-default k-list-wrapper-content">' +
+                        '<p>#: data.name #(#: data.email #)</p>' +
+                    '</span>' +
+                '</div>',
+            dataSource: {
+                transport: {
+                    read: {
+                        method: 'POST',
+                        dataType: "json",
+                        url: $("#subscribers-list-url").val(),
+                        data: {ids: $("#subscribers-id").val()}
+                    }
+                }
+            },
+            select: function (e){ 
+                var selectedOne =  this.dataItem(e.item.index());
+                var subscribers = $("#subscribers-id").val();
+
+                $("#subscribers-id").val(subscribers + ',' + selectedOne.id);
+                
+            },
+            height: 200
+        }).data("kendoAutoComplete");
+    </script>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% trans_default_domain 'app' %}
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'app.about.title'|trans }}{% endblock %}
+
+{% block content %}
+	<div class="page-title parallax parallax1" {% if page is not empty and page.picture is not empty %}style="background-image: url({{ page.picture }})"{% endif %}>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="page-title-content text-center">
+                <div class="page-title-heading ">
+                    <h2 class="title text-white font-weight-700">
+                    	{{ page is not empty ? page.name|upper : 'app.about.vision'|trans }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="flat-row flat-about-us style3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md12">
+                    {{ page is not empty ? page.content|raw : 'app.about.description'|trans|raw }}
+                </div>
+            </div>
+        </div>    
+    </section>
+
+    <section class="flat-row flat-team">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flat-title">
+                        <h2 class="title center-title">{{ 'app.staff.title'|trans }}</h2>
+                    </div>
+                    <div class="team-wrap clearfix">
+                        <div class="themesflat-carousel-box data-effect clearfix" data-gap="30" data-column="4" data-column2="3" data-column3="1" data-dots= "false" data-auto="false">
+                        	<div class="owl-carousel">
+                        		{% set staffs = expertise_staffs() %}
+                        		{% if staffs is not empty %}
+                        			{% for staff in staffs %}
+		                                <div class="team-member text-center">
+		                                    <div class="team-image">
+		                                        <a href="#" title=""><img src="{{ asset(staff.picture) }}" alt=""></a>
+		                                        <div class="overlay"></div>
+		                                        <div class="team-desc">
+		                                            <ul class="social">
+		                                                <li>
+		                                                    <a class="facebook data-hover" href="{{ asset(staff.facebook) }}" title="Facebook">
+		                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                                <li>
+		                                                    <a class="twitter data-hover" href="{{ asset(staff.twitter) }}" title="Twitter">
+		                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                                <li>
+		                                                    <a class="google data-hover" href="{{ asset(staff.googlePlus) }}" title="Google Plus">
+		                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                                <li>
+		                                                    <a class="linkedin data-hover" href="{{ asset(staff.linkedIn) }}" title="Linkedin">
+		                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                            </ul>
+		                                        </div>
+		                                    </div>
+		                                    <div class="team-info">
+		                                        <div class="name">
+		                                            <a href="#" title="">{{ staff.fullName }}</a>
+		                                        </div>
+		                                        <div class="job">
+		                                            {{ staff.position }}
+		                                        </div>
+		                                    </div>
+		                                </div>
+                        			{% endfor %}
+                        		{% else %}
+	                                <div class="team-member text-center">
+	                                    <div class="team-image">
+	                                        <a href="#" title=""><img src="{{ asset('bundles/app/images/style3/expert2.png') }}" alt=""></a>
+	                                        <div class="overlay"></div>
+	                                        <div class="team-desc">
+	                                            <ul class="social">
+	                                                <li>
+	                                                    <a class="facebook data-hover" href="" title="Facebook">
+	                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="twitter data-hover" href="" title="Twitter">
+	                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="google data-hover" href="" title="Google Plus">
+	                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="linkedin data-hover" href="" title="Linkedin">
+	                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </ul><!-- /.social -->
+	                                        </div>
+	                                    </div><!-- /.team-image -->
+
+	                                    <div class="team-info">
+	                                        <div class="name">
+	                                            <a href="#" title="">Oliver Giroud</a>
+	                                        </div>
+	                                        <div class="job">
+	                                            Supervisor
+	                                        </div>
+	                                        
+	                                    </div><!-- /.team-info -->
+	                                </div> <!-- /.team-member -->
+
+	                                <div class="team-member text-center">
+	                                    <div class="team-image">
+	                                        <a href="#" title=""><img src="{{ asset('bundles/app/images/style3/expert3.png') }}" alt=""></a>
+	                                        <div class="overlay"></div>
+	                                        <div class="team-desc">
+	                                            <ul class="social">
+	                                                <li>
+	                                                    <a class="facebook data-hover" href="" title="Facebook">
+	                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="twitter data-hover" href="" title="Twitter">
+	                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="google data-hover" href="" title="Google Plus">
+	                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="linkedin data-hover" href="" title="Linkedin">
+	                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </ul><!-- /.social -->
+	                                        </div>
+	                                    </div><!-- /.team-image -->
+	                                    <div class="team-info">
+	                                        <div class="name">
+	                                            <a href="#" title="">Alicia Burrows</a>
+	                                        </div>
+	                                        <div class="job">
+	                                            Employee
+	                                        </div>
+	                                    </div><!-- /.team-info -->
+	                                </div> <!-- /.team-member -->
+
+	                                <div class="team-member text-center">
+	                                    <div class="team-image">
+	                                        <a href="#" title=""><img src="{{ asset('bundles/app/images/style3/expert4.png') }}" alt=""></a>
+	                                        <div class="overlay"></div>
+	                                        <div class="team-desc">
+	                                            <ul class="social">
+	                                                <li>
+	                                                    <a class="facebook data-hover" href="" title="Facebook">
+	                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="twitter data-hover" href="" title="Twitter">
+	                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="google data-hover" href="" title="Google Plus">
+	                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="linkedin data-hover" href="" title="Linkedin">
+	                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </ul><!-- /.social -->
+	                                        </div>
+	                                    </div><!-- /.team-image -->
+	                                    <div class="team-info">
+	                                        <div class="name">
+	                                            <a href="#" title="">Tanisa Krush</a>
+	                                        </div>
+	                                        <div class="job">
+	                                            Secretary
+	                                        </div>   
+	                                    </div><!-- /.team-info -->
+	                                </div> <!-- /.team-member -->
+                        		{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

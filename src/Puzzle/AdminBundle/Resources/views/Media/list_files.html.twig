@@ -1,0 +1,254 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Media:layout_table.html.twig' %}
+
+{% set pageTitle = "media."~type|default('file')~".list" %}
+
+{% block title %} {{ parent() }} - {{ pageTitle|trans|capitalize }} {% endblock %}
+
+{% block formsearchplaceholder %}{{ 'media.search'|trans }} {{ pageTitle|trans|lower }} ...{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="#upload_files_modal" data-uk-modal="{ center:false }">
+        <span class="uk-text-bold">{{ "button.import"|trans|upper }}</span>
+        <i class="fa fa-cloud-upload"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <em>{{ pageTitle|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <div class="md-card">
+            {% if files is not empty %}
+                <div class="md-card-toolbar">
+                    <div class="md-card-toolbar-actions">
+                        <div class="uk-button-dropdown" data-uk-dropdown>
+                            <button class="md-btn">
+                                {% if type is defined and type is not empty %}
+                                    {% set filterTitle = "media.filter."~type %}
+                                    {{ filterTitle|trans }}
+                                {% else %}
+                                    {{ 'media.filter.title'|trans }}
+                                {% endif %}
+                                <i class="material-icons">&#xE313;</i>
+                            </button>
+                            <div class="uk-dropdown uk-dropdown-small uk-text-left">
+                                <ul class="uk-nav uk-nav-dropdown">
+                                    {% if type is defined and type is not empty %}
+                                        <li>
+                                            <a href="{{ url('admin_media_file_list') }}">
+                                                <i class="fa fa-file uk-margin-right"></i>
+                                                {{ "media.filter.all"|trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    <li>
+                                        <a href="{{ url('admin_media_file_list', {'type': 'audio' }) }}">
+                                            <i class="fa fa-file-audio-o uk-margin-right"></i>
+                                            {{ "media.filter.audio"|trans }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('admin_media_file_list', {'type': 'picture' }) }}">
+                                            <i class="fa fa-photo uk-margin-right"></i>
+                                            {{ "media.filter.picture"|trans }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('admin_media_file_list', {'type': 'video' }) }}">
+                                            <i class="fa fa-video-camera uk-margin-right"></i>
+                                            {{ "media.filter.video"|trans }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="md-card-content">
+                <div class="uk-width-large-1-1 uk-margin-bottom">
+                    {# <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                        <i class="material-icons toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                        <span id="toggle-check-text">{{ "button.select_all"|trans }}</span>
+                    </a> #}
+                    <input type="hidden" value="{{ files|length|default('0') }}" id="toggle-items-count">
+                    <input type="hidden" value="0" id="toggle-items-checked-count">
+                    <a href="{{ url('admin_media_folder_browse') }}" data-uk-modal="{ center:true }" class="md-btn md-btn-flat md-btn-flat-primary toggle-action uk-hidden show-modal">
+                        <i class="fa fa-copy"></i> 
+                        {{ "button.copy"|trans }}
+                    </a>
+                    <a href="{{ url('admin_media_folder_browse', {'operation': 'move'})}}" data-uk-modal="{ center:true }" class="md-btn md-btn-flat md-btn-flat-primary toggle-action uk-hidden show-modal">
+                        <i class="fa fa-scissors"></i> 
+                        {{ "button.move"|trans }}
+                    </a>
+                    <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                        <i class="fa fa-trash-o"></i> 
+                        {{ "button.remove_list"|trans }}
+                    </a>
+                </div>
+                <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ 'media.file.property.name'|trans }}</th>
+                        <th>{{ 'media.file.property.date'|trans }}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                            <tr class="toggleable" id="item-{{ file.id }}">
+                                <td>
+                                    <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                        <i class="material-icons toggle-icon toggle-item" id="toggle-item-{{ file.id }}">&#xE835;</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="uk-text-truncate">
+                                        <a href="{{ url('admin_media_file_show', {'id': file.id}) }}" class="show-modal">
+                                            <i class="fa fa-file fa-2x uk-margin-right"></i>
+                                            {{ file.name }}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{ file.createdAt|date('d-m-y H:i') }}</td>
+                                <td class="uk-text-right">
+                                    <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                        <a><i class="fa fa-ellipsis-h"></i></a>
+                                        <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
+                                            <ul class="uk-nav uk-nav-dropdown">
+                                                <li>
+                                                    <a href="{{ url('admin_media_file_show', { 'id': file.id }) }}" class="show-modal">
+                                                        <i class="fa fa-eye"></i>
+                                                        {{ "button.show"|trans }}
+                                                    </a>
+                                                </li>
+                                                {# <li>
+                                                    <a href="{{ url('admin_media_file_update', { 'id': file.id }) }}">
+                                                        <i class="fa fa-pencil"></i>
+                                                        {{ "button.update"|trans }}
+                                                    </a>
+                                                </li> #}
+                                                <li>
+                                                    <a href="{{ asset(file.path) }}" target="blank" download>
+                                                        <i class="fa fa-download"></i>
+                                                        {{ "button.download"|trans }}
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_media_file_delete', {'id': file.id}) }}" data-label="{{ file.name }}" class="remove-item">
+                                                        <i class="fa fa-trash-o uk-text-danger"></i>
+                                                        {{ "button.remove"|trans }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    {{ parent() }}
+    <div class="uk-modal" id="upload_files_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-modal-body uk-margin-top">
+                <div class="uk-width-1-1">
+                <ul class="uk-tab" data-uk-tab="{connect:'#tabs_1'}">
+                    <li class="uk-active"><a href="#">{{ 'media.file.add_multiple'|trans|upper }}</a></li>
+                    <li><a href="#">{{ 'media.file.add'|trans|upper }}</a></li>
+                </ul>
+                <ul id="tabs_1" class="uk-switcher uk-margin">
+                    <li>
+                        <div class="uk-form-row">     
+                            <div id="file_upload_drop" class="uk-file-upload">
+                                <p class="uk-text mb10">{{ 'media.file.drag_and_drop'|trans|upper }}</p>
+                                <p class="uk-text-muted uk-text-small uk-margin-small-bottom">{{ 'media.file.or'|trans|upper }}</p>
+                                <a class="uk-form-file md-btn md-btn-flat md-btn-flat-primary" id="file_upload_label">{{ 'media.file.choose'|trans|upper }}<input id="file_upload_select" type="file" multiple></a>
+                                <input type="hidden" id="file_filters" value="{{ filters }}">
+                                <input type="hidden" id="file_upload_context" value="media">
+                            </div>
+                            <div id="file_upload_progressbar" class="uk-progress uk-hidden">
+                                <div class="uk-progress-bar" style="width:0">0%</div>
+                            </div>
+                            <input type="hidden" id="refresh-auto" value="1">
+                            <input type="hidden" id="refresh-url" value="{{ url('admin_media_file_list') }}">
+                        </div>
+                    </li>
+                    <li>
+                        <form method="post" action="{{ url('admin_media_file_add') }}" class="uk-form-stacked">
+                            <div class="uk-form-row" id="local">     
+                                <div id="file_upload_drop" class="uk-file-upload">
+                                    <p class="uk-text mb10">{{ 'media.file.drag_and_drop'|trans|upper }}</p>
+                                    <p class="uk-text-muted uk-text-small uk-margin-small-bottom">{{ 'media.file.or'|trans|upper }}</p>
+                                    <a class="uk-form-file md-btn md-btn-flat md-btn-flat-primary" id="file_upload_label">{{ 'media.file.choose'|trans|upper }}<input id="file_upload_select" type="file"></a>
+                                    <input type="hidden" id="file_filters" value="{{ filters }}">
+                                    <input type="hidden" id="file_upload_context" value="media">
+                                </div>
+                                <div id="file_upload_progressbar" class="uk-progress uk-hidden">
+                                    <div class="uk-progress-bar" style="width:0">0%</div>
+                                </div>
+                            </div>
+                            <div class="md-card-content uk-hidden" id="target_container_file">
+                                <enmbed src="" alt="" id="target_file"/>
+                                <input class="md-input" name="file" id="files_to_add_file"/>
+                            </div>
+                            <div class="uk-form-row uk-hidden alternate">
+                                <label for="path" class="uk-form-label">{{ 'media.file.property.url'|trans }}</label>
+                                <input class="md-input" name="path" id="path"/>
+                            </div>
+                            <div class="uk-form-row alternate uk-hidden">
+                                <label for="path" class="uk-form-label">{{ 'media.file.property.name'|trans }}</label>
+                                <input class="md-input" name="name" id="name"/>
+                            </div>
+                            <div class="uk-form-row">
+                                <label for="caption" class="uk-form-label">{{ 'media.file.property.caption'|trans }}</label>
+                                <input class="md-input" name="caption" id="caption"/>
+                            </div>
+                            <div class="uk-form-row uk-hidden alternate">
+                                <div class="uk-form-row">
+                                    <div class="uk-float-right">
+                                        <input name="uploadable" id="uploadable" type="checkbox" data-switchery/>
+                                    </div>
+                                    <label for="caption" class="uk-display-block uk-margin-small-top uk-form-label">{{ 'media.file.copy'|trans }}</label>
+                                </div>
+                            </div>
+                            <div class="uk-text-right">
+                                <a href="#" id="toggle-source">{{ 'media.file.toggle_source'|trans }}</a>
+                                <input id="source" name="source" value="local" type="hidden"/>
+                            </div>
+                            <div class="uk-modal-footer uk-text-right">
+                                <button type="button" class="md-btn md-btn-flat uk-modal-close">{{ "button.close"|trans }}</button>
+                                <button type="submit" class="md-btn md-btn-success">{{ "button.save"|trans }}</button>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        'bundles/admin/js/page_contact_list.js'
+        
+        output="compiled/js/admin_media_file.min.js" 
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

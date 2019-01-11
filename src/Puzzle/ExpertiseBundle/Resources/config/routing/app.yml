@@ -1,0 +1,45 @@
+# FAQ
+app_expertise_faq_list:
+    path:     /faq/list
+    defaults: { _controller: ExpertiseBundle:App:listFaqs }
+    
+# Partner
+app_expertise_partner_list:
+    path:     /partner/list
+    defaults: { _controller: ExpertiseBundle:App:listPartners }
+    
+# Project
+app_expertise_project_list:
+    path:     /project/list
+    defaults: { _controller: ExpertiseBundle:App:listProjects }
+    
+app_expertise_project_show:
+    path:     /project/{id}/show
+    defaults: { _controller: ExpertiseBundle:App:showProject }
+
+# Service
+app_expertise_service_list:
+    path:     /service/list
+    defaults: { _controller: ExpertiseBundle:App:listServices }
+    
+app_expertise_service_show:
+    path:     /service/{id}/show
+    defaults: { _controller: ExpertiseBundle:App:showService }
+
+# Staff
+app_expertise_staff_list:
+    path:     /staff/list
+    defaults: { _controller: ExpertiseBundle:App:listStaffs }
+    
+app_expertise_staff_show:
+    path:     /staff/{id}/show
+    defaults: { _controller: ExpertiseBundle:App:showStaff }
+
+# Testimonial
+app_expertise_testimonial_list:
+    path:     /testimonial/list
+    defaults: { _controller: ExpertiseBundle:App:listTestimonials }
+    
+app_expertise_testimonial:
+    path:     /testimonial/{id}/show
+    defaults: { _controller: ExpertiseBundle:App:showTestimonial }

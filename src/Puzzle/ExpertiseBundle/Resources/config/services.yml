@@ -1,0 +1,12 @@
+services:
+#    expertise.example:
+#        class: ExpertiseBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+# Twig extension
+    expertise.twig.extension:
+        class: Puzzle\ExpertiseBundle\Twig\ExpertiseExtension
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
+        tags:
+            - { name: twig.extension }
+    

@@ -1,0 +1,11 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header"><h3>{{ "expertise.content.faq.update"|trans }} <em>{{ faq.question }}</em></h3></div>
+    {% include 'AdminBundle:Expertise:form_faq.html.twig' with {'form' : form, 'faq' : faq} %}
+</div>
+
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+</script>

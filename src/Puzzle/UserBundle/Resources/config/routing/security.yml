@@ -1,0 +1,31 @@
+login:
+    path:   /login
+    defaults: { _controller: UserBundle:Security:login }
+    host: '%host%' 
+
+admin_login:
+    path:   '%admin_prefix%login'
+    defaults: { _controller: UserBundle:Security:adminLogin }
+    host: '%admin_host%' 
+
+login_check:
+    path:   /login_check
+     
+logout:
+    path:   /logout
+
+registration:
+    path:   /registration
+    defaults: { _controller: UserBundle:Security:registration }
+
+connect:
+    path:   /connect
+    defaults: { _controller: UserBundle:Security:connect }
+
+reset_password:
+    path:   /reset-password
+    defaults: { _controller: UserBundle:Security:resetPassword }
+
+reset_password_confirm:
+    path:   /reset-password-confirm
+    defaults: { _controller: UserBundle:Security:resetPasswordConfirm }

@@ -1,0 +1,95 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr':{ 'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-large-7-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <section>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class="parsley-row">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon">
+                                        <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                    </span>
+                                    {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                    {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                                </div>
+                            </div>
+                            <div class=" parsley-row">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon">
+                                        <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                    </span>
+                                    {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                    {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon">
+                                        <a href="#"><i class="material-icons">&#xE0BE;</i></a>
+                                    </span>
+                                    {{ form_label(form.email, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                    {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                                </div>
+                            </div>
+                            <div class="parsley-row">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon">
+                                        <a href="#"><i class="material-icons">&#xE0CD;</i></a>
+                                    </span>
+                                    {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                    {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon">
+                                        <a href="#"><i class="material-icons">&#xE0AF;</i></a>
+                                    </span>
+                                    {{ form_label(form.company, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                    {{ form_widget(form.company, {'attr': {'class': 'md-input'}}) }}
+                                </div>
+                            </div>
+                            <div class="parsley-row">
+                                <div class="uk-input-group">
+                                    <span class="uk-input-group-addon">
+                                        <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                    </span>
+                                    {{ form_label(form.position, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                    {{ form_widget(form.position, {'attr': {'class': 'md-input'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="parsley-row uk-margin-top">
+                            {{ form_label(form.location, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.location, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-large-3-10">
+            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData': form.picture, 'data': contact is defined ? contact.picture : null, 'suffix': 'picture', 'context': 'contact/contact'} %}
+        </div>
+    </div>
+    <div class="uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_contact_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if contact is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

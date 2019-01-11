@@ -1,0 +1,21 @@
+parameters:
+    contact_email: "contact@redeln-inphb.org"
+    contact:
+        title: contact.title
+        description: contact.description
+        icon: contact.icon
+        enable: true
+        dependencies: 'media,user'
+        roles:
+            moment_read:
+                label: 'ROLE_CONTACT_POST_READ'
+                description: contact.role.moment.read
+            moment_manage:
+                label: 'ROLE_CONTACT_POST_MANAGE'
+                description: contact.role.moment.manage
+            agenda_read:
+                label: 'ROLE_CONTACT_CATEGORY_READ'
+                description: contact.role.agenda.read
+            agenda_manage:
+                label: 'ROLE_CONTACT_CATEGORY_MANAGE'
+                description: contact.role.agenda.manage

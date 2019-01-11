@@ -1,0 +1,19 @@
+account_profile:
+    path:   /myaccount
+    defaults: { _controller: UserBundle:Account:show }
+    
+account_update:
+    path:   /myaccount/update
+    defaults: { _controller: UserBundle:Account:update }
+
+account_update_picture:
+    path:   /myaccount/update-picture
+    defaults: { _controller: UserBundle:Account:updatePicture }
+
+account_update_credentials:
+    path:   /myaccount/update-credentials
+    defaults: { _controller: UserBundle:Account:updateCredentials }
+
+account_notification:
+    path:   /notifications/{id}
+    defaults: { _controller: UserBundle:Notification:show }

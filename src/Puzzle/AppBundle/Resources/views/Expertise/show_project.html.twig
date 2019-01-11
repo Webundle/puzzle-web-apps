@@ -1,0 +1,310 @@
+{% trans_default_domain 'app' %}
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'app.project.show'|trans }} - {{ project.name|default('') }} {% endblock %}
+
+{% block content %}
+    <div class="page-title parallax parallax1" {% if project is not empty and project.pictures is not empty %}style="background-image: url({{ project.pictures|first }})"{% endif %}>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="page-title-content text-center">
+                <div class="page-title-heading ">
+                    <h2 class="title text-white font-weight-700 mb-5">
+                    	{{ project is not empty ? project.name|upper : 'app.project.show'|trans|upper }}
+                    </h2>
+                    <a href="{{ url('app_contact', {'subject': project.service.name|default('Lorem ipsum')}) }}" class="btn btn-primary font-weight-700">
+                        {{ 'app.contact.button'|trans|upper }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-wrap main-project-detail pd-top-80 pd-bottom-60">
+        <div class="wrap-project-detail">
+            <div class="container">
+            	{% if project is not empty %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="sidebar-left">
+                                <div class="widget-list-info">
+                                    <h5 class="widget-title">{{ project.name }}</h5>                                
+                                    <ul class="list-info">
+                                        <li>
+		                                	<span class="text">{{ 'expertise.property.project.client'|trans({}, 'messages') }}:</span> 
+		                                	<span class="right">{{ project.client }}</span>
+		                                </li>
+		                                <li>
+		                                	<span class="text">{{ 'expertise.property.project.location'|trans({}, 'messages') }}:</span>
+		                                	<span class="right">{{ project.location }}</span>
+		                                </li>
+		                                <li>
+		                                	<span class="text">{{ 'expertise.property.project.startedAt'|trans({}, 'messages') }}:</span>
+		                                	<span class="right">{{ project.startedAt|date('d/m/Y') }}</span>
+		                                </li>
+		                                <li>
+		                                	<span class="text">{{ 'expertise.property.project.endedAt'|trans({}, 'messages') }}:</span>
+		                                	<span class="right">{{ project.endedAt|date('d/m/Y') }}</span>
+		                                </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                        	<div class="project-content">
+                        		<div class="flat-carousel">
+			                        <div class="themesflat-carousel-box data-effect clearfix" data-column="1" data-column2="2" data-column3="4" data-dots= "false" data-auto="false" data-nav="true" data-gap = '0'>
+			                            <div class="owl-carousel owl-theme  owl-loaded owl-drag clearfix">
+			                            	{% for file in project.files %}
+				                                <div class="imagebox imagebox-project style4">
+				                                    <div class="imagebox-border">
+				                                        <div class="imagebox-image ">
+				                                            <img src="{{ asset(file.path) }}">
+				                                        </div> 
+				                                    </div>
+				                                </div>
+			                               	{% endfor %}
+			                            </div> 
+			                        </div>
+			                    </div>
+                        	</div>
+                            <div class="project-content">
+                                <div class="textbox textbox-project-detail">
+                                	{{ project.description|raw }}
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+            	{% else %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="sidebar-left">
+                                <div class="widget-list-info">
+                                    <h5 class="widget-title">LOREM IPSUM DOLOR</h5>                                
+                                    <ul class="list-info">
+                                         <li>
+		                                	<span class="text font-weight-700">{{ 'expertise.property.project.client'|trans({}, 'messages') }}:</span> 
+		                                	<span class="right">Lorem ipsum dolor</span>
+		                                </li>
+		                                <li>
+		                                	<span class="text font-weight-700">{{ 'expertise.property.project.location'|trans({}, 'messages') }}:</span>
+		                                	<span class="right">Lorem ipsum dolor</span>
+		                                </li>
+		                                <li><span class="text font-weight-700">{{ 'expertise.property.project.startedAt'|trans({}, 'messages') }}:</span> <span class="right">02 / 08 / 2016</span></li>
+		                                <li><span class="text font-weight-700">{{ 'expertise.property.project.endedAt'|trans({}, 'messages') }}:</span> <span class="right">15 / 03 / 2018</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                        	<div class="project-content">
+                        		<div class="flat-carousel">
+			                        <div class="themesflat-carousel-box data-effect clearfix" data-column="1" data-column2="2" data-column3="4" data-dots= "false" data-auto="false" data-nav="true" data-gap = '0'>
+			                            <div class="owl-carousel owl-theme  owl-loaded owl-drag clearfix">
+			                                <div class="imagebox imagebox-project style4">
+			                                    <div class="imagebox-border">
+			                                        <div class="imagebox-image ">
+			                                            <img src="{{ asset('bundles/app/images/projects/project-detail/big-project.jpg') }}" alt="standell">
+			                                        </div> 
+			                                    </div>
+			                                </div>
+			                                <div class="imagebox imagebox-project style4">
+			                                    <div class="imagebox-border">
+			                                        <div class="imagebox-image ">
+			                                            <img src="{{ asset('bundles/app/images/projects/project-detail/big-project.jpg') }}" alt="standell">
+			                                        </div> 
+			                                    </div>
+			                                </div>
+			                                <div class="imagebox imagebox-project style4">
+			                                    <div class="imagebox-border">
+			                                        <div class="imagebox-image ">
+			                                            <img src="{{ asset('bundles/app/images/projects/project-detail/big-project.jpg') }}" alt="standell">
+			                                        </div> 
+			                                    </div>
+			                                </div>
+			                                <div class="imagebox imagebox-project style4">
+			                                    <div class="imagebox-border">
+			                                        <div class="imagebox-image ">
+			                                            <img src="{{ asset('bundles/app/images/projects/project-detail/big-project.jpg') }}" alt="standell">
+			                                        </div> 
+			                                    </div>
+			                                </div>
+			                            </div> 
+			                        </div>
+			                    </div>
+                        	</div>
+                            <div class="project-content">
+                                <div class="textbox textbox-project-detail">
+                                    <h5 class="textbox-heading"><a href="#">Lorem ipsum dolor</a></h5>
+                                    <div class="textbox-content">
+                                        <p>
+                                            In dignissim lorem metus, a cursus quam pulvinar id. In hac habitasse platea dictumst. Nullam faucibus, dui ut cursus auctor, odio ante maximus urna, vitae accumsan dui diam vel orci. Pellentesque dignissim molestie dolor at placerat. Donec eu cursus diam. Sed nec augue quis lorem congue maximus. Cras vehicula et lacus sit amet convallis. 
+                                            Vestibulum varius sapien eget ullamcorper volutpat. Mauris accumsan nunc sit amet turpis semper, at porta augue varius. In volutpat erat sapien, sed porta odio dignissim nec. Praesent et lorem est. Pellentesque eget neque nec 
+                                            turpis fringilla fringilla. Sed euismod consequat leo, at auctor dui vulputate id. Suspendisse eget ultricies urna. 
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="textbox textbox-project-detail">
+                                    <h5 class="textbox-heading"><a href="#">Lorem ipsum dolor</a></h5>
+                                    <div class="textbox-content">
+                                        <p>
+                                            In vel suscipit nisi diam at risus. Sed purus tempor, vestibulum tortor quis, laoreet quamosdo. Suspendisse commodo, nibh eusalem ullamcorper fringilla, est neque dapibus ligula, iaculis massa id sapien. Vestibum vitae faucibus eratsan. Proin sapien felis, suscipit bibendum tortor vel, tincidunt mollis ipsum. Quisque ultricies lacus sed aliquet iaculis. 
+                                            Placerat a nulla sodales, mollis gravida orci. Curabitur fermentum lorem vehicula egestas luctus. Suspendisse sit amet est in elit mattis auctor eget a erat maximus as arcu.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% set service = project is not empty ? project.service : null %}
+        {% if service is not empty and service.projects|length > 0 %}
+        	<div class="wrap-related-project">
+	            <div class="container">
+	            	<h3 class="title mt-5 mb-5"><a href="#">{{ 'app.project.related'|trans }}</a></h3>
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="flat-imagebox clearfix project-related">
+	                            <div class="flat-carousel">
+	                                <div class="themesflat-carousel-box data-effect clearfix" data-column="4" data-column2="2" data-column3="1" data-dots= "false" data-auto="false" data-nav="true" data-gap = '0'>
+	                                    <div class="owl-carousel owl-theme  owl-loaded owl-drag clearfix">
+	                                    	{% for related in service.projects %}
+	                                    		{% if related.id != project.id %}
+			                                        <div class="imagebox imagebox-project style4">
+			                                            <div class="imagebox-border">
+			                                                <div class="imagebox-image ">
+			                                                    <img src="{{ asset(related.pictures|first) }}">
+			                                                    <div class="overlay"></div>
+			                                                    <div class="imagebox-content">
+			                                                        <h3 class="heading">
+			                                                            <a href="{{ url('app_expertise_project_show', {'id': related.id}) }}">{{ related.name }}</a>
+			                                                        </h3>
+			                                                        <div class="meta-project">
+			                                                            <a href="#">{{ related.client }}</a>
+			                                                            <a href="#">{{ related.company }}</a>
+			                                                        </div>
+			                                                    </div>
+			                                                </div> 
+			                                            </div>
+			                                        {% endif %}
+		                                        </div>
+		                                    {% endfor %}
+	                                    </div> 
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+        {% else %}
+	        <div class="wrap-related-project">
+	            <div class="container">
+	            	<h3 class="title mt-5 mb-5"><a href="#">{{ 'app.project.related'|trans }}</a></h3>
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="flat-imagebox clearfix project-related">
+	                            <div class="flat-carousel">
+	                                <div class="themesflat-carousel-box data-effect clearfix" data-column="4" data-column2="2" data-column3="1" data-dots= "false" data-auto="false" data-nav="true" data-gap = '0'>
+	                                    <div class="owl-carousel owl-theme  owl-loaded owl-drag clearfix">
+	                                        <div class="imagebox imagebox-project style4">
+	                                            <div class="imagebox-border">
+	                                                <div class="imagebox-image ">
+	                                                    <img src="{{ asset('bundles/app/images/projects/project-detail/realated-1.jpg') }}" alt="standell">
+	                                                    <div class="overlay"></div>
+	                                                    <div class="imagebox-content">
+	                                                        <h3 class="heading">
+	                                                            <a href="#">The Alpina Central</a>
+	                                                        </h3>
+	                                                        <div class="meta-project">
+	                                                            <a href="#">Building</a>
+	                                                            <a href="#">Office</a>
+	                                                        </div>
+	                                                    </div>
+	                                                </div> 
+	                                            </div>
+	                                        </div>
+	                                        <div class="imagebox imagebox-project style4">
+	                                            <div class="imagebox-border">
+	                                                <div class="imagebox-image ">
+	                                                    <img src="{{ asset('bundles/app/images/projects/project-detail/realated-1.jpg') }}" alt="standell">
+	                                                    <div class="overlay"></div>
+	                                                    <div class="imagebox-content">
+	                                                        <h3 class="heading">
+	                                                            <a href="#">The Alpina Central</a>
+	                                                        </h3>
+	                                                        <div class="meta-project">
+	                                                            <a href="#">Building</a>
+	                                                            <a href="#">Office</a>
+	                                                        </div>
+	                                                    </div>
+	                                                </div> 
+	                                            </div>
+	                                        </div>
+	                                        <div class="imagebox imagebox-project style4">
+	                                            <div class="imagebox-border">
+	                                                <div class="imagebox-image ">
+	                                                    <img src="{{ asset('bundles/app/images/projects/project-detail/realated-1.jpg') }}" alt="standell">
+	                                                    <div class="overlay"></div>
+	                                                    <div class="imagebox-content">
+	                                                        <h3 class="heading">
+	                                                            <a href="#">The Alpina Central</a>
+	                                                        </h3>
+	                                                        <div class="meta-project">
+	                                                            <a href="#">Building</a>
+	                                                            <a href="#">Office</a>
+	                                                        </div>
+	                                                    </div>
+	                                                </div> 
+	                                            </div>
+	                                        </div>
+	                                        <div class="imagebox imagebox-project style4">
+	                                            <div class="imagebox-border">
+	                                                <div class="imagebox-image ">
+	                                                    <img src="{{ asset('bundles/app/images/projects/project-detail/realated-1.jpg') }}" alt="standell">
+	                                                    <div class="overlay"></div>
+	                                                    <div class="imagebox-content">
+	                                                        <h3 class="heading">
+	                                                            <a href="#">The Alpina Central</a>
+	                                                        </h3>
+	                                                        <div class="meta-project">
+	                                                            <a href="#">Building</a>
+	                                                            <a href="#">Office</a>
+	                                                        </div>
+	                                                    </div>
+	                                                </div> 
+	                                            </div>
+	                                        </div>
+	                                        <div class="imagebox imagebox-project style4">
+	                                            <div class="imagebox-border">
+	                                                <div class="imagebox-image ">
+	                                                    <img src="{{ asset('bundles/app/images/projects/project-detail/realated-1.jpg') }}" alt="standell">
+	                                                    <div class="overlay"></div>
+	                                                    <div class="imagebox-content">
+	                                                        <h3 class="heading">
+	                                                            <a href="#">The Alpina Central</a>
+	                                                        </h3>
+	                                                        <div class="meta-project">
+	                                                            <a href="#">Building</a>
+	                                                            <a href="#">Office</a>
+	                                                        </div>
+	                                                    </div>
+	                                                </div> 
+	                                            </div>
+	                                        </div>
+	                                    </div> 
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    {% endif %}
+
+    </div>
+{% endblock %}

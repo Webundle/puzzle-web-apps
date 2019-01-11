@@ -1,0 +1,25 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Expertise:layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.content.partner.update"|trans|capitalize }} {{ partner.name }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href="{{ url('admin_expertise_partner_list') }}">{{ "expertise.content.partner.list"|trans|capitalize }}</a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "expertise.content.partner.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Expertise:form_partner.html.twig' with { 'form': form } %}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}

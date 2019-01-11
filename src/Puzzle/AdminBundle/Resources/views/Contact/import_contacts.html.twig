@@ -1,0 +1,40 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "admin_contacts" %}
+
+{% extends 'ContactBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "contact.content.contact.import"|trans|capitalize }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            <h1>{{ "contact.title"|trans|capitalize }} - {{ "contact.content.contact.import"|trans|capitalize }}</h1>
+            <span class="sub_heading">
+                <a href="{{ url('admin_contacts') }}">
+                    <i class="material-icons">&#xE5C4;</i>
+                    {{ "button.back"|trans }}
+                </a>
+            </span>
+        </div>
+        <div id="page_content_inner">
+            <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+                <div class="uk-width-large-6-10 uk-container-center">
+                    <div class="md-card">
+                        <div class="md-card-content">
+                             <form class="uk-form-stacked" action="{{ url('admin_contact_import')}}" method="POST" enctype="multipart/form-data">
+                                <div class="uk-margin-medium-bottom">
+                                    <label for="file">Choisir le fichier</label>
+                                    <input id="file" type="file" name="file" class="md-file">
+                                </div>
+                                <div class="uk-text-center">
+                                    <button type="submit" class="md-btn md-btn-success">{{ "button.import"|trans }}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

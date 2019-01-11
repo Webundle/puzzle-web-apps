@@ -1,0 +1,133 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr': {'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-xLarge-7-10  uk-width-large-7-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <section>
+                        <div class="uk-grid">
+                            <div class="uk-width-medium-1-2 parsley-row">
+                                {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-width-medium-1-2 parsley-row">
+                                {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class="parsley-row">
+                                {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class=" parsley-row">
+                                {{ form_label(form.email, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class="parsley-row">
+                                {{ form_label(form.position, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.position, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class=" parsley-row">
+                                {{ form_label(form.ranking, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.ranking, {'attr': {'class': 'md-input', 'min': 1}}) }}
+                            </div>
+                        </div>
+                        <div class="uk-form-row uk-margin">
+                            <div class="uk-grid uk-margin-bottom uk-margin-small-top">
+                                <div class="uk-width-medium-1-2">
+                                    <div class="form-group">
+                                        <div class="uk-input-group">
+                                            <span class="uk-input-group-addon">
+                                                <i class="uk-input-group-icon fa fa-facebook"></i>
+                                            </span>
+                                            <div class="md-input-wrapper">
+                                                {{ form_label(form.facebook, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                                {{ form_widget(form.facebook, {'attr': {'class': 'md-input'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-width-medium-1-2">
+                                    <div class="form-group">
+                                        <div class="uk-input-group">
+                                            <span class="uk-input-group-addon">
+                                                <i class="uk-input-group-icon fa fa-twitter"></i>
+                                            </span>
+                                            <div class="md-input-wrapper">
+                                                {{ form_label(form.twitter, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                                {{ form_widget(form.twitter, {'attr': {'class': 'md-input'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uk-grid uk-margin-bottom uk-margin-small-top">
+                                <div class="uk-width-medium-1-2">
+                                    <div class="form-group">
+                                        <div class="uk-input-group">
+                                            <span class="uk-input-group-addon">
+                                                <i class="uk-input-group-icon fa fa-linkedin"></i>
+                                            </span>
+                                            <div class="md-input-wrapper">
+                                                {{ form_label(form.linkedIn, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                                {{ form_widget(form.linkedIn, {'attr': {'class': 'md-input'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-width-medium-1-2">
+                                    <div class="form-group">
+                                        <div class="uk-input-group">
+                                            <span class="uk-input-group-addon">
+                                                <i class="uk-input-group-icon fa fa-google"></i>
+                                            </span>
+                                            <div class="md-input-wrapper">
+                                                {{ form_label(form.googlePlus, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                                {{ form_widget(form.googlePlus, {'attr': {'class': 'md-input'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-form-row uk-margin">
+                            {{ form_label(form.description, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.description, {'attr': {'class': 'md-input', 'rows': 5, 'cols': 100}}) }}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.service, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.service, {'attr': {'data-md-selectize': true}}) }}
+                    </div>
+                </div>
+            </div>
+            
+            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData' : form.picture, 'suffix' : 'picture', 'data' : staff is defined ? staff.picture : null, 'context' : 'expertise/staff' } %}
+        </div>
+    </div>
+
+    <div class="uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_expertise_staff_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if staff is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

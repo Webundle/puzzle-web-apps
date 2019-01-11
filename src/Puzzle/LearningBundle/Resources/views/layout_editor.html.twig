@@ -1,0 +1,16 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle::layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "learning.title"|trans|capitalize }}{% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+	<i class="material-icons">keyboard_arrow_right</i>
+	<span>{{ "learning.navigation.title"|trans|capitalize }}</span>
+	{% block breadcrumbmodulelist %}
+		<i class="material-icons">keyboard_arrow_right</i>
+		<a href="{{ url('admin_learning_post_list') }}">{{ "learning.content.post.list"|trans|capitalize }}</a>
+	{% endblock %}
+{% endblock %}
+

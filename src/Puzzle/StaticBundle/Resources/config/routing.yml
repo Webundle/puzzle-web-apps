@@ -1,0 +1,11 @@
+static_app:
+    resource: '@StaticBundle/Resources/config/routing/app.yml'
+    prefix:   '/static'
+    host: '%host%'
+
+static_admin:
+    resource: '@StaticBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%static'
+    host: '%admin_host%'
+    options:
+        expose: true

@@ -1,0 +1,100 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Expertise:layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.content.partner.list"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_expertise_partner_create') }}">
+        <span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+	<em>{{ "expertise.content.partner.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+     <div id="page_content_inner">
+        <div class="uk-width-1-1">
+            <div class="md-card">
+                {% if partners is not empty %}
+                    <div class="md-card-toolbar toggle-action uk-hidden">
+                        <div class="md-card-toolbar-actions">
+                            <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                                <a class="uk-text-primary uk-text-bold">
+                                    {{ 'layout.multiple_actions'|trans }}
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li>
+                                            <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                                <i class="fa fa-trash-o uk-text-danger"></i> 
+                                                {{ "button.remove"|trans }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <input type="hidden" value="{{ partners|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="md-card-content">
+                    <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ "expertise.property.partner.name"|trans }}</th>
+                            <th>{{ "expertise.property.partner.location"|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for partner in partners %}
+                                <tr class="toggleable" id="item-{{ partner.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ partner.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('admin_expertise_partner_update', {'id': partner.id}) }}">{{ partner.name }}</a>
+                                    </td>
+                                    <td>{{ partner.location }}</td>
+                                    <td class="uk-text-right">
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                            <a><i class="fa fa-ellipsis-h"></i></a>
+                                            <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    <li>
+                                                        <a href="{{ url('admin_expertise_partner_update', { 'id': partner.id }) }}">
+                                                            <i class="fa fa-pencil"></i>
+                                                            {{ "button.update"|trans }}
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_partner_delete', {'id' : partner.id}) }}" data-label="{{ partner.name }}" class="remove-item">
+                                                            <i class="fa fa-trash-o uk-text-danger"></i>
+                                                            {{ "button.remove"|trans }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

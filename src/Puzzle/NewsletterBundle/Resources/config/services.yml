@@ -1,0 +1,17 @@
+services:
+#    newsletter.example:
+#        class: NewsletterBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    newsletter.twig.extension:
+        class: Puzzle\NewsletterBundle\Twig\NewsletterExtension
+        arguments: [ '@doctrine.orm.entity_manager']
+        tags:
+          - { name: twig.extension }
+          
+    newsletter.subscriber_listener:
+            class: Puzzle\NewsletterBundle\Listener\SubscriberListener
+            arguments: ["@mailer", "%newsletter_email%"]
+            public: false
+            tags:
+                - { name: kernel.event_listener, event: "newsletter.add_subscriber", method: onAdd }
+    

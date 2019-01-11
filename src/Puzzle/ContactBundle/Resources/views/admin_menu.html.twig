@@ -1,0 +1,16 @@
+{% trans_default_domain 'messages' %}
+
+<li {% if active == "contact" %}class="act_section current_section"{% endif %}>
+  	<a href="#">
+        <span class="menu_icon"><i class="material-icons">{{ "contact.icon"|trans }}</i></span>
+      	<span class="menu_title">{{ "contact.title"|trans }}</span>
+  	</a>
+  	<ul>
+      	<li {% if subactive == "admin_contacts" %}class="act_item"{% endif %}>
+            <a href="{{ url('admin_contacts')}}">{{ "contact.navigation.contact"|trans }}</a>
+      	</li>
+      	<li {% if subactive == "admin_contact_groups" %}class="act_item"{% endif %}>
+            <a href="{{ url('admin_contact_groups')}}">{{ "contact.navigation.group"|trans }}</a>
+      	</li>
+     </ul>
+</li>

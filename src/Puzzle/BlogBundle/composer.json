@@ -1,0 +1,33 @@
+{
+    "name" : "webundle/puzzle-blog-bundle",
+    "description" : "Manage news",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "AGNES Gnagne Cedric",
+        "email" : "cecenho55@gmail.com"
+    }],
+    "keywords" : [
+        "news cms"
+    ],
+    "license" : [
+        "proprietary"
+    ],
+    "require" : {
+        "php": ">=5.3.9",
+        "symfony/symfony": "2.8.*",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
+        "twig/twig" : "*",
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Webundle\\Puzzle\\BlogBundle" : ""
+        }
+    },
+    "target-dir" : "Webundle/Puzzle/BlogBundle",
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "1.0-dev"
+        }
+    }
+}

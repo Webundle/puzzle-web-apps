@@ -1,0 +1,19 @@
+admin_learning_comment_list:
+    path:     /list
+    defaults: { _controller: 'LearningBundle:Comment:list' }
+
+admin_learning_comment_update:
+    path:     /{id}/approve
+    defaults: { _controller: 'LearningBundle:Comment:update' }
+    
+admin_learning_comment_approve:
+    path:     /{id}/approve
+    defaults: { _controller: 'LearningBundle:Comment:approve' }
+    
+admin_learning_comment_disapprove:
+    path:     /{id}/disapprove
+    defaults: { _controller: 'LearningBundle:Comment:disapprove' }
+
+admin_learning_comment_delete:
+    path:     /{id}/delete
+    defaults: { _controller: 'LearningBundle:Comment:delete' }

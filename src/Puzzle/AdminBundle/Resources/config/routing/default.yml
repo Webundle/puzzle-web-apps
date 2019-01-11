@@ -1,0 +1,38 @@
+admin_homepage:
+    path:     '%admin_prefix%dashboard'
+    defaults: { _controller: AdminBundle:Default:index }
+
+admin_settings:
+    path:     /settings
+    defaults: { _controller: AdminBundle:Default:settings }
+ 
+# Modules
+admin_modules:
+    path:     /modules
+    defaults: { _controller: AdminBundle:Default:listModules }
+    
+admin_install_module:
+    path:     /modules/install
+    defaults: { _controller: AdminBundle:Default:installModule }
+    methods: POST
+    
+admin_module:
+    path:     /modules/{id}
+    defaults: { _controller: AdminBundle:Default:showModule }
+    
+admin_toggle_module:
+    path:     /modules/{id}/toggle
+    defaults: { _controller: AdminBundle:Default:toggleModule }
+
+admin_uninstall_module:
+    path:     /modules/{id}/uninstall
+    defaults: { _controller: AdminBundle:Module:uninstallModule }  
+
+# Permissions
+admin_permissions:
+    path:     /permissions
+    defaults: { _controller: AdminBundle:Default:listPermissions }
+    
+admin_attribute_permission:
+    path:     /permissions/attribute
+    defaults: { _controller: AdminBundle:Default:attributePermission }

@@ -1,0 +1,166 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "newsletter_subscribers" %}
+
+{% extends 'NewsletterBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ config.list|trans|capitalize }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+        	<div class="heading_actions">
+                <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+                    <a class="md-btn md-btn-flat " href="#" data-uk-modal="{ center:true }">
+                        Actions
+                        <i class="material-icons">&#xE5D4;</i>
+                    </a>
+                    <div class="uk-dropdown uk-dropdown-small">
+                        <ul class="uk-nav">
+                        	<li>
+                                <a href="{{ url('newsletter_subscriber_create')}}">
+                                    <i class="material-icons md-icon md-24">&#xE145;</i>
+                                    Nouveau
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#import_subscribers" data-uk-modal="{ center:true }">
+                                    <i class="material-icons md-icon md-24">&#xE2C4;</i>
+                                    Importer
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#export_subscribers" data-uk-modal="{ center:true }">
+                                    <i class="material-icons md-icon md-24">&#xE2C6;</i>
+                                    Exporter
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h1>{{ bundleName|trans|capitalize }} - {{ config.list|trans|capitalize }}</h1>
+        </div>
+        <div id="page_content_inner">
+        	<div class="uk-width-1-1 uk-text-right">
+                <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                    <i class="material-icons md-24">&#xE872;</i> 
+                    Supprimer la selection
+                </a>
+                <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                    <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                    <span id="toggle-check-text">Tout sélectionner</span>
+                </a>
+                <input type="hidden" value="{{ subscribers|length|default('0') }}" id="toggle-items-count">
+                <input type="hidden" value="0" id="toggle-items-checked-count">
+            </div>
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-overflow-container uk-margin-bottom">
+                        <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Entreprise</th>
+                                <th>Poste</th>
+                                <th>Lieu de résidence</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for subscriber in subscribers %}
+                                    <tr class="toggleable" id="item-{{subscriber.id}}">
+                                        <td style="padding-top:1em">
+                                            <a class="uk-text-muted uk-text-small uk-text-left uk-hidden toggleable-btn toggleable-btn-select" href="#">
+                                                <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ subscriber.id }}">&#xE835;</i>
+                                            </a>
+                                        </td>
+                                        <td style="padding-top:1em">{{subscriber.name}}</td>
+                                        <td style="padding-top:1em">{{subscriber.email}}</td>
+                                        <td style="padding-top:1em">{{subscriber.phone}}</td>
+                                        <td style="padding-top:1em">{{subscriber.company}}</td>
+                                        <td style="padding-top:1em">{{subscriber.position}}</td>
+                                        <td style="padding-top:1em">{{subscriber.location}}</td>
+                                        <td class="uk-text-right">
+                                        	<a href="{{url('newsletter_subscriber', {'id': subscriber.id})}}" data-uk-tooltip="{pos:'bottom'}" title="Voir les détails" class="uk-hidden toggleable-btn">
+                                                <i class="material-icons md-icon uk-text-primary">&#xE8F4;</i>
+                                            </a>
+                                            <a href="{{url('newsletter_subscriber_update', {'id': subscriber.id})}}" data-uk-tooltip="{pos:'bottom'}" title="Modifier" class="uk-hidden toggleable-btn">
+                                                <i class="material-icons md-icon uk-text-primary">&#xE3C9;</i>
+                                            </a>
+                                            <a href="#remove_item_modal" data-uk-modal="{ center:true }" class="uk-hidden toggleable-btn">
+                                                <i class="md-icon material-icons uk-text-danger remove-item" id="remove-item-{{ subscriber.id }}">&#xE872;</i>
+                                            </a>
+                                            <input type="hidden" id="url-remove-item-{{ subscriber.id }}" value="{{ url('newsletter_subscriber_remove', {'id': subscriber.id})}}">
+                                            <input type="hidden" id="label-remove-item-{{ subscriber.id }}" value="{{subscriber.name}}">
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="uk-modal" id="showModal"></div>
+    <div class="uk-modal" id="remove_item_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-margin-medium-bottom uk-text-center">
+                <h3>{{ config.remove|trans|capitalize }} <span id="remove_item_label" class="uk-text-bold"></span>?</h3>
+            </div>
+            <div class="uk-modal-footer uk-text-center">
+                <button type="button" class="md-btn uk-modal-close">Fermer</button>
+                <a href="" class="md-btn md-btn-danger" id="remove_item_url">Supprimer</a>
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="remove_list_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-margin-medium-bottom uk-text-center">
+                <h3>{{ config.remove_list|trans|capitalize }} ?</h3>
+            </div>
+            <div class="uk-modal-footer uk-text-center">
+                <button type="button" class="md-btn uk-modal-close">Fermer</button>
+                <a href="{{url("newsletter_subscribers_remove")}}" class="md-btn md-btn-danger" id="remove_list_btn">Supprimer</a>
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="import_subscribers">
+        <div class="uk-modal-dialog">
+            <div class="uk-modal-header">
+                <h3 class="uk-modal-title">{{ config.import|trans|capitalize }}</h3>
+            </div>
+            <form class="uk-form-stacked" action="{{ url('newsletter_subscriber_import')}}" method="POST" enctype="multipart/form-data">
+                <div class="uk-margin-medium-bottom">
+                    <label for="file">Choisir le fichier</label>
+                    <input id="file" type="file" name="file" class="md-file">
+                </div>
+
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" class="md-btn md-btn-flat uk-modal-close">Fermer</button><button type="submit" class="md-btn md-btn-flat md-btn-flat-primary" id="snippet_new_save">Importer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="uk-modal" id="export_subscribers">
+        <div class="uk-modal-dialog">
+            <div class="uk-modal-header">
+                <h3 class="uk-modal-title">{{ config.export|trans|capitalize }}</h3>
+            </div>
+            <form class="uk-form-stacked" action="{{ url('newsletter_subscriber_export')}}" method="POST" >
+                <div class="uk-margin-medium-bottom">
+                    <input type="text" class="md-input" id="name" name="name" value="Export du {{ "now"|date('d-m-Y H') }}h{{ "now"|date('i') }}"/>
+                </div>
+                <div class="uk-modal-footer uk-text-right">
+                    <button type="button" class="md-btn md-btn-flat uk-modal-close">Fermer</button><button type="submit" class="md-btn md-btn-flat md-btn-flat-primary" id="snippet_new_save">Exporter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

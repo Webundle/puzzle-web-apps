@@ -1,0 +1,56 @@
+media:
+    title: 'Médiathèque'
+    description: 'Gérer vos photos, audios, vidéos et autres documents'
+    icon: "wb_cloudy"
+    role:
+        file:
+            read: 'Consulter et télécharger la liste de vos fichiers en lecture'
+            manage: 'Ajouter, modifier, supprimer un fichier'
+        folder:
+            read: 'Consulter la liste de vos dossiers'
+            manage: 'Créer, modifier, supprimer un dossier'
+    navigation:
+        folder: 'Dossiers'
+        file: 'Fichiers'
+        picture: 'Images'
+        audio: 'Audios'
+        video: 'Vidéos'
+        document: 'Autres'
+    content:
+        file:
+            list: 'Fichiers'
+            create: 'Importer des fichiers'
+            remove: 'Etes-vous sûr de vouloir supprimer le fichier'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de fichiers'
+        picture:
+            list: 'Photos'
+            create: 'Importer des photos'
+            remove: 'Etes-vous sûr de vouloir supprimer la photo'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de photos'
+        audio:
+            list: 'Audios'
+            create: 'Importer des fichiers audios'
+            remove: 'Etes-vous sûr de vouloir supprimer le fichier audio'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de fichiers audios'
+        video:
+            list: 'Vidéos'
+            create: 'Importer des vidéos'
+            remove: 'Etes-vous sûr de vouloir supprimer la vidéo'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de vidéos'
+        document:
+            list: 'Documents'
+            create: 'Importer des documents'
+            remove: 'Etes-vous sûr de vouloir supprimer le document'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de documents'
+        folder:
+            list: 'Dossiers'
+            show: 'Détails du dossier'
+            create: 'Nouveau dossier'
+            update: 'Modifier le dossier'
+            remove: 'Etes-vous sûr de vouloir supprimer le dossier'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de dossiers'
+    property:
+        folder:
+            name: 'Nom'
+            parent: 'Parent'
+            allowed_extensions: 'Extensions autorisées'

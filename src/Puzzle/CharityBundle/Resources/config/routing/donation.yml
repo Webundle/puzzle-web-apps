@@ -1,0 +1,15 @@
+admin_charity_donation_list:
+    path:     /list
+    defaults: { _controller: 'CharityBundle:Donation:list' }
+
+admin_charity_donation_create:
+    path:     /create
+    defaults: { _controller: 'CharityBundle:Donation:create' }
+    
+admin_charity_donation_update:
+    path:     /{id}/update
+    defaults: { _controller: 'CharityBundle:Donation:update' }
+
+admin_charity_donation_delete:
+    path:     /{id}/delete
+    defaults: { _controller: 'CharityBundle:Donation:delete' }

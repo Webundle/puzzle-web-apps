@@ -1,0 +1,146 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Blog:layout.html.twig' %}
+
+{% block title %} {{ parent() }} - {{ "blog.category.show"|trans|capitalize }} {{ category.name }} {% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+        <a class="uk-text-bold" href="#" data-uk-modal="{ center:true }">
+            {{ "actions"|trans|capitalize }}
+            <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <div class="uk-dropdown uk-dropdown-small">
+            <ul class="uk-nav">
+                <li>
+                    <a href="{{ url('admin_blog_category_create', { 'parent' : category.id }) }}">
+                        <i class="fa fa-plus-circle"></i>
+                        {{ "button.add"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('admin_blog_category_update', { 'id': category.id })}}" class="show-modal" id="{{ category.id }}">
+                        <i class="fa fa-pencil"></i>
+                        {{ "button.update"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#remove_item_modal" data-uk-modal="{ center:true }" alt="Supprimer" title="Supprimer">
+                        <span class="remove-item" id="remove-item-{{ category.id }}">
+                            <i class="fa fa-trash-o uk-text-danger"></i>
+                            {{ "button.remove"|trans }}
+                        </span>
+                    </a>
+                    <input type="hidden" id="url-remove-item-{{ category.id }}" value="{{ url('admin_blog_category_delete', { 'id': category.id }) }}">
+                    <input type="hidden" id="label-remove-item-{{ category.id }}" value="{{ category.name }}">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_blog_category_list') }} ">
+       {{ 'blog.category.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    {% if category.parentNode is not empty %}
+    <a href=" {{ url('admin_blog_category_show', { 'id': category.parentNode.id }) }}">
+       ...
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    {% endif %}
+    <em>{{ "blog.category.show"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+     <div id="page_content_inner">
+        <div class="uk-width-medium-8-10 uk-container-center">
+            <div class="md-card">
+                {% if category.childNodes is not empty %}
+                    <div class="md-card-toolbar toggle-action uk-hidden">
+                        <div class="md-card-toolbar-actions">
+                            <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                                <a class="uk-text-primary uk-text-bold">
+                                    {{ 'layout.multiple_actions'|trans }}
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li>
+                                            <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                                <i class="fa fa-trash-o uk-text-danger"></i> 
+                                                {{ "button.remove"|trans }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <input type="hidden" value="{{ category.childNodes|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="md-card-content">
+                    <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ "blog.category.name"|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for child in category.childNodes %}
+                                <tr class="toggleable" id="item-{{ category.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ child.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('admin_blog_category_update', { 'id': child.id }) }}">{{ child.name }}</a>
+                                    </td>
+                                    <td class="uk-text-right">
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                            <a><i class="fa fa-ellipsis-h"></i></a>
+                                            <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    {% if child.childNodes is not empty %}
+                                                        <li>
+                                                            <a href="{{ url('admin_blog_category_show', { 'id': child.id }) }}" alt="{{ "button.show"|trans }}" title="{{ "button.show"|trans }}">
+                                                                <i class="fa fa-eye"></i>
+                                                                {{ 'button.show'|trans }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    <li>
+                                                        <a href="{{ url('admin_blog_category_update', { 'id': child.id }) }}">
+                                                            <i class="fa fa-pencil"></i>
+                                                            {{ "button.update"|trans }}
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#remove_item_modal" data-uk-modal="{ center:true }">
+                                                            <i class="fa fa-trash-o uk-text-danger remove-item" id="remove-item-{{ child.id }}"></i>
+                                                            {{ "button.remove"|trans }}
+                                                        </a>
+                                                        <input type="hidden" id="url-remove-item-{{ child.id }}" value="{{ url('admin_blog_category_delete', {'id': child.id})}}">
+                                                        <input type="hidden" id="label-remove-item-{{ child.id }}" value="{{ child.name }}">
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

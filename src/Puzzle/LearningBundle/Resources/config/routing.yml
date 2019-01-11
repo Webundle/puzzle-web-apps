@@ -1,0 +1,11 @@
+article:
+    resource: '@LearningBundle/Resources/config/routing/post.yml'
+    prefix: '/posts'
+    
+category:
+    resource: '@LearningBundle/Resources/config/routing/category.yml'
+    prefix: '/categories'
+
+comment:
+    resource: '@LearningBundle/Resources/config/routing/comment.yml'
+    prefix: '/comments'

@@ -1,0 +1,20 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Blog:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "blog.category.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+    <a href=" {{ url('admin_blog_category_list') }} ">
+       {{ 'blog.category.list'|trans|capitalize }}
+    </a>
+	<i class="fa fa-chevron-right"></i>
+	<em>{{ "blog.category.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Blog:form_category.html.twig' with { 'form': form } %}
+    </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header"><h3>{{ "admin.content.menu.update"|trans }} {{ menu.name }} </h3></div>
+    {% include 'AdminBundle:Menu:form.html.twig' with { 'form' : form } %}
+</div>

@@ -1,0 +1,121 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'BlogBundle::layout_table.html.twig' %}
+
+{% block title %} {{ parent() }} - {{ "blog.content.category.show"|trans|capitalize }} {{ category.name }} {% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+        <a class="md-btn md-btn-flat " href="#" data-uk-modal="{ center:true }">
+            {{ "button.actions"|trans }}
+            <i class="material-icons">&#xE5D4;</i>
+        </a>
+        <div class="uk-dropdown uk-dropdown-large">
+            <ul class="uk-nav">
+                <li>
+                    <a href="{{ url('admin_blog_category_create', { 'parent' : category.id }) }}">
+                        <i class="material-icons md-24">&#xE147;</i>
+                        {{ "button.add"|trans|upper }}
+                    </a>
+                </li>
+                <li class="uk-nav-divider"></li>
+                <li>
+                    <a href="{{ url('admin_blog_category_update', { 'id': category.id })}}" class="show-modal" id="{{ category.id }}">
+                        <i class="material-icons md-24">&#xE254;</i>
+                        {{ "button.update"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#remove_item_modal" data-uk-modal="{ center:true }" alt="Supprimer" title="Supprimer">
+                        <span class="remove-item" id="remove-item-{{ category.id }}">
+                            <i class="material-icons uk-text-danger md-24">&#xE872;</i>
+                            {{ "button.remove"|trans }}
+                        </span>
+                    </a>
+                    <input type="hidden" id="url-remove-item-{{ category.id }}" value="{{ url('admin_blog_category_delete', { 'id': category.id }) }}">
+                    <input type="hidden" id="label-remove-item-{{ category.id }}" value="{{ category.name }}">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_blog_category_list') }} ">
+       {{ 'blog.content.category.list'|trans|capitalize }}
+    </a>
+    <i class="material-icons">keyboard_arrow_right</i>
+    {% if category.parentNode is not empty %}
+    <a href=" {{ url('admin_blog_category_show', { 'id': category.parentNode.id }) }}">
+       ...
+    </a>
+    <i class="material-icons">keyboard_arrow_right</i>
+    {% endif %}
+    <em>{{ "blog.content.category.show"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+     <div id="page_content_inner">
+        <div class="uk-width-medium-8-10 uk-container-center">
+            <div class="md-card">
+                {% if category.childNodes is not empty %}
+                    <div class="md-card-toolbar">
+                        <div class="md-card-toolbar-actions">
+                            <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                                <i class="material-icons md-24">&#xE872;</i> 
+                                {{ "button.remove_list"|trans }}
+                            </a>
+                            <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                                <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                                <span id="toggle-check-text">{{ "button.select_all"|trans }}</span>
+                            </a>
+                            <input type="hidden" value="{{ category.childNodes|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="md-card-content">
+                    <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ "blog.property.category.name"|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for child in category.childNodes %}
+                                <tr class="toggleable" id="item-{{ category.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left uk-hidden toggleable-btn toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ child.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('admin_blog_category_update', { 'id': child.id }) }}">{{ child.name }}</a>
+                                    </td>
+                                    <td class="uk-text-right">
+                                        <a href="{{ url('admin_blog_category_show', { 'id': child.id }) }}" alt="{{ "button.show"|trans }}" title="{{ "button.show"|trans }}" class="uk-hidden toggleable-btn">
+                                            <i class="md-icon material-icons uk-text-primary">&#xE8F4;</i>
+                                        </a>
+                                        <a href="{{ url('admin_blog_category_update', { 'id': child.id }) }}" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.update"|trans }}" class="uk-hidden toggleable-btn" alt="{{ "button.update"|trans }}">
+                                            <i class="material-icons md-icon uk-text-primary">&#xE3C9;</i>
+                                        </a>
+                                        <a href="#remove_item_modal" data-uk-modal="{ center:true }" class="uk-hidden toggleable-btn" title="{{ "button.remove"|trans }}" alt="{{ "button.remove"|trans }}">
+                                            <i class="md-icon material-icons uk-text-danger remove-item" id="remove-item-{{ child.id }}">&#xE872;</i>
+                                        </a>
+                                        <input type="hidden" id="url-remove-item-{{ child.id }}" value="{{ url('admin_blog_category_delete', { 'id': child.id })}}">
+                                        <input type="hidden" id="label-remove-item-{{ child.id }}" value="{{ child.name }}">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

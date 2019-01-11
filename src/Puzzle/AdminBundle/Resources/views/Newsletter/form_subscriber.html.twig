@@ -1,0 +1,28 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form) }}
+<div class="uk-modal-body">
+    <div class="uk-margin-medium-bottom">
+        {{ form_label(form.email, null, {'label_attr' : {'class' : 'uk-form-label'}}) }}
+        {{ form_widget(form.email, {'attr' : {'class' : 'md-input'}}) }}
+    </div>
+    <div class="uk-margin-medium-bottom">
+        {{ form_label(form.name, null, {'label_attr' : {'class' : 'uk-form-label'}}) }}
+        {{ form_widget(form.name, {'attr' : {'class' : 'md-input'}}) }}
+    </div>
+</div>
+<div class="uk-modal-footer uk-text-right">
+    <button type="button" class="md-btn uk-modal-close">
+        <i class="fa fa-arrow-left"></i>
+        {{ "button.close"|trans }}
+    </button>
+    <button class="md-btn md-btn-success" type="submit">
+        {% if subscriber is defined %}
+            {{ 'button.update'|trans }}
+        {% else %}
+            {{ 'button.add'|trans }}
+        {% endif %}
+        <i class="fa fa-check"></i>
+    </button>
+</div>
+{{ form_end(form) }}

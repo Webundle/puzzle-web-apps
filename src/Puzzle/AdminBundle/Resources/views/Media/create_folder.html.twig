@@ -1,0 +1,19 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3>{{ "media.folder.create"|trans }}</h3>
+    </div>
+    <div class="uk-modal-body">
+        {% include 'AdminBundle:Media:form_folder.html.twig' with {'form': form} %}
+    </div>
+</div>
+
+{% javascripts
+    'bundles/admin/js/common.js'
+    'bundles/admin/js/uikit_custom.js'
+    'bundles/admin/libs/materialize-tags/js/materialize-tags.min.js'
+    output="compiled/js/media_folder_create.min.js" 
+%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}

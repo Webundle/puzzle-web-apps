@@ -1,0 +1,32 @@
+admin_menu_list:
+    path:     /list
+    defaults: { _controller: AdminBundle:Menu:listMenus }
+
+admin_menu_create:
+    path:     /create
+    defaults: { _controller: AdminBundle:Menu:createMenu }
+
+admin_menu_show:
+    path:     /{id}/show
+    defaults: { _controller: AdminBundle:Menu:showMenu }
+
+admin_menu_update:
+    path:     /{id}/update
+    defaults: { _controller: AdminBundle:Menu:updateMenu }
+
+admin_menu_delete:
+    path:     /{id}/delete
+    defaults: { _controller: AdminBundle:Menu:deleteMenu }
+
+# MenuItems
+admin_menu_item_create:
+    path:     /{id}/items/create
+    defaults: { _controller: AdminBundle:Menu:createMenuItem }
+
+admin_menu_item_update:
+    path:     /{id}/items/{itemId}/update
+    defaults: { _controller: AdminBundle:Menu:updateMenuItem }
+
+admin_menu_item_delete:
+    path:     /{id}/items/{itemId}/delete
+    defaults: { _controller: AdminBundle:Menu:deleteMenuItem }

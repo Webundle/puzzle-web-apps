@@ -1,0 +1,6 @@
+admin_default:
+    resource: '@AdminBundle/Resources/config/routing/default.yml'
+
+admin_menu:
+    resource: '@AdminBundle/Resources/config/routing/menu.yml'
+    prefix:   '%admin_prefix%menus'

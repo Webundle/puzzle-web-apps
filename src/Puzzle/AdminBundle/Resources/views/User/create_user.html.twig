@@ -1,0 +1,49 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:User:layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "user.content.user.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_user_list') }} ">
+       {{ 'user.content.user.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "user.content.user.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:User:form_user.html.twig' with { 'form': form } %}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        'bundles/admin/js/kendoui_custom.js'
+        'bundles/admin/js/kendoui.js'
+
+        output="compile/js/admin_user_create.min.js" 
+        %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        // Allow only pictures
+        $("#choose_files_btn_picture").click(function(){
+            altair_form_file_upload.choose_files_modal("picture", "user");
+        });
+        // Datetime Picker
+        $("#credentials_expired_at, #account_expired_at").kendoDateTimePicker({
+            format: "dd-MM-yyyy HH:mm"
+        });
+    </script>
+{% endblock %}

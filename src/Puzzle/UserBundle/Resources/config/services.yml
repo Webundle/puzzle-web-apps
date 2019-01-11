@@ -1,0 +1,23 @@
+services:
+    # handler
+    security.authentication_success_handler:
+        class: Puzzle\UserBundle\Security\Http\Handler\AuthenticationSuccessHandler
+        arguments: [ '@router', '@security.http_utils', [] ]
+    security.authentication_failure_handler:
+        class: Puzzle\UserBundle\Security\Http\Handler\AuthenticationFailureHandler
+        arguments: [ '@http_kernel', '@security.http_utils', [] ]
+    security.access_denied_handler:
+        class: Puzzle\UserBundle\Security\Http\Handler\AccessDeniedHandler
+    security.authentication_entry_point:
+        class: Puzzle\UserBundle\Security\Http\EntryPoint\XmlHttpRequestEntryPoint
+        arguments: [ '@router' ]
+    admin.security.authentication_entry_point:
+        class: Puzzle\UserBundle\Security\Http\EntryPoint\AdminXmlHttpRequestEntryPoint
+        arguments: [ '@router' ]
+    user.listener:
+        class: Puzzle\UserBundle\Listener\UserListener
+        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%admin.email%' ]
+        tags:
+            - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling }
+            - { name: kernel.event_listener, event: "user.create", method: onCreate }
+

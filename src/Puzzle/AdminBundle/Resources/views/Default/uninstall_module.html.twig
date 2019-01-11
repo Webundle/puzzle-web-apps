@@ -1,0 +1,49 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        {% if parents is empty and dependencies is empty %}
+        <div class="uk-alert uk-alert-success" data-uk-alert="">
+        {% elseif parents is not empty %}
+        <div class="uk-alert uk-alert-danger" data-uk-alert="">
+        {% else %}
+        <div class="uk-alert uk-alert-warning" data-uk-alert="">
+        {% endif %}
+            <h3 class="uk-modal-title">{{ "admin.content.module.remove"|trans }} <b>{{ module.title|trans }}</b></h3>
+        </div>
+    </div>
+    <div class="uk-modal-content">
+        {% if parents is not empty %}
+            <p>
+                Le module ne peut être désinstallé car il est utilisé par d'autres modules:
+            </p>
+            <ul>
+                {% for parent in parents %}
+                    <li><span class="uk-text-bold">{{ parent.title|trans }}: </span>{{ parent.description|trans }}</li>
+                {% endfor %}
+            </ul>
+            <p>Vous devez désinstaller ces modules et ce module sera désinstallé automatiquement.</p>
+        {% else %}
+            {% if dependencies is not empty %}
+                <p>
+                    La désinstallation de ce module entraînera la désinstallation automatique de ses dépendances:
+                    <ul>
+                        {% for dependency in dependencies %}
+                            <li><span class="uk-text-bold">{{ dependency.title|trans }}: </span>{{ dependency.description|trans }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            {% endif %}
+            Êtes-vous sur de vouloir désinstaller ce module ?
+        {% endif %}
+
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" class="md-btn md-btn-flat uk-modal-close">Fermer</button>
+        {% if parents is empty %}
+        	<form method="POST" action="{{ url('admin_module_remove', { 'id': module.id }) }}">
+            	<button class="md-btn md-btn-flat md-btn-flat-danger" type="submit">Désinstaller</button>
+            </form>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,95 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Expertise:layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.content.pricing.list"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_expertise_pricing_create') }}">
+        <span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <em>{{ "expertise.content.pricing.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <div class="uk-width-1-1">
+            <div class="md-card">
+                {% if pricings is not empty %}
+                    <div class="md-card-toolbar">
+                        <div class="md-card-toolbar-actions">
+                            <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                                <i class="fa fa-trash-o"></i> 
+                                {{ "button.remove_list"|trans|upper }}
+                            </a>
+                            {# <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                                <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                                <span id="toggle-check-text">{{ "button.select_all"|trans|upper }}</span>
+                            </a> #}
+                            <input type="hidden" value="{{ pricings|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="md-card-content">
+                    <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{ "expertise.property.pricing.name"|trans }}</th>
+                                <th>{{ "expertise.property.pricing.amount"|trans }}</th>
+                                <th>{{ "expertise.property.pricing.currency"|trans }}</th>
+                                <th>{{ "expertise.property.pricing.period"|trans }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pricing in pricings %}
+                                <tr class="toggleable" id="item-{{ pricing.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ pricing.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('admin_expertise_pricing_update', {'id': pricing.id}) }}">{{ pricing.name }}</a>
+                                    </td>
+                                    <td>{{ pricing.amount|default('-') }}</td>
+                                    <td>{{ pricing.currency|default('-') }}</td>
+                                    <td>{{ pricing.period|default('-') }}</td>
+                                    <td class="uk-text-right">
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                            <a><i class="fa fa-ellipsis-h"></i></a>
+                                            <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    <li>
+                                                        <a href="{{ url('admin_expertise_pricing_update', {'id': pricing.id}) }}" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.update"|trans }}" class="uk-hidden toggleable-btn" alt="{{ "button.update"|trans }}">
+                                                            <i class="material-icons md-icon uk-text-primary">&#xE3C9;</i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_pricing_delete', {'id': pricing.id}) }}" data-label="{{ pricing.name }}" class="remove-item">
+                                                            <i class="fa fa-trash-o uk-text-danger"></i>
+                                                            {{ "button.remove"|trans }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

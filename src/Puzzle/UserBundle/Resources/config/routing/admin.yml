@@ -1,0 +1,43 @@
+admin_user_list:
+    path:   /list
+    defaults: { _controller: UserBundle:Admin:listUsers }
+
+admin_user_create:
+    path:   /create
+    defaults: { _controller: UserBundle:Admin:createUser }
+    
+admin_user_show:
+    path:   /{id}/show
+    defaults: { _controller: UserBundle:Admin:showUser }
+
+admin_user_update:
+    path:   /{id}/update
+    defaults: { _controller: UserBundle:Admin:updateUser }
+
+admin_user_update_credentials:
+    path:   /{id}/update-credentials
+    defaults: { _controller: UserBundle:Admin:updateUserCredentials }
+
+admin_user_delete:
+    path:   /{id}/delete
+    defaults: { _controller: UserBundle:Admin:deleteUser }
+
+admin_user_group_list:
+    path:   /group/list
+    defaults: { _controller: UserBundle:Admin:listGroups }
+
+admin_user_group_create:
+    path:   /group/create
+    defaults: { _controller: UserBundle:Admin:createGroup }
+
+admin_user_group_show:
+    path:   /group/{id}/show
+    defaults: { _controller: UserBundle:Group:showGroup }
+
+admin_user_group_update:
+    path:   /group/{id}/update
+    defaults: { _controller: UserBundle:Group:updateGroup }
+
+admin_user_group_delete:
+    path:   /group/{id}/delete
+    defaults: { _controller: UserBundle:Admin:deleteGroup }

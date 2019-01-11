@@ -1,0 +1,96 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "newsletter_subscribers" %}
+
+{% extends 'NewsletterBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ config.show|trans|capitalize }} {{ subscriber.name|capitalize }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+        	<div class="heading_actions">
+                <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+                    <a class="md-btn md-btn-flat " href="#" data-uk-modal="{ center:true }">
+                        Actions
+                        <i class="material-icons">&#xE5D4;</i>
+                    </a>
+                    <div class="uk-dropdown uk-dropdown-small">
+                        <ul class="uk-nav">
+                        	<li>
+                                <a href="{{ url('newsletter_subscriber_update', {'id': subscriber.id})}}">
+                                    <i class="material-icons md-icon md-24">&#xE145;</i>
+                                    Modifier
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#remove_item_modal" data-uk-modal="{ center:true }" alt="Supprimer" title="Supprimer">
+                                    <span class="remove-item" id="remove-item-{{ subscriber.id }}">
+                                        <i class="material-icons uk-text-danger md-24">&#xE872;</i>
+                                        Supprimer
+                                    </span>
+                                </a>
+                                <input type="hidden" id="url-remove-item-{{ subscriber.id }}" value="{{ url('newsletter_subscriber_remove', {'id': subscriber.id})}}">
+                                <input type="hidden" id="label-remove-item-{{ subscriber.id }}" value="{{subscriber.name}}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h1>{{ bundleName|trans|capitalize }} - {{ config.show|trans|capitalize }}</h1>
+            <span class="sub_heading">
+                <a onclick="history.back();">
+                    <i class="material-icons">arrow_back</i>
+                    Retour
+                </a>/
+                <em>{{ subscriber.name|capitalize }}</em>
+            </span>
+        </div>
+        <div id="page_content_inner">
+            <div class="uk-width-large-6-10 uk-container-center">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <section>
+                            <p>
+                                <label class="uk-text-small uk-text-muted">Nom & Prénoms</label> : {{ subscriber.name|capitalize }}
+                            </p>
+                            <p>
+                                <label class="uk-text-small uk-text-muted">E-mail</label> : 
+                                {{ subscriber.email }}
+                            </p>
+                            <p>
+                                <label class="uk-text-small uk-text-muted">Numéro de téléphone</label> : 
+                                {{ subscriber.phone }}
+                            </p>
+                            <p>
+                                <label class="uk-text-small uk-text-muted">Entreprise</label> :
+                                {{ subscriber.company }}
+                            </p>
+                            <p>
+                                <label class="uk-text-small uk-text-muted">Poste</label> : 
+                                {{ subscriber.position }}
+                            </p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="remove_item_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-margin-medium-bottom uk-text-center">
+                <h3>{{ config.remove|trans|capitalize }} <span id="remove_item_label" class="uk-text-bold"></span>?</h3>
+            </div>
+            <div class="uk-modal-footer uk-text-center">
+                <button type="button" class="md-btn uk-modal-close">Fermer</button>
+                <a href="" class="md-btn md-btn-danger" id="remove_item_url">Supprimer</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset("bundles/admin/js/pages/forms_file_upload.js")}}"></script>
+    <script src="{{asset("js/controls.js")}}"></script>
+{% endblock %}

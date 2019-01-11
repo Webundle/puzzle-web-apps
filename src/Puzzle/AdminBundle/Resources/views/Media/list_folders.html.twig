@@ -1,0 +1,54 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Media:layout.html.twig' %}
+
+{% block title %} {{ parent() }} - {{ "media.folder.list"|trans|capitalize }} {% endblock %}
+
+{# {% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_media_folder_create') }}" class="show-modal">
+        <span class="uk-text-bold">{{ "button.add"|trans }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+ #}
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <em>{{ 'media.folder.list'|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+            <div class="uk-width-large-1-1">
+                <div class="gallery_grid uk-grid-width-medium-1-5 uk-grid-width-large-1-5" data-uk-grid="{gutter: 16}" id="list-files">
+                    {% if folderDefault is not empty %}
+                        <div class="gallery_grid_file">
+                            <div class="uk-text-center">
+                                <a href="{{ url('admin_media_folder_show', {'id': folderDefault.id}) }}">
+                                    <i class="fa fa-home fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="uk-text-center" style="height:40px">
+                                <a class="folder_image_title uk-text-truncate uk-text-bold uk-text-primary" title="{{ folderDefault.name }}" href="{{ url('admin_media_folder_show', {'id': folderDefault.id}) }}">{{ folderDefault.name|trans|capitalize }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% for folder in folders %}
+                        <div class="gallery_grid_file">
+                            <div class="uk-text-center">
+                                <a href="{{ url('admin_media_folder_show', {'id': folder.id}) }}">
+                                    <i class="fa fa-folder fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="uk-text-center" style="height:40px">
+                                <a class="folder_image_title uk-text-truncate uk-text-bold uk-text-primary" title="{{ folder.name }}" href="{{ url('admin_media_folder_show', {'id': folder.id}) }}">{{ folder.name|capitalize }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

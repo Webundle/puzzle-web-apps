@@ -1,0 +1,5 @@
+# FAQ
+app_contact_create:
+    path:     /create
+    defaults: { _controller: ContactBundle:App:createContact }
+    

@@ -1,0 +1,121 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "admin_contact_groups" %}
+
+{% extends 'ContactBundle::layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "contact.content.group.list"|trans|capitalize }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+        'bundles/admin/skins/tinymce/material_design/skin.min.css'
+        'bundles/admin/libs/kendo-ui/styles/kendo.common-material.min.css'
+        'bundles/admin/libs/kendo-ui/styles/kendo.material.min.css'
+        'bundles/admin/libs/materialize-tags/css/materialize-tags.css'
+        filter='cssrewrite' 
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}" media="all" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            <div class="heading_actions">
+                <a href="{{ url('admin_contact_group_create')}}" class="md-btn md-btn-primary show-modal">
+                    {{ "button.add"|trans }}
+                    <i class="material-icons md-24">&#xE147;</i>
+                </a>
+            </div>
+            <h1>{{ "contact.title"|trans|capitalize }} - {{ "contact.content.group.list"|trans|capitalize }}</h1>
+        </div>
+        <div id="page_content_inner">
+            {% if groups is not empty %}
+                <div class="uk-width-1-1 uk-text-right">
+                    <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                        <i class="material-icons md-24">&#xE872;</i> 
+                        {{ "button.remove_list"|trans }}
+                    </a>
+                    <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                        <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                        <span id="toggle-check-text">{{ "button.select_all"|trans }}</span>
+                    </a>
+                    <input type="hidden" value="{{ groups|length|default('0') }}" id="toggle-items-count">
+                    <input type="hidden" value="0" id="toggle-items-checked-count">
+                </div>
+            {% endif %}
+            <div class="uk-width-medium-8-10 uk-container-center">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nom</th>
+                                <th>Effectif</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for group in groups %}
+                                    <tr class="toggleable" id="item-{{ group.id }}">
+                                        <td>
+                                            <a class="uk-text-muted uk-text-small uk-text-left uk-hidden toggleable-btn toggleable-btn-select" href="#">
+                                                <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ group.id }}">&#xE835;</i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ url('admin_contact_group', {'id': group.id}) }}">
+                                                {{ group.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ group.contacts|length|default(0) }}</td>
+                                        
+                                        <td class="uk-text-right">
+                                            <a href="{{url('admin_contact_group', {'id': group.id})}}" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.show"|trans }}" class="uk-hidden toggleable-btn">
+                                                <i class="material-icons md-icon uk-text-primary">&#xE8F4;</i>
+                                            </a>
+                                            <a href="{{url('admin_contact_group_update', {'id': group.id})}}" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.update"|trans }}" class="uk-hidden toggleable-btn show-modal">
+                                                <i class="material-icons md-icon uk-text-primary">&#xE3C9;</i>
+                                            </a>
+                                            <a href="#remove_item_modal" data-uk-modal="{ center:true }" class="uk-hidden toggleable-btn" title="{{ "button.remove"|trans }}">
+                                                <i class="md-icon material-icons uk-text-danger remove-item" id="remove-item-{{ group.id }}">&#xE872;</i>
+                                            </a>
+                                            <input type="hidden" id="url-remove-item-{{ group.id }}" value="{{ url('admin_contact_group_remove', {'id': group.id})}}">
+                                            <input type="hidden" id="label-remove-item-{{ group.id }}" value="{{group.name}}">
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="uk-modal" id="showModal"></div>
+    <div class="uk-modal" id="remove_item_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-margin-medium-bottom uk-text-center">
+                <h3>{{ "contact.content.group.remove"|trans|capitalize }} <span id="remove_item_label" class="uk-text-bold"></span>?</h3>
+            </div>
+            <div class="uk-modal-footer uk-text-center">
+                <button type="button" class="md-btn uk-modal-close">{{ "button.close"|trans }}</button>
+                <a href="" class="md-btn md-btn-danger" id="remove_item_url">{{ "button.remove"|trans }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="remove_list_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-margin-medium-bottom uk-text-center">
+                <h3>{{ "contact.content.group.remove_list"|trans|capitalize }} ?</h3>
+            </div>
+            <div class="uk-modal-footer uk-text-center">
+                <button type="button" class="md-btn uk-modal-close">{{ "button.close"|trans }}</button>
+                <a href="{{url("admin_contact_groups_remove")}}" class="md-btn md-btn-danger" id="remove_list_btn">{{ "button.remove"|trans }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

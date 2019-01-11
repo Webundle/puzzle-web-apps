@@ -1,0 +1,168 @@
+# Group
+admin_newsletter_groups:
+    path:     /groups
+    defaults: { _controller: NewsletterBundle:Group:showList }
+    
+admin_newsletter_group_create:
+    path:     /groups/create
+    defaults: { _controller: NewsletterBundle:Group:create }
+
+admin_newsletter_group:
+    path:     /groups/{id}
+    defaults: { _controller: NewsletterBundle:Group:show }
+    
+admin_newsletter_group_update:
+    path:     /groups/{id}/update
+    defaults: { _controller: NewsletterBundle:Group:update }
+
+admin_newsletter_group_remove:
+    path:     /groups/{id}/remove
+    defaults: { _controller: NewsletterBundle:Group:remove }
+    
+admin_newsletter_groups_remove:
+    path:     /groups/remove/list
+    defaults: { _controller: NewsletterBundle:Group:removeList }
+
+# Subscriber
+admin_newsletter_subscribers:
+    path:     /subscribers
+    defaults: { _controller: NewsletterBundle:Subscriber:showList }
+    
+admin_newsletter_subscriber_create:
+    path:     /subscribers/create
+    defaults: { _controller: NewsletterBundle:Subscriber:create }
+
+admin_newsletter_subscriber_import:
+    path:     /subscribers/import
+    defaults: { _controller: NewsletterBundle:Subscriber:import }
+    
+admin_newsletter_subscriber_export:
+    path:     /subscribers/export
+    defaults: { _controller: NewsletterBundle:Subscriber:export }
+    
+admin_newsletter_subscriber:
+    path:     /subscribers/{id}
+    defaults: { _controller: NewsletterBundle:Subscriber:show }
+
+admin_newsletter_subscriber_update:
+    path:     /subscribers/{id}/update
+    defaults: { _controller: NewsletterBundle:Subscriber:update }
+
+admin_newsletter_subscriber_remove:
+    path:     /subscribers/{id}/remove
+    defaults: { _controller: NewsletterBundle:Subscriber:remove }
+    
+admin_newsletter_subscribers_remove:
+    path:     /subscribers/remove/list
+    defaults: { _controller: NewsletterBundle:Subscriber:removeList }
+    
+# Mail
+admin_newsletter_mails:
+    path:     /mails
+    defaults: { _controller: NewsletterBundle:Mail:showList }
+    
+admin_newsletter_mail_create_form:
+    path:     /mails/create
+    defaults: { _controller: NewsletterBundle:Mail:createForm }
+    
+admin_newsletter_mail_create_callback:
+    path:     /mails/create-callback
+    defaults: { _controller: NewsletterBundle:Mail:createCallback }
+    methods: POST
+    
+admin_newsletter_mail:
+    path:     /mails/{id}
+    defaults: { _controller: NewsletterBundle:Mail:show }
+
+admin_newsletter_mail_preview:
+    path:     /mails/{id}/preview
+    defaults: { _controller: NewsletterBundle:Mail:preview }  
+
+admin_newsletter_mail_update_form:
+    path:     /mails/{id}/update-form
+    defaults: { _controller: NewsletterBundle:Mail:updateForm }
+    
+admin_newsletter_mail_update_callback:
+    path:     /mails/{id}/update-callback
+    defaults: { _controller: NewsletterBundle:Mail:updateCallback }
+
+admin_newsletter_mail_remove:
+    path:     /mails/{id}/remove
+    defaults: { _controller: NewsletterBundle:Mail:remove }
+    
+admin_newsletter_mails_remove:
+    path:     /mails/remove/list
+    defaults: { _controller: NewsletterBundle:Mail:removeList }
+    
+# Template
+admin_newsletter_templates:
+    path:     /templates
+    defaults: { _controller: NewsletterBundle:Template:showList }
+
+admin_newsletter_template_create:
+    path:     /templates/create
+    defaults: { _controller: NewsletterBundle:Template:create }
+    
+admin_newsletter_template:
+    path:     /templates/{id}
+    defaults: { _controller: NewsletterBundle:Template:show }
+    
+admin_newsletter_template_update:
+    path:     /templates/{id}/update
+    defaults: { _controller: NewsletterBundle:Template:updateForm }
+
+admin_newsletter_template_remove:
+    path:     /templates/{id}/remove
+    defaults: { _controller: NewsletterBundle:Template:remove }
+    
+admin_newsletter_templates_remove:
+    path:     /templates/remove/list
+    defaults: { _controller: NewsletterBundle:Template:removeList }
+    
+# Contact
+admin_newsletter_contacts:
+    path:     /contacts
+    defaults: { _controller: NewsletterBundle:Contact:showList }
+    
+admin_newsletter_contact_response:
+    path:     /contacts/{id}/response
+    defaults: { _controller: NewsletterBundle:Contact:response }
+    methods: POST
+    
+admin_newsletter_contact_update:
+    path:     /contacts/{id}/update
+    defaults: { _controller: NewsletterBundle:Contact:update }
+    
+admin_newsletter_contact_remove:
+    path:     /contacts/{id}/remove
+    defaults: { _controller: NewsletterBundle:Contact:remove }
+    
+# Category
+admin_newsletter_categories:
+    path:     /categories
+    defaults: { _controller: NewsletterBundle:Category:showList }
+    
+admin_newsletter_category_create_form:
+    path:     /categories/create
+    defaults: { _controller: NewsletterBundle:Category:createForm }
+    
+admin_newsletter_category_create_callback:
+    path:     /categories/create-callback
+    defaults: { _controller: NewsletterBundle:Category:createCallback }
+    methods: POST
+    
+admin_newsletter_category:
+    path:     /categories/{id}
+    defaults: { _controller: NewsletterBundle:Category:show }
+    
+admin_newsletter_category_update_form:
+    path:     /categories/{id}/update-form
+    defaults: { _controller: NewsletterBundle:Category:updateForm }
+    
+admin_newsletter_category_update_callback:
+    path:     /categories/{id}/update-callback
+    defaults: { _controller: NewsletterBundle:Category:updateCallback }
+    
+admin_newsletter_category_remove:
+    path:     /categories/{id}/remove
+    defaults: { _controller: NewsletterBundle:Category:remove }

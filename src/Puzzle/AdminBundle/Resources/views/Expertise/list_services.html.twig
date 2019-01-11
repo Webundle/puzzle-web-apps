@@ -1,0 +1,93 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Expertise:layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.content.service.list"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_expertise_service_create') }}">
+        <span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <em>{{ "expertise.content.service.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <div class="uk-width-1-1">
+            <div class="md-card">
+                {% if services is not empty %}
+                    <div class="md-card-toolbar uk-hidden toggle-action">
+                        <div class="md-card-toolbar-actions">
+                            <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                                <i class="fa fa-trash-o"></i> 
+                                {{ "button.remove_list"|trans|upper }}
+                            </a>
+                            <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                                <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                                <span id="toggle-check-text">{{ "button.select_all"|trans|upper }}</span>
+                            </a>
+                            <input type="hidden" value="{{ services|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="md-card-content">
+                    <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{ "expertise.property.service.name"|trans }}</th>
+                                <th>{{ "expertise.property.service.createdAt"|trans }}</th>
+                                <th>{{ "expertise.property.service.updatedAt"|trans }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in services %}
+                                <tr class="toggleable" id="item-{{ service.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ service.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('admin_expertise_service_update', {'id': service.id}) }}">{{ service.name }}</a>
+                                    </td>
+                                    <td>{{ service.createdAt|date('d-m-Y H:i') }}</td>
+                                    <td>{{ service.updatedAt|date('d-m-Y H:i') }}</td>
+                                    <td class="uk-text-right">
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                            <a><i class="fa fa-ellipsis-h"></i></a>
+                                            <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    <li>
+                                                        <a href="{{ url('admin_expertise_service_update', {'id': service.id}) }}" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.update"|trans }}" class="uk-hidden toggleable-btn" alt="{{ "button.update"|trans }}">
+                                                            <i class="material-icons md-icon uk-text-primary">&#xE3C9;</i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_service_delete', {'id': service.id}) }}" data-label="{{ service.name }}" class="remove-item">
+                                                            <i class="fa fa-trash-o uk-text-danger"></i>
+                                                            {{ "button.remove"|trans }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

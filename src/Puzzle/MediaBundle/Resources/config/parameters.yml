@@ -1,0 +1,22 @@
+parameters:
+    media:
+        title: media.title
+        description: media.description
+        icon: media.icon
+        enable: true
+        dependencies: 'user'
+        roles:
+            file_read:
+                label: 'ROLE_MEDIA_FILE_READ'
+                description: media.role.file.read
+            file_manage:
+                label: 'ROLE_MEDIA_FILE_MANAGE'
+                description: media.role.file.manage
+            folder_read:
+                label: 'ROLE_MEDIA_FOLDER_READ'
+                description: media.role.folder.read
+            folder_manage:
+                label: 'ROLE_MEDIA_FOLDER_MANAGE'
+                description: media.role.folder.manage
+
+

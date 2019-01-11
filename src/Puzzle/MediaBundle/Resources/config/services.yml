@@ -1,0 +1,39 @@
+services:
+#    media.example:
+#        class: MediaBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    media.upload_manager:
+        class: Puzzle\MediaBundle\Service\UploadManager  
+        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager" ]
+
+    media.file_manager:
+        class: Puzzle\MediaBundle\Service\FileManager
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    media.file_listener:
+        class: Puzzle\MediaBundle\Listener\FileListener
+        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager"]
+        tags:
+            - { name: kernel.event_listener, event: "media.create_file", method: onCreate }
+            - { name: kernel.event_listener, event: "media.rename_file", method: onRename }
+            - { name: kernel.event_listener, event: "media.copy_file", method: onCopy }
+            - { name: kernel.event_listener, event: "media.remove_file", method: onRemove }
+
+    media.folder_listener:
+        class: Puzzle\MediaBundle\Listener\FolderListener
+        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager"]
+        tags:
+            - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling }
+            - { name: kernel.event_listener, event: "media.create_folder", method: onCreate }
+            - { name: kernel.event_listener, event: "media.rename_folder", method: onUpdate }
+            - { name: kernel.event_listener, event: "media.remove_folder", method: onRemove }
+            - { name: kernel.event_listener, event: "media.add_files_to_folder", method: onAddFiles } 
+            - { name: kernel.event_listener, event: "media.remove_files_to_folder", method: onRemoveFiles }
+    
+    # Twig extension
+    media.twig.extension:
+        class: Puzzle\MediaBundle\Twig\MediaExtension
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
+        tags:
+            - { name: twig.extension }

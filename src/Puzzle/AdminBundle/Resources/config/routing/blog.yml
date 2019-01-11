@@ -1,0 +1,71 @@
+# Categories
+admin_blog_categories:
+    path:     /categories
+    defaults: { _controller: AdminBundle:Blog:listCategories }
+    
+admin_blog_create_category:
+    path:     /categories/create
+    defaults: { _controller: AdminBundle:Blog:createCategory }
+
+admin_blog_category:
+    path:     /categories/{id}
+    defaults: { _controller: AdminBundle:Blog:showCategory }
+    
+admin_blog_edit_category:
+    path:     /categories/{id}/edit
+    defaults: { _controller: AdminBundle:Blog:editCategory }
+
+admin_blog_translate_category:
+    path:     /categories/{id}/translate
+    defaults: { _controller: AdminBundle:Blog:translateCategory }
+
+admin_blog_remove_category:
+    path:     /categories/{id}/remove
+    defaults: { _controller: AdminBundle:Blog:removeCategory }
+    
+admin_blog_remove_categories:
+    path:     /categories/remove/list
+    defaults: { _controller: AdminBundle:Blog:removeCategories }
+    
+# Post
+admin_blog_posts:
+    path:     /posts
+    defaults: { _controller: AdminBundle:Blog:listPosts }
+    
+admin_blog_create_post:
+    path:     /posts/create
+    defaults: { _controller: AdminBundle:Blog:createPost }
+    
+admin_blog_post:
+    path:     /posts/{id}
+    defaults: { _controller: AdminBundle:Blog:showPost }
+    
+admin_blog_edit_post:
+    path:     /posts/{id}/edit
+    defaults: { _controller: AdminBundle:Blog:editPost }
+
+admin_blog_translate_post:
+    path:     /posts/{id}/translate
+    defaults: { _controller: AdminBundle:Blog:translatePost }
+
+admin_blog_remove_post:
+    path:     /posts/{id}/remove
+    defaults: { _controller: AdminBundle:Blog:removePost }
+    
+admin_blog_remove_posts:
+    path:     /posts/remove/list
+    defaults: { _controller: AdminBundle:Blog:removePost }
+
+# Comment
+admin_blog_comments:
+    path:     /comments
+    defaults: { _controller: AdminBundle:Blog:listComments }
+
+admin_blog_edit_comment:
+    path:     /comments/{id}/edit
+    defaults: { _controller: AdminBundle:Blog:editComment }
+    methods: POST
+
+admin_blog_remove_comment:
+    path:     /comments/{id}/remove
+    defaults: { _controller: AdminBundle:Blog:removeComment }

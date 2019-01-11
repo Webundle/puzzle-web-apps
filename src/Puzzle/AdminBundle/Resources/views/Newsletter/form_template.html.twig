@@ -1,0 +1,40 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'method': 'POST'}) }}
+    <div class="uk-width-medium-7-10 uk-container-center">
+        <div class="md-card">
+            <div class="md-card-content">
+                <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                    <div class="uk-width-large-1-1">
+                        <div class="uk-form-row">
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.trigger, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.trigger, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_widget(form.content, {'id': 'wysiwyg_ckeditor'}) }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-margin-top uk-text-center">
+        <a href="{{ url('admin_newsletter_template_list') }}" class="md-btn">
+            <i class="fa fa-arrow-left"></i>
+            {{ "button.cancel"|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if page is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

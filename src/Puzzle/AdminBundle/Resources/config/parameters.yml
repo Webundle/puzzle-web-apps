@@ -1,0 +1,11 @@
+# This file is auto-generated during the composer install
+parameters:
+    admin_host : "admin.puzzle.local"
+    admin:
+        title: admin.title
+        icon: admin.icon
+        menu_item_translatable_fields: 'name'
+        roles:
+            manage:
+                label: 'ROLE_ADMIN'
+                description: admin.role.admin

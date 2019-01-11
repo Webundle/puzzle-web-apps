@@ -1,0 +1,6 @@
+admin:
+    resource: '@MediaBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%media'
+    host: '%admin_host%'
+    options:
+        expose: true

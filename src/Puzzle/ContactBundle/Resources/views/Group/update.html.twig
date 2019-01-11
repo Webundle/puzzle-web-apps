@@ -1,0 +1,43 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3>{{ "contact.content.group.update"|trans }}</h3>
+    </div>
+    {{ form_start(form, {'method': 'POST'}) }}
+    <div class="uk-modal-body uk-margin-top">
+        <div class="uk-margin-medium-bottom">
+            <div class="uk-form-row">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="uk-margin-medium-bottom">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+            </div>
+            <div class="uk-form-row">
+                {{ form_label(form.contacts) }}
+                {{ form_widget(form.contacts, {'id': 'kUI_multiselect_contacts'}) }}
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" class="md-btn md-btn-flat uk-modal-close">{{ "button.close"|trans }}</button>
+        {{ form_widget(form.save, {'id': 'save'}) }}
+    </div>
+    {{ form_end(form) }}
+</div>
+<script src="{{asset("bundles/admin/js/common.js")}}"></script>
+<script src="{{asset("bundles/admin/js/uikit_custom.js")}}"></script>
+<script src="{{asset("bundles/admin/js/kendoui_custom.js")}}"></script>
+<script src="{{asset("bundles/admin/js/kendoui.js")}}"></script>
+
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+
+    var $kUI_multiselect_contacts = $('#kUI_multiselect_contacts');
+    if($kUI_multiselect_contacts.length) {
+        $kUI_multiselect_contacts.kendoMultiSelect();
+    }
+</script>

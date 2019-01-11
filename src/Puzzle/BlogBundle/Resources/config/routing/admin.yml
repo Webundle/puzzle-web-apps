@@ -1,0 +1,58 @@
+# Admin
+admin_blog_category_list:
+    path:     /category/list
+    defaults: { _controller: 'BlogBundle:Admin:listCategories' }
+
+admin_blog_category_create:
+    path:     /category/create
+    defaults: { _controller: 'BlogBundle:Admin:createCategory' }
+
+admin_blog_category_show:
+    path:     /category/{id}
+    defaults: { _controller: 'BlogBundle:Admin:showCategory' }
+
+admin_blog_category_update:
+    path:     /category/{id}/update
+    defaults: { _controller: 'BlogBundle:Admin:updateCategory' }
+    
+admin_blog_category_delete:
+    path:     /category/{id}/delete
+    defaults: { _controller: 'BlogBundle:Admin:deleteCategory' }
+
+# Admin
+admin_blog_post_list:
+    path:     /post/list
+    defaults: { _controller: 'BlogBundle:Admin:listPosts' }
+
+admin_blog_post_create:
+    path:     /post/create
+    defaults: { _controller: 'BlogBundle:Admin:createPost' }
+    
+admin_blog_post_update:
+    path:     /post/{id}/update
+    defaults: { _controller: 'BlogBundle:Admin:updatePost' }
+
+admin_blog_post_delete:
+    path:     /post/{id}/delete
+    defaults: { _controller: 'BlogBundle:Admin:deletePost' }
+
+# Admin
+admin_blog_comment_list:
+    path:     /comment/list
+    defaults: { _controller: 'BlogBundle:Admin:listComments' }
+
+admin_blog_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: 'BlogBundle:Admin:updateComment' }
+    
+admin_blog_comment_approve:
+    path:     /comment/{id}/approve
+    defaults: { _controller: 'BlogBundle:Admin:approveComment' }
+    
+admin_blog_comment_disapprove:
+    path:     /comment/{id}/disapprove
+    defaults: { _controller: 'BlogBundle:Admin:disapproveComment' }
+
+admin_blog_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: 'BlogBundle:Admin:deleteComment' }

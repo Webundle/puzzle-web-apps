@@ -1,0 +1,15 @@
+admin_learning_post_list:
+    path:     /list
+    defaults: { _controller: 'LearningBundle:Post:list' }
+
+admin_learning_post_create:
+    path:     /create
+    defaults: { _controller: 'LearningBundle:Post:create' }
+    
+admin_learning_post_update:
+    path:     /{id}/update
+    defaults: { _controller: 'LearningBundle:Post:update' }
+
+admin_learning_post_delete:
+    path:     /{id}/delete
+    defaults: { _controller: 'LearningBundle:Post:delete' }

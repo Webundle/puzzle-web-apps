@@ -1,0 +1,26 @@
+services:
+#    mail.example:
+#        class: NewsletterBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    mail.twig.extension:
+        class: Puzzle\MailBundle\Twig\NewsletterExtension
+        arguments: [ '@doctrine.orm.entity_manager']
+        public: false
+        tags:
+          - { name: twig.extension }
+          
+    mail.contact_listener:
+            class: Puzzle\MailBundle\Listener\ContactListener
+            arguments: ["@mailer", "%mail_email%"]
+            tags:
+                - { name: kernel.event_listener, event: "mail.create_contact", method: onCreate }
+
+    mail.mail_listener:
+            class: Puzzle\SchedulingBundle\Listener\SchedulingListener
+            arguments: ["@doctrine.orm.entity_manager", "@scheduling.manager", "@scheduling.cron", "@scheduling.tools"]
+            tags:
+                - { name: kernel.event_listener, event: "scheduling.schedule", method: onSchedule }
+
+    mail.mail_manager:
+            class: Puzzle\MailBundle\Service\MailManager
+            arguments: ["@doctrine.orm.entity_manager", "@scheduling.manager", "@scheduling.cron", "@scheduling.tools"]

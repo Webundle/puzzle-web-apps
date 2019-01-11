@@ -1,0 +1,99 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "admin_contacts" %}
+
+{% extends 'ContactBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "contact.content.contact.show"|trans|capitalize }} {{ contact.fullName|capitalize }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+        	<div class="heading_actions">
+                <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+                    <a class="md-btn md-btn-flat " href="#" data-uk-modal="{ center:true }">
+                        Actions
+                        <i class="material-icons">&#xE5D4;</i>
+                    </a>
+                    <div class="uk-dropdown uk-dropdown-small">
+                        <ul class="uk-nav">
+                        	<li>
+                                <a href="{{ url('admin_contact_update', {'id': contact.id})}}">
+                                    <i class="material-icons md-icon md-24">&#xE145;</i>
+                                    {{ "button.update"|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#remove_item_modal" data-uk-modal="{ center:true }" alt="Supprimer" title="{{ "button.remove"|trans }}">
+                                    <span class="remove-item" id="remove-item-{{ contact.id }}">
+                                        <i class="material-icons uk-text-danger md-24">&#xE872;</i>
+                                        {{ "button.remove"|trans }}
+                                    </span>
+                                </a>
+                                <input type="hidden" id="url-remove-item-{{ contact.id }}" value="{{ url('admin_contact_remove', {'id': contact.id})}}">
+                                <input type="hidden" id="label-remove-item-{{ contact.id }}" value="{{ contact.fullName }}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h1>{{ "contact.title"|trans|capitalize }} - {{ "contact.content.contact.update"|trans|capitalize }}</h1>
+            <span class="sub_heading">
+                <a href="{{ url('admin_contacts') }}">
+                    <i class="material-icons">arrow_back</i>
+                    {{ "button.back"|trans }}
+                </a>/
+                <em>{{ contact.fullname|capitalize }}</em>
+            </span>
+        </div>
+        <div id="page_content_inner">
+            <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+                <div class="uk-width-large-7-10 uk-container-center">
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+                                <div class="uk-width-large-7-10 uk-container-center">
+                                    <section>
+                                        <p>
+                                            <label class="uk-text-small uk-text-muted">{{"contact.property.contact.fullName"}}</label> : {{ contact.fullName|capitalize }}
+                                        </p>
+                                        <p>
+                                            <label class="uk-text-small uk-text-muted">{{"contact.property.contact.email"}}</label> : 
+                                            {{ contact.email }}
+                                        </p>
+                                        <p>
+                                            <label class="uk-text-small uk-text-muted">{{"contact.property.contact.phone"}}</label> : 
+                                            {{ contact.phone }}
+                                        </p>
+                                        <p>
+                                            <label class="uk-text-small uk-text-muted">{{"contact.property.contact.company"}}</label> :
+                                            {{ contact.company }}
+                                        </p>
+                                        <p>
+                                            <label class="uk-text-small uk-text-muted">{{"contact.property.contact.position"}}</label> : 
+                                            {{ contact.position }}
+                                        </p>
+                                    </section>
+                                </div>
+                                <div class="uk-width-large-3-10">
+                                    <img src="{{ contact.picture }}" alt="" class="img_large"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="remove_item_modal">
+        <div class="uk-modal-dialog">
+            <div class="uk-margin-medium-bottom uk-text-center">
+                <h3>{{ "contact.content.contact.remove"|trans|capitalize }} <span id="remove_item_label" class="uk-text-bold"></span>?</h3>
+            </div>
+            <div class="uk-modal-footer uk-text-center">
+                <button type="button" class="md-btn uk-modal-close">{{ "button.close"|trans }}</button>
+                <a href="" class="md-btn md-btn-danger" id="remove_item_url">{{ "button.remove"|trans }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

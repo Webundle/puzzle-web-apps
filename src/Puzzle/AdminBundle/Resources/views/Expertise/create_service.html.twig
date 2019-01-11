@@ -1,0 +1,27 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Expertise:layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.content.service.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_expertise_service_list') }} ">
+       {{ 'expertise.content.service.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "expertise.content.service.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Expertise:form_service.html.twig' with { 'form' : form } %}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}

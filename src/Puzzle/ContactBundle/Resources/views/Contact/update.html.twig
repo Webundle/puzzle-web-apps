@@ -1,0 +1,136 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "admin_contacts" %}
+
+{% extends 'ContactBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "contact.content.contact.update"|trans|capitalize }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            
+            <h1>{{ "contact.title"|trans|capitalize }} - {{ "contact.content.contact.update"|trans|capitalize }}</h1>
+            <span class="sub_heading">
+                <a href="{{ url('admin_contacts') }}">
+                    <i class="material-icons">&#xE5C4;</i>
+                    {{ "button.back"|trans }}
+                </a>
+                /
+                <em>{{ contact.fullName }}</em>
+            </span>
+        </div>
+        <div id="page_content_inner">
+            {{ form_start(form, {'attr':{ 'class': 'uk-form-stacked'}}) }}
+                <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+                    <div class="uk-width-large-7-10">
+                        <div class="md-card">
+                            <div class="md-card-content">
+                                <section>
+                                    <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                                        <div class=" parsley-row">
+                                            <div class="uk-input-group">
+                                                <span class="uk-input-group-addon">
+                                                    <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                                </span>
+                                                {{ form_label(form.firstName) }}
+                                                {{ form_widget(form.firstName) }}
+                                            </div>
+                                        </div>
+                                        <div class="parsley-row">
+                                            <div class="uk-input-group">
+                                                <span class="uk-input-group-addon">
+                                                    <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                                </span>
+                                                {{ form_label(form.lastName) }}
+                                                {{ form_widget(form.lastName) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                                        <div class=" parsley-row">
+                                            <div class="uk-input-group">
+                                                <span class="uk-input-group-addon">
+                                                    <a href="#"><i class="material-icons">&#xE0BE;</i></a>
+                                                </span>
+                                                {{ form_label(form.email) }}
+                                                {{ form_widget(form.email) }}
+                                            </div>
+                                        </div>
+                                        <div class="parsley-row">
+                                            <div class="uk-input-group">
+                                                <span class="uk-input-group-addon">
+                                                    <a href="#"><i class="material-icons">&#xE0CD;</i></a>
+                                                </span>
+                                                {{ form_label(form.phone) }}
+                                                {{ form_widget(form.phone) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                                        <div class=" parsley-row">
+                                            <div class="uk-input-group">
+                                                <span class="uk-input-group-addon">
+                                                    <a href="#"><i class="material-icons">&#xE0AF;</i></a>
+                                                </span>
+                                                {{ form_label(form.company) }}
+                                                {{ form_widget(form.company) }}
+                                            </div>
+                                        </div>
+                                        <div class="parsley-row">
+                                            <div class="uk-input-group">
+                                                <span class="uk-input-group-addon">
+                                                    <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                                </span>
+                                                {{ form_label(form.position) }}
+                                                {{ form_widget(form.position) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="parsley-row uk-margin-top">
+                                        {{ form_label(form.location) }}
+                                        {{ form_widget(form.location) }}
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-width-large-3-10">
+                        <div class="md-card">
+                            <div class="md-card-toolbar">
+                                <div class="md-card-toolbar-actions">
+                                    <a href="#choose_files_modal" data-uk-modal="{ center:false }" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.add"|trans }}" id="choose_files_btn" alt="{{ "button.add"|trans }}">
+                                        <i class="md-icon material-icons">&#xE146;</i>
+                                    </a>
+                                </div>
+                                <h3 class="md-card-toolbar-heading-text">
+                                    {{ form_label(form.picture) }}
+                                </h3>
+                            </div>
+                            <div class="md-card-content {% if contact.picture is empty %}uk-hidden{% endif %}" id="target_container_picture">
+                                <img src="{{ contact.picture }}" alt="" class="img_large" id="target_picture"/>
+                                {{ form_widget(form.picture, {'id' : 'files_to_add_picture'}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md-fab-wrapper">
+                    {{ form_widget(form.save, {'id': 'save'}) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        // Choose files
+        $("#choose_files_btn").click(function(){
+            altair_form_file_upload.choose_files_modal("picture", "contact/contacts");
+        });
+    </script>
+{% endblock %}

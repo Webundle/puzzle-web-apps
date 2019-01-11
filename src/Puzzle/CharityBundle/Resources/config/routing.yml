@@ -1,0 +1,15 @@
+cause:
+    resource: '@CharityBundle/Resources/config/routing/cause.yml'
+    prefix: '/causes'
+    
+category:
+    resource: '@CharityBundle/Resources/config/routing/category.yml'
+    prefix: '/categories'
+
+donation:
+    resource: '@CharityBundle/Resources/config/routing/donation.yml'
+    prefix: '/donations'
+
+volunteer:
+    resource: '@CharityBundle/Resources/config/routing/volunteer.yml'
+    prefix: '/volunteers'

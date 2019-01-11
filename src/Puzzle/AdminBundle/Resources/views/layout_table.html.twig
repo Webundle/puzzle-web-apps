@@ -1,0 +1,36 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 
+        'bundles/admin/libs/datatables/media/js/jquery.dataTables.min.js'
+        'bundles/admin/libs/datatables-colvis/js/dataTables.colVis.js'
+        'bundles/admin/libs/datatables-tabletools/js/dataTables.tableTools.js'
+        'bundles/admin/libs/datatables-tabletools/js/dataTables.tableTools.js'
+        'bundles/admin/js/datatables_uikit.js'
+        'bundles/admin/js/plugins_datatables.js'
+
+        output="compiled/js/base_layout_table.min.js" 
+        %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function(){
+            // Action buttons
+            $("body").on('mouseenter', '.toggleable', togglize);
+            $("body").on('mouseleave', '.toggleable', untogglize);
+
+            // Table
+            $('#dt_individual_search').DataTable({
+                "destroy": true,
+                "sPaginationType" : "full_numbers",
+                "language" : {
+                    "url": "{{ asset('bundles/admin/libs/datatables/media/lang/dataTables.'~app.request.locale ~'.json') }}"
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

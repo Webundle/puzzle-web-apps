@@ -1,0 +1,34 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'LearningBundle::layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "learning.content.post.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+	<i class="material-icons">keyboard_arrow_right</i>
+	<em>{{ "learning.content.post.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'LearningBundle:Post:form.html.twig' with { 'form': form } %}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 
+        'bundles/learning/js/admin_learning_post.js'
+        output='compiled/js/admin_learning_post_create.min.js'
+    %}
+    	<script src={{ asset_url }}></script>
+    {% endjavascripts %}
+{% endblock %}

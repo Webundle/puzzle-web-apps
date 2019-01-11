@@ -1,0 +1,47 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "dashboard.title"|trans }}{% endblock %}
+
+{% block content %}
+<div id="page_content_inner">
+    {# <div class="uk-grid uk-grid-width-large-1-4 uk-grid-width-medium-1-2 uk-grid-medium" data-uk-grid-margin>
+        <div>
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-float-right uk-margin-top uk-margin-small-right"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></div>
+                    <span class="uk-text-muted uk-text-small">Visiteurs du site</span>
+                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>{{ countVisitors }}</noscript></span></h2>
+                </div>
+            </div>
+        </div>
+    </div> #}
+    <div class="uk-width-medium-8-10 uk-container-center">
+        <div>
+            <div class="md-card">
+                <div class="md-card-content">
+                    {{ render_admin_dashboard() }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+    {% javascripts 
+        'bundles/admin/libs/d3/d3.min.js'
+        'bundles/admin/libs/chartist/dist/chartist.min.js'
+        'bundles/admin/libs/peity/jquery.peity.min.js'
+        'bundles/admin/libs/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js'
+        'bundles/admin/libs/countUp.js/countUp.min.js'
+        'bundles/admin/js/dashboard.js'
+        
+        output='compiled/js/admin_dahboard.min.js'
+    %}
+    	<script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+     
+{% endblock %}

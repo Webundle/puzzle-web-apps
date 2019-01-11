@@ -1,0 +1,78 @@
+{% trans_default_domain 'messages' %}
+    
+{% if files is not empty %}    
+    <div style="height:400px;overflow-y:auto;overflow-x:hidden">
+        {% if enableMultipleSelect == 1 %}
+            <div class="uk-width-large-1-1 uk-text-right">
+               {#  <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                    <input type="checkbox" data-md-icheck class="md-check"/>
+                    {{ 'select_all'|trans }}
+                </a> #}
+                <a href="#" class="md-btn md-btn-flat md-btn-flat-primary selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}">
+                    {{ 'media.file.choose'|trans}}
+                </a>
+            </div>
+        {% endif %}
+        <div class="uk-width-large-1-1 uk-margin-medium-bottom">
+            <div class="gallery_grid uk-grid-width-medium-1-4 uk-grid-width-large-1-5" data-uk-grid="{gutter: 16}" id="list-pictures">
+                {% for file in files %}
+                    <div>
+                        <div class="md-card md-card-hover">
+                            <div class="gallery_grid_picture md-card-content" id="grid_picture_{{file.id}}">
+                                <a href="{{ file.path }}" class="selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}">
+                                    {% if file.picture is not empty %}
+                                        <img src="{{ file.path }}" id="item_{{ file.id }}">
+                                    {% elseif file.audio is not empty %}
+                                        <audio src="{{ file.path }}" controls id="item_{{ file.id }}" style="width:100%"></audio>
+                                    {% elseif file.video is not empty %}
+                                        <video src="{{ file.path }}" style="width:100%" controls id="item_{{ file.id }}"></video>
+                                    {% else %}
+                                        <i class="material-icons md-36">&#xE24D;</i>
+                                    {% endif %}
+                                </a>
+                                <div class="gallery_grid_image_caption" style="height:40px">
+                                    {% if enableMultipleSelect == 1 %}
+                                        <div class="gallery_grid_image_menu" data-uk-dropdown="{pos:'top-right'}">
+                                            <span class="uk-text-muted uk-text-small uk-text-left">
+                                                <input type="checkbox" id="{{ file.id }}" data-md-icheck class="md-check"/> 
+                                            </span>
+                                    </div>
+                                    {% endif %}
+                                    <span class="gallery_image_title uk-text-truncate">{{ file.name }}</span>
+                                    <span class="uk-text-muted uk-text-small">
+                                        {{ file.createdAt|date('d-M-y') }} {{ file.sizeConvert }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% javascripts
+    'bundles/admin/js/common.js'
+    'bundles/admin/js/uikit_custom.js'
+    'bundles/admin/js/forms_file_upload.js'
+
+    output='compiled/js/admin_media_file_modal'
+%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+
+    // Select files
+    $(".selector_files_from_media").click(function(e){
+        e.preventDefault();
+        if($(this).hasClass("multiple-select")){
+            altair_form_file_upload.select_files_from_media($("#file_type").val());
+        }else{
+            altair_form_file_upload.select_files_from_media($("#file_type").val(), $(this).attr("href"));
+        }
+    });
+    
+    altair_form_file_upload.init($("#file_type").val());
+</script>

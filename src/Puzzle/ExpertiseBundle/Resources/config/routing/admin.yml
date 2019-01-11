@@ -1,0 +1,136 @@
+# FAQ
+admin_expertise_faq_list:
+    path:     /faq/list
+    defaults: { _controller: ExpertiseBundle:Admin:listFaqs }
+    
+admin_expertise_faq_create:
+    path:     /faq/create
+    defaults: { _controller: ExpertiseBundle:Admin:createFaq }
+    
+admin_expertise_faq_update:
+    path:     /faq/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updateFaq }
+
+admin_expertise_faq_delete:
+    path:     /faq/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteFaq }
+
+# Partner
+admin_expertise_partner_list:
+    path:     /partner/list
+    defaults: { _controller: ExpertiseBundle:Admin:listPartners }
+    
+admin_expertise_partner_create:
+    path:     /partner/create
+    defaults: { _controller: ExpertiseBundle:Admin:createPartner }
+    
+admin_expertise_partner_update:
+    path:     /partner/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updatePartner }
+
+admin_expertise_partner_delete:
+    path:    /partner/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deletePartner }
+
+# Project
+admin_expertise_project_list:
+    path:     /project/list
+    defaults: { _controller: ExpertiseBundle:Admin:listProjects }
+    
+admin_expertise_project_create:
+    path:     /project/create
+    defaults: { _controller: ExpertiseBundle:Admin:createProject }
+    
+admin_expertise_project_update:
+    path:     /project/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updateProject }
+
+admin_expertise_project_delete:
+    path:     /project/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteProject }
+
+# Service
+admin_expertise_service_list:
+    path:     /service/list
+    defaults: { _controller: ExpertiseBundle:Admin:listServices }
+    
+admin_expertise_service_create:
+    path:     /service/create
+    defaults: { _controller: ExpertiseBundle:Admin:createService }
+    
+admin_expertise_service_update:
+    path:     /service/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updateService }
+
+admin_expertise_service_delete:
+    path:     /service/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteService }
+
+# Staff
+admin_expertise_staff_list:
+    path:     /staff/list
+    defaults: { _controller: ExpertiseBundle:Admin:listStaffs }
+    
+admin_expertise_staff_create:
+    path:     /staff/create
+    defaults: { _controller: ExpertiseBundle:Admin:createStaff }
+    
+admin_expertise_staff_update:
+    path:     /staff/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updateStaff }
+
+admin_expertise_staff_delete:
+    path:     /staff/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteStaff }
+
+
+# Testimonial
+admin_expertise_testimonial_list:
+    path:     /testimonial/list
+    defaults: { _controller: ExpertiseBundle:Admin:listTestimonials }
+    
+admin_expertise_testimonial_create:
+    path:     /testimonial/create
+    defaults: { _controller: ExpertiseBundle:Admin:createTestimonial }
+    
+admin_expertise_testimonial_update:
+    path:     /testimonial/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updateTestimonial }
+
+admin_expertise_testimonial_delete:
+    path:     /testimonial/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteTestimonial }
+
+# Feature
+admin_expertise_feature_list:
+    path:     /feature/list
+    defaults: { _controller: ExpertiseBundle:Admin:listFeatures }
+    
+admin_expertise_feature_create:
+    path:     /feature/create
+    defaults: { _controller: ExpertiseBundle:Admin:createFeature }
+    
+admin_expertise_feature_update:
+    path:     /feature/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updateFeature }
+
+admin_expertise_feature_delete:
+    path:    /feature/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteFeature }
+
+# Pricing
+admin_expertise_pricing_list:
+    path:     /pricing/list
+    defaults: { _controller: ExpertiseBundle:Admin:listPricings }
+    
+admin_expertise_pricing_create:
+    path:     /pricing/create
+    defaults: { _controller: ExpertiseBundle:Admin:createPricing }
+    
+admin_expertise_pricing_update:
+    path:     /pricing/{id}/update
+    defaults: { _controller: ExpertiseBundle:Admin:updatePricing }
+
+admin_expertise_pricing_delete:
+    path:    /pricing/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deletePricing }

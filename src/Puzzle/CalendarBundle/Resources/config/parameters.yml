@@ -1,0 +1,14 @@
+parameters:
+    calendar_email: calendar.email
+    calendar:
+        title: calendar.title
+        description: calendar.description
+        icon: calendar.icon
+        enable: true
+        dependencies: 'media,user'
+        agenda_translatable_fields: 'name,slug,description'
+        moment_translatable_fields: 'title,slug,description,tags'
+        roles:
+            manage:
+                label: 'ROLE_CALENDAR_MANAGE'
+                description: calendar.role.manage

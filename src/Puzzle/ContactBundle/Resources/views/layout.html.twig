@@ -1,0 +1,7 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "contact.title"|trans|capitalize }}{% endblock %}
+
+{% set active = "contact" %}

@@ -1,0 +1,660 @@
+layout:
+    logout: 'Déconnectez-vous'
+    delete: 'Etes-vous sur de vouloir supprimer '
+    delete_list: ' Etes-vous sur de vouloir supprimer la sélection'
+    multiple_actions: 'Actions groupées'
+    actions: 'Actions'
+    
+website:
+    name: "Puzzle"
+    email: 'contact@gmail.com'
+
+locale:
+    fr: 'Français'
+    en: 'Anglais'
+    
+button:
+    add: 'Ajouter'
+    show: 'Voir les détails'
+    update: 'Modifier'
+    remove: 'Supprimer'
+    remove_list: 'Supprimer la sélection'
+    select_all: 'Tout sélectionner'
+    cancel: 'Annuler'
+    close: 'Fermer'
+    save: 'Enregistrer'
+    back: 'Retour'
+    copy: 'Copier vers'
+    move: 'Déplacer vers'
+    download: 'Télécharger'
+    import: 'Importer'
+    export: 'Exporter'
+    translate: 'Traduire'
+    show_more: 'Voir plus'
+    actions: 'Actions'
+text:
+    name: 'Nom'
+    value: 'Valeur'
+
+success:
+    post: 'Créé'
+    put: 'Mis à jour'
+    delete: 'Supprimé'
+    
+#Admin
+admin:
+    title : 'Adminstration'
+    navigation:
+        dashboard: 
+            title: 'Tableau de bord'
+            tooltip: ''
+        setting: 'Réglages'
+        module: 'Modules'
+        access_control: 'Permissions'
+        menu: 'Menus'
+    content:
+        module:
+            list: 'Liste des modules'
+            remove: 'Desinstaller le module'
+        access_control:
+            list: 'Liste des permissions'
+        menu:
+            list: 'Liste des menus'
+            create: 'Nouveau menu'
+            update: 'Modifier un menu'
+            show: 'Détails du menu'
+            remove: ' Etes-vous sur de vouloir supprimer ce menu'
+            remove_list: ' Etes-vous sur de vouloir supprimer la liste de menus'
+        menuItem:
+            create: 'Ajouter un élément au menu'
+            update: 'Modifier un élément du menu'
+            remove: ' Etes-vous sur de vouloir supprimer ce élément du menu'
+            remove_list: ' Etes-vous sur de vouloir supprimer la liste d''éléement du menu'
+    property:
+        menu:
+            name: 'Nom'
+        menuItem:
+            name: 'Nom'
+            parent: 'Parent'
+            position: 'Position'
+            page: 'Page associée'
+            parent: 'Parent'
+
+# Dashboard
+dashboard:
+    title: 'Tableau de bord'
+    icon: "fa fa-home"
+
+#Blog
+blog:
+    title: 'Actualités'
+    description: 'Gérer les actualités'
+    icon: 'fa fa-newspaper-o'
+    navigation:
+        post: 'Articles'
+        category: 'Catégories'
+        comments: 'Commentaires'
+    content:
+        bundle_name: 'Blog'
+        post:
+            list: 'Liste des articles'
+            show: 'Détails de l''article'
+            create: 'Nouvel article'
+            update: 'Modifier l''article'
+            remove: 'Etes-vous sûr de vouloir supprimer l''article'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''articles'
+        category:
+            list: 'Liste des catégories'
+            show: 'Détails de la catégorie'
+            create: 'Nouvelle catégorie'
+            update: 'Modifier la catégorie'
+            remove: 'Etes-vous sûr de vouloir supprimer la catégorie'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de catégories'
+    property:
+        category:
+            name: 'Nom'
+            description: 'Description'
+            picture: 'Image'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+        post:
+            name: 'Nom'
+            category: 'Catégorie'
+            author: 'Auteur'
+            short_description: 'Courte description (20 caractères min, 100 max)'
+            description: 'Description'
+            picture: 'Image de couverture'
+            pictures: 'Galerie d''images'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+            enable_comments: 'Commentaires'
+            tags: 'Etiquettes'
+            isFlash: 'Flash News'
+            flashExpiresAt: 'Flash expires le'
+            visible: 'Rendre visible'
+
+# Media
+media:
+    title: 'Médiathèque'
+    description: 'Gérer vos photos, audios, vidéos et autres documents'
+    icon: "fa fa-cloud"
+    actions: 'Actions'
+    filter:
+        title: 'Filtrer'
+        all: 'Tous'
+        picture: 'Images'
+        audio: 'Audios'
+        video: 'Vidéos'
+        document: 'Autres'
+    search: 'Rechercher parmis les'
+    file:
+        description: 'Gérer vos fichiers'
+        navigation: 'Fichiers'
+        list: 'Fichiers'
+        create: 'Importer des fichiers'
+        delete: 'Etes-vous sûr de vouloir supprimer le fichier'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de fichiers'
+        drag_and_drop: 'Glisser/Déposer'
+        or: 'ou'
+        choose: 'Choisir'
+        add_multiple: 'Ajouter plusieurs'
+        from_computer: 'Depuis votre stockage local'
+        from_media: 'Dépuis la Médiathèque'
+        add: 'Ajouter'
+        toggle_source: 'Changer de source'
+        copy: 'Télécharger la source'
+        property:
+            url: 'Lien'
+            name: 'Nom'
+            caption: 'Description'
+            size: 'Taille'
+            extension: 'Extension'
+            path: 'Chemin'
+            createdAt: 'Date de création'
+            updatedAt: 'Date d''édition'
+    picture:
+        list: 'Photos'
+        create: 'Importer des photos'
+        remove: 'Etes-vous sûr de vouloir supprimer la photo'
+        remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de photos'
+    audio:
+        list: 'Audios'
+        create: 'Importer des fichiers audios'
+        remove: 'Etes-vous sûr de vouloir supprimer le fichier audio'
+        remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de fichiers audios'
+    video:
+        list: 'Vidéos'
+        create: 'Importer des vidéos'
+        remove: 'Etes-vous sûr de vouloir supprimer la vidéo'
+        remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de vidéos'
+    document:
+        list: 'Documents'
+        create: 'Importer des documents'
+        remove: 'Etes-vous sûr de vouloir supprimer le document'
+        remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de documents'
+    folder:
+        description: 'Gérer vos dossiers et galeries'
+        list: 'Dossiers'
+        show: 'Détails du dossier'
+        create: 'Nouveau dossier'
+        update: 'Modifier le dossier'
+        delete: 'Etes-vous sûr de vouloir supprimer le dossier'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de dossiers'
+        property:
+            name: 'Nom'
+            parent: 'Parent'
+            tag: 'Etiquette'
+            allowed_extensions: 'Extensions autorisées'
+
+# Expertise
+expertise:
+    title: 'Vitrine'
+    description: 'Gérer les services, les projets déjà réalisés, les témoignages, la FAQs, le personnel'
+    icon: 'fa fa-suitecase'
+    role:
+        manage: 'Gérer les informations vitrines pour mettre en avant le savoir-faire'
+    navigation:
+        service: 'Services'
+        project: 'Portfolio'
+        staff: 'Personnel'
+        testimonial: 'Témoignagnes'
+        faq: 'Foire aux Questions'
+        partner: 'Partenaires'
+        feature: 'Fonctionnalités'
+        pricing: 'Offres'
+    content:
+        service:
+            list: 'Liste des services'
+            show: 'Détails du service'
+            create: 'Nouveau service'
+            update: 'Modifier le service'
+            delete: 'Etes-vous sûr de vouloir supprimer le service'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de services'
+        project:
+            list: 'Liste des projets'
+            show: 'Détails du projet'
+            create: 'Nouveau projet'
+            update: 'Modifier le projet'
+            delete: 'Etes-vous sûr de vouloir supprimer le projet'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de projets'
+        staff:
+            list: 'Liste du personnel'
+            show: 'Détails du membre'
+            create: 'Nouveau membre'
+            update: 'Modifier le membre'
+            delete: 'Etes-vous sûr de vouloir supprimer le membre'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de membres'
+        testimonial:
+            list: 'Liste des témoignages'
+            show: 'Détails du témoignage'
+            create: 'Nouveau témoignage'
+            update: 'Modifier le témoignage'
+            delete: 'Etes-vous sûr de vouloir supprimer le témoignagne'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de témoignages'
+        partner:
+            list: 'Liste des partenaires'
+            show: 'Détails du partenaire'
+            create: 'Nouveau partenaire'
+            update: 'Modifier le partenaire'
+            delete: 'Etes-vous sûr de vouloir supprimer le partenaire'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de partenaires'
+        faq:
+            list: 'Foire aux Questions'
+            create: 'Nouveau FAQ'
+            update: 'Modifier le FAQ'
+            delete: 'Etes-vous sûr de vouloir supprimer le FAQ'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de FAQs'
+        feature:
+            list: 'Liste des fonctionnalités'
+            create: 'Nouvelle fonctionnalité'
+            update: 'Modifier la fonctionnalité'
+            delete: 'Etes-vous sûr de vouloir supprimer la fonctionnalité'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de fonctionnalités'
+        pricing:
+            list: 'Liste des offres'
+            create: 'Nouvelle offre'
+            update: 'Modifier l''offre'
+            delete: 'Etes-vous sûr de vouloir supprimer l''offre'
+            delete_list: 'Etes-vous sûr de vouloir supprimer la sélection d''offres'
+    property:
+        service:
+            name: 'Nom'
+            description: 'Description'
+            classIcon: 'Classe d''icône'
+            picture: 'Image'
+            createdAt: 'Date de création'
+            updatedAt: 'Date d''édition'
+            ranking: 'Position'
+        project:
+            name: 'Nom'
+            description: 'Description'
+            client: 'Client'
+            startedAt: ' Date de début'
+            endedAt: 'Date de fin'
+            service: 'Service'
+            location: 'Site Web'
+            pictures: 'Images'
+        faq:
+            question: 'Question'
+            answer: 'Réponse'
+        testimonial:
+            author: 'Auteur'
+            description: 'Contenu'
+            company: 'Entreprise'
+            position: 'Poste'
+            picture: 'Image'
+            createdAt: 'Date de création'
+            updatedAt: 'Date d''édition'
+        partner:
+            name: 'Nom'
+            picture: 'Image'
+            location: 'Localisation ou site Web'
+            tags: 'Etiquettes'
+        staff:
+            firstName: 'Nom'
+            lastName: 'Prénoms'
+            fullName: 'Nom & Prénoms'
+            service: 'Service'
+            position: 'Poste'
+            email: 'E-mail'
+            phoneNumber: 'Téléphone'
+            picture: 'Image'
+            facebook: 'Facebook'
+            twitter: 'Twitter'
+            linkedIn: 'LinkedIn'
+            googlePlus: 'Google Plus'
+            description: 'Description'
+            createdAt: 'Date de création'
+            updatedAt: 'Date d''édition'
+            ranking: 'Rang'
+        feature:
+            name: 'Nom'
+            icon: 'Classe d''icone'
+            description: 'Description'
+        pricing:
+            name: 'Nom'
+            description: 'Description'
+            amount: 'Montant'
+            currency: 'Devise'
+            period: 'Période'
+
+#Contact
+contact:
+    title: 'Contact'
+    description: 'Gérer les contacts et groupes de contacts'
+    icon: 'contacts'
+    navigation:
+        contact: 'Contacts'
+        group: 'Groupes'
+        request: 'Requêtes'
+    content:
+        contact:
+            list: 'Liste des contacts'
+            create: 'Nouveau contact'
+            show: 'Détails du contact'
+            import: 'Importer des contacts'
+            export: 'Exporter des contacts'
+            update: 'Modifier le contact'
+            remove: 'Etes-vous sûr de vouloir supprimer le contact'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de contacts'
+        group:
+            list: 'Liste des groupes'
+            show: 'Détails du groupe'
+            create: 'Nouveau groupe'
+            update: 'Modifier le groupe'
+            remove: 'Etes-vous sûr de vouloir supprimer le groupe'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
+        request:
+            list: 'Liste des requêtes'
+            show: 'Détails de la requête'
+            mark: 'Marquer lu'
+            remove: 'Etes-vous sûr de vouloir supprimer la requête'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de requêtes'
+            success: 'Votre requête a été envoyée avec succès.'
+    property:
+        group:
+            name: 'Nom'
+            description: 'Description'
+            contacts: 'Contacts'
+        request:
+            subject: 'Sujet'
+            message: 'Message'
+            markAsRead: 'Marquer comme lu'
+            contact: 'Par'
+            createdAt: 'Envoyé le'
+            updatedAt: 'Mis à jour le'
+        contact:
+            firstName: 'Prénoms'
+            lastName: 'Nom'
+            fullName: 'Nom & Prénoms'
+            email: 'E-mail'
+            phoneNumber: 'Téléphone'
+            company: 'Entreprise'
+            position: 'Poste'
+            location: 'Lieu de résidence'
+            picture: 'Image'
+            subject: 'Sujet'
+            message: 'Message'
+
+# Static
+static:
+    title: 'Pages Statiques'
+    description: 'Gérer les pages'
+    icon: 'fa fa-file'
+    navigation:
+        templates: 'Modèles'
+        pages: 'Pages'
+    content:
+        bundle_name: 'Pages Statiques'
+        page:
+            list: 'Liste des pages'
+            show: 'Détails de la page'
+            create: 'Nouvelle page'
+            update: 'Modifier la page'
+            remove: 'Etes-vous sûr de vouloir supprimer l''article'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''articles'
+        template:
+            list: 'Liste des modèles'
+            create: 'Nouveau modèle'
+            update: 'Modifier le modèle'
+            remove: 'Etes-vous sûr de vouloir supprimer le modèle'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de modèle'
+    property:
+        template:
+            name: 'Nom'
+            slug: 'Slug'
+            content: 'Contenu'
+            document: 'Fichier'
+            description: 'Description'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+        page:
+            name: 'Nom'
+            author: 'Auteur'
+            content: 'Contenu'
+            template: 'Modèle'
+            slug: 'Slug'
+            parent: 'Parent'
+            picture: 'Image'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+
+#Newsletter
+newsletter:
+    title: 'Newsletter'
+    description: 'Gérer les abonnés, envoyer des mails'
+    icon: 'email'
+    navigation:
+        contact: 'Contacts'
+        subscriber: 'Abonnés'
+        group: 'Groupes'
+        category: 'Catégories de mail'
+        template: 'Modèles'
+        mail: 'Mails'
+    content:
+        contact:
+            list: 'Liste des messages'
+            remove: 'Etes-vous sûr de vouloir supprimer le message'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de messages'
+        subscriber:
+            list: 'Liste des abonnés'
+            create: 'Nouvel abonné'
+            import: 'Importer des abonnés'
+            export: 'Exporter des abonnés'
+            update: 'Modifier l''abonné'
+            remove: 'Etes-vous sûr de vouloir supprimer l''abonné'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''abonnés'
+        group:
+            list: 'Liste des groupes'
+            show: 'Détails du groupe'
+            create: 'Nouveau groupe'
+            update: 'Modifier le groupe'
+            remove: 'Etes-vous sûr de vouloir supprimer le groupe'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
+        category:
+            list: 'Liste des catégories'
+            show: 'Détails de la catégorie'
+            create: 'Nouvelle catégorie'
+            update: 'Modifier la catégorie'
+            remove: 'Etes-vous sûr de vouloir supprimer la catégorie'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de catégories'
+        template:
+            list: 'Liste des modèles'
+            create: 'Nouveau modèle'
+            update: 'Modifier le modèle'
+            remove: 'Etes-vous sûr de vouloir supprimer le modèle'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de modèles'
+        mail:
+            list: 'Liste de mails'
+            create: 'Nouveau mail'
+            show: 'Détails du mail'
+            update: 'Modifier le mail'
+            remove: 'Etes-vous sûr de vouloir supprimer le mail '
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de mails'
+    property:
+        group:
+            name: 'Nom'
+            description: 'Description'
+            subscribers: 'Abonnés'
+        template:
+            name: 'Nom'
+            content: 'Contenu'
+            trigger: 'Déclencheur'
+            document: 'Fichier'
+            description: 'Description'
+        subscriber:
+            name: 'Nom'
+            email: 'E-mail'
+            phone: 'Téléphone'
+            company: 'Entreprise'
+            position: 'Poste'
+
+
+#User
+user:
+    title: 'Comptes'
+    description: 'Gestion des comptes utilisateurs'
+    icon: 'supervisor_account'
+    my_account: 'Mon compte'
+    logout: 'Déconnexion'
+    role:
+        user: 'Accéder à l''espace client'
+        admin: 'Administrateur de la plateforme'
+        user_manage: 'Gérer les comptes utilisateurs'
+    navigation:
+        user: 'Liste des utilisateurs'
+        group: 'Groupes'
+    content:
+        user:
+            list: 'Liste des utilisateurs'
+            show: 'Détails d''un utilisateur'
+            create: 'Nouvel utilisateur'
+            update: 'Modifier un utilisateur'
+            remove: 'Etes-vous sûr de vouloir supprimer l''utilisateur'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''utilisateurs'
+        group:
+            list: 'Liste des groupes'
+            show: 'Détails du groupe'
+            create: 'Nouveau groupe'
+            update: 'Modifier le groupe'
+            remove: 'Etes-vous sûr de vouloir supprimer le groupe'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
+    property:
+        group:
+            name: 'Nom'
+            description: 'Description'
+            users: 'Utilisateurs'
+        user:
+            firstName: 'Nom'
+            lastName: 'Prénoms'
+            fullName: 'Nom & Prénoms'
+            email: 'E-mail'
+            phone: 'Téléphone'
+            role: 'Entreprise'
+            picture: 'Photo de profil'
+            isActive: 'Status'
+            username: 'Nom d''utilisateur'
+            password: 'Mot de passe'
+            credentialsExpiredAt: 'Date d''expiration des paramètres'
+            accountExpiredAt: 'Date d''expiration du compte'
+            enabled: 'Verrouillé le compte'
+            locked: 'Désactivé le compte'
+            
+#Calendar
+calendar:
+    email: 'contact@redeln-inphb.org'
+    title: 'Calendrier'
+    description: 'Gérer les évenements et des agendas d''événements'
+    icon: 'event'
+    role:
+        moment:
+            read: 'Consulter la liste des événements'
+            manage: 'Mettre à jour la liste des événements'
+        agenda:
+            read: 'Consulter la liste des agendas'
+            manage: 'Mettre à jour la liste des agendas'
+    navigation:
+        moment: 'Evénements'
+        agenda: 'Agendas'
+    content:
+        moment:
+            list: 'Liste des événements'
+            show: 'Détails de l''événement'
+            create: 'Nouvel événement'
+            import: 'Importer des évenements'
+            export: 'Exporter des évenements'
+            update: 'Modifier l''évenément'
+            remove: 'Etes-vous sûr de vouloir supprimer l''évenément'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''évenéments'
+        agenda:
+            list: 'Liste des agendas'
+            show: 'Détails de l''agenda'
+            create: 'Nouvel agenda'
+            update: 'Modifier l''agenda'
+            remove: 'Etes-vous sûr de vouloir supprimer l''agenda'
+    property:
+        moment:
+            title : 'Titre'
+            started_at: 'Date de début'
+            ended_at: 'Date de fin'
+            location: 'Lieu'
+            description: 'Description'
+            color: 'Couleur'
+            tags: 'Etiquettes'
+            enable_comments: 'Commentaires'
+            is_recurrent: 'Recurrence'
+            picture: 'Image'
+            agenda: 'Agenda'
+            members: 'Membres'
+            visibility:
+                name: 'Visibilité'
+                private: 'Seulement Moi'
+                share: 'Moi et les personnes associées'
+                public: 'Tout le monde'
+        agenda:
+            name: 'Nom'
+            members: 'Membres'
+            visibility:
+                name: 'Visibilité'
+                private: 'Seulement Moi'
+                share: 'Moi et les personnes associées'
+                public: 'Tout le monde'
+    default_value:
+        moment:
+            visibility:
+                private: 'Privé'
+                public: 'Public'
+                share: 'Partagé'
+        agenda:
+            name: 'personnel'
+            visibility:
+                private: 'Privé'
+                public: 'Public'
+                share: 'Partagé'
+    
+#Scheduling
+scheduling:
+    property: 
+        recurrence: 
+            intervale: 'Répeter chaque'
+            unity:
+                title: 'Unité'
+                placeholder: 'Unité de Fréquence'
+                minute: 'Minute(s)'
+                hour: 'Heure(s)'
+                day: 'Jour(s)'
+                week: 'Semaine(s)'
+                month: 'Mois'
+                year: 'An(s)'
+            next_run_at: 'Prochaine notification'
+            due_at: 'Date limite'
+            excluded_days:
+                title: 'Exceptions'
+                placeholder: 'Jours à exclure'
+                monday: 'Lundi'
+                tuesday: 'Mardi'
+                wednesday: 'Mercredi'
+                thursday: 'Jeudi'
+                friday: 'Vendredi'
+                saturday: 'Samedi'
+                sunday: 'Dimanche'

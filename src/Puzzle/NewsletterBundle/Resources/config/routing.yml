@@ -1,0 +1,11 @@
+newsletter_app:
+    resource: '@NewsletterBundle/Resources/config/routing/app.yml'
+    prefix:   '/newsletter'
+    host: '%host%'
+
+newsletter_admin:
+    resource: '@NewsletterBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%newsletter'
+    host: '%admin_host%'
+    options:
+        expose: true

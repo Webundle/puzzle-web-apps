@@ -1,0 +1,34 @@
+{% trans_default_domain 'messages' %}
+
+{% set active = "admin" %}
+
+{% set subactive = "admin_modules" %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "admin.module.content.list"| trans }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            <h1>{{ "admin.title"|trans }} - {{ "admin.content.module.list"| trans }}</h1>
+            <span class="sub_heading">
+                {{ module.title|trans }}
+            </span>
+        </div>
+        <div id="page_content_inner">
+            <div class="uk-grid" data-uk-grid-margin>
+                {% for role in roles %}
+                <div class="uk-width-1-2">
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            {{ role.description|trans }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</div>
+    <div class="uk-modal" id="showModal"></div>
+{% endblock %}

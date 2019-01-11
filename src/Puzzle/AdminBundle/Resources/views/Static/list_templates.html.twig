@@ -1,0 +1,90 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'StaticBundle::layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "static.content.template.list"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_static_template_create') }}">
+       	<span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+	<em>{{ "static.content.template.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <div class="uk-width-1-1">
+            <div class="md-card">
+                {% if templates is not empty %}
+                    <div class="md-card-toolbar">
+                        <div class="md-card-toolbar-actions">
+                            <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
+                                <i class="fa fa-trash-o"></i> 
+                                {{ "button.remove_list"|trans }}
+                            </a>
+                            {# <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
+                                <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
+                                <span id="toggle-check-text">{{ "button.select_all"|trans }}</span>
+                            </a> #}
+                            <input type="hidden" value="{{ templates|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="md-card-content">
+                    <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ "static.property.template.name"|trans }}</th>
+                            <th>{{ "static.property.template.slug"|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for template in templates %}
+                                <tr class="toggleable" id="item-{{ template.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ template.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td>{{ template.name }}</td>
+                                    <td>{{ template.slug }}</td>
+                                    <td class="uk-text-right">
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                            <a><i class="fa fa-ellipsis-h"></i></a>
+                                            <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    <li>
+                                                        <a href="{{ url('admin_static_template_update', {'id': template.id}) }}">
+                                                            <i class="fa fa-pencil"></i>
+                                                            {{ "button.update"|trans }}
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_static_template_delete', {'id': template.id}) }}" data-label="{{ template.name }}" class="remove-item">
+                                                            <i class="fa fa-trash-o uk-text-danger"></i>
+                                                            {{ "button.remove"|trans }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

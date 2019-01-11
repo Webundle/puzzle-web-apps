@@ -1,0 +1,58 @@
+# Agenda
+admin_calendar_agendas:
+    path:     /agendas
+    defaults: { _controller: CalendarBundle:Agenda:showList }
+    
+admin_calendar_agenda_create:
+    path:     /agendas/create
+    defaults: { _controller: CalendarBundle:Agenda:create }
+
+admin_calendar_agenda:
+    path:     /agendas/{id}
+    defaults: { _controller: CalendarBundle:Agenda:show }
+
+admin_calendar_agenda_translate:
+    path:     /agendas/{id}/translate
+    defaults: { _controller: CalendarBundle:Agenda:translate }
+
+admin_calendar_agenda_update:
+    path:     /agendas/{id}/update
+    defaults: { _controller: CalendarBundle:Agenda:update }
+    
+admin_calendar_agenda_remove:
+    path:     /agendas/{id}/remove
+    defaults: { _controller: CalendarBundle:Agenda:remove }
+
+admin_calendar_agendas_remove:
+    path:     /agendas/remove/list
+    defaults: { _controller: CalendarBundle:Agenda:removeList }
+
+# Moment
+admin_calendar_moments:
+    path:     /moments
+    defaults: { _controller: CalendarBundle:Moment:showList }
+
+admin_calendar_moment_create:
+    path:     /moments/create
+    defaults: { _controller: CalendarBundle:Moment:create }
+
+admin_calendar_moment:
+    path:     /moments/{id}
+    defaults: { _controller: CalendarBundle:Moment:show }
+
+admin_calendar_moment_translate:
+    path:     /moments/{id}/translate
+    defaults: { _controller: CalendarBundle:Moment:translate }
+
+admin_calendar_moment_update:
+    path:     /moments/{id}/update
+    defaults: { _controller: CalendarBundle:Moment:update }
+    
+admin_calendar_moment_remove:
+    path:     /moments/{id}/remove
+    defaults: { _controller: CalendarBundle:Moment:remove }
+
+admin_calendar_moments_remove:
+    path:     /moments/remove/list
+    defaults: { _controller: CalendarBundle:Moment:removeList } 
+    

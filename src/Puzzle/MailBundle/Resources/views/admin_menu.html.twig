@@ -1,0 +1,16 @@
+{% trans_default_domain 'messages' %}
+<li {% if active == "newsletter" %}class="act_section current_section"{% endif %}>
+  	<a href="#">
+        <span class="menu_icon"><i class="material-icons">{{ "newsletter.icon"|trans }}</i></span>
+      	<span class="menu_title">{{ "newsletter.title"|trans }}</span>
+  	</a>
+  	<ul>
+    	<li {% if subactive == "admin_newsletter_contacts" %}class="act_item"{% endif %}><a href="{{ url('admin_newsletter_contacts')}}">{{ "newsletter.navigation.contact"|trans }}</a></li>
+      	<li class="menu_subtitle">Abonnés</li>
+        <li {% if subactive == "admin_newsletter_subscribers" %}class="act_item"{% endif %}><a href="{{ url('admin_newsletter_subscribers')}}">{{ "newsletter.navigation.subscriber"|trans }}</a></li>
+        <li {% if subactive == "admin_newsletter_groups" %}class="act_item"{% endif %}><a href="{{ url('admin_newsletter_groups')}}">{{ "newsletter.navigation.group"|trans }}</a></li>
+      	<li class="menu_subtitle">Mails</li>
+        <li {% if subactive == "admin_newsletter_mails" %}class="act_item"{% endif %}><a href="{{ url('admin_newsletter_mails')}}">{{ "newsletter.navigation.mail"|trans }}</a></li>
+        <li {% if subactive == "admin_newsletter_templates" %}class="act_item"{% endif %}><a href="{{ url('admin_newsletter_templates')}}">{{ "newsletter.navigation.template"|trans }}</a></li>
+  	</ul>
+</li>

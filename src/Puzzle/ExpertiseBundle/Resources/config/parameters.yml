@@ -1,0 +1,15 @@
+parameters:
+    expertise:
+        title: expertise.title
+        description: expertise.description
+        icon: expertise.icon
+        enable: true
+        dependencies: 'media,user'
+        project_translatable_fields: 'name,slug,description'
+        service_translatable_fields: 'name,slug,description'
+        staff_translatable_fields: 'position,description'
+        testimonial_translatable_fields: 'position,description'
+        roles:
+            manage:
+                label: 'ROLE_EXPERTISE_MANAGE'
+                description: expertise.role.manage

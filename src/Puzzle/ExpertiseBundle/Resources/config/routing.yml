@@ -1,0 +1,11 @@
+expertise_app:
+    resource: '@ExpertiseBundle/Resources/config/routing/app.yml'
+    prefix:   '/expertise'
+    host: '%host%'
+
+expertise_admin:
+    resource: '@ExpertiseBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%expertise'
+    host: '%admin_host%'
+    options:
+        expose: true

@@ -1,0 +1,45 @@
+{% trans_default_domain 'messages' %}
+
+{% set active = "admin" %}
+
+{% set subactive = "admin_modules" %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "admin.module.content.list"| trans }} {% endblock %}
+    
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            <h1>Administration - {{ "admin.module.title"| trans }}</h1>
+            {% if type is defined and type == "enable" %}
+                <span class="sub_heading"></span>
+            {% endif %}
+        </div>
+        <div id="page_content_inner">
+            <div class="uk-width-large-8-10 uk-container-center">
+                <ul class="uk-nestable" id="nestable">
+                    {% for module in modules %}
+                        <li data-id="{{ module.id }}" class="uk-nestable-item">
+                            <div class="uk-nestable-panel">
+                                <div class="uk-float-right">
+                                    {% if module.id is empty %}
+                                        <form action="{{ url('admin_install_module') }}" method="POST">
+                                            <input type="hidden" name="name" value="{{ module.name }}">
+                                            <button type="submit" class="md-btn md-btn-flat md-btn-flat-success">Activer</button>
+                                    </form>
+                                    {% else %}
+                                        <a href="{{url('admin_uninstall_module', { 'id':module.id })}}" class="md-btn md-btn-flat md-btn-flat-danger show-modal">Désactiver</a>
+                                    {% endif %}
+                                </div>
+                                <i class="material-icons">{{ module.icon|trans }}</i> {{ module.title|trans }} <br/>
+                                <span class="uk-text-muted uk-text-small">{{ module.description|trans }}</span>
+                            </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="showModal"></div>
+{% endblock %}

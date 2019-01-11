@@ -1,0 +1,16 @@
+parameters:
+    scheduling.manager.class: Puzzle\SchedulingBundle\Service\SchedulingManager
+    scheduling.cron.class: Puzzle\SchedulingBundle\Service\SchedulingCron
+    scheduling.tools.class: Puzzle\SchedulingBundle\Service\SchedulingTools
+    
+services:
+    scheduling.cron:
+        class: "%scheduling.cron.class%"
+        arguments: ["@doctrine"]
+    
+    scheduling.tools:
+        class: "%scheduling.tools.class%"
+        
+    scheduling.manager:
+        class: "%scheduling.manager.class%"
+        arguments: ["@doctrine.orm.entity_manager", "@scheduling.cron", "@scheduling.tools"]

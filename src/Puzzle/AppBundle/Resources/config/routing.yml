@@ -1,0 +1,23 @@
+app_homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+
+app_about_us:
+    path:     /about-us
+    defaults: { _controller: AppBundle:Default:aboutUs }
+
+app_about_values:
+    path:     /about/our-values
+    defaults: { _controller: AppBundle:Default:showOurValues }
+
+app_about_expertise:
+    path:     /about/our-expertise
+    defaults: { _controller: AppBundle:Default:showOurExpertise }
+
+app_about_team:
+    path:     /about/our-team
+    defaults: { _controller: AppBundle:Default:showOurTeam }
+
+app_contact:
+    path:     /contact
+    defaults: { _controller: AppBundle:Default:contact }

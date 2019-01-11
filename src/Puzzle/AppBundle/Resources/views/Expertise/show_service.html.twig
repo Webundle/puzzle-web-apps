@@ -1,0 +1,102 @@
+{% trans_default_domain 'app' %}
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'app.service.show'|trans }} {{ service.name|default('') }} {% endblock %}
+
+{% block content %}
+    <div class="page-title parallax parallax1" {% if service is not empty and service.picture is not empty %}style="background-image: url({{ service.picture }})"{% endif %}>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="page-title-content text-center">
+                <div class="page-title-heading ">
+                    <h2 class="title text-white font-weight-700 mb-5">
+                        {{ service is not empty ? service.name|upper : 'app.service.show'|trans|upper }}
+                    </h2>
+                    <a href="{{ url('app_contact', {'subject': service.name|default('Lorem ipsum')}) }}" class="btn btn-primary font-weight-700">
+                        {{ 'app.contact.button'|trans|upper }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-wrap main-service-detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="sidebar-left sidebar-service">
+                        <div class="widget widget-categories">
+                            <h5 class="widget-title font-weight-700">{{ 'app.service.title'|trans }}</h5>
+                            {% set services = expertise_services() %}
+                            {% if services is not empty and services|length > 2 %}
+	                            <ul>
+	                                {% for serv in services %}
+	                                	{% if serv.id != service.id %}
+	                                		<li><a href="{{ url('app_expertise_service_show', {'id': serv.id}) }}">{{ serv.name }}</a></li>
+	                                	{% endif %}
+	                                {% endfor %}
+	                            </ul>
+	                        {% else %}
+	                        	<ul>
+	                                <li><a href="#">Lorem ipsum dolor</a></li>
+	                                <li><a href="#">Lorem ipsum dolor</a></li>
+	                                <li><a href="#">Lorem ipsum dolor</a></li>
+	                                <li><a href="#">Lorem ipsum dolor</a></li>
+	                                <li><a href="#">Lorem ipsum dolor</a></li>
+	                            </ul>
+	                        {% endif %}
+                        </div>
+
+                        {# <div class="widget widget-dowloads">
+                            <h5 class="widget-title">Download Brochure</h5>
+                            <ul class="dowloads">
+                                <li><a href="#" class="btn btn-styl2">HOME REMODELING.PDF</a></li>
+                                <li><a href="#" class="btn btn-styl2">CONSTRUCTION SERVICE.PDF</a></li>
+                                <li><a href="#" class="btn btn-styl2">WARRANTY INFOR.PDF</a></li>
+                            </ul>
+                        </div>
+                        <div class="widget widget-logo-info widget-text sidebar-service">
+                            <h5 class="widget-title">Our Office</h5>
+                            <ul class="info">
+                                <li class="phone"><a href="#" class="data-hover">(+88) 012-3455-678</a></li>
+                                <li class="mail"><a href="#" class="data-hover">support@standell.com</a></li>
+                                <li class="address"><a href="#" class="data-hover">3919 New Cut Rd, Ellicott City,  Maryland, US</a></li>   
+                            </ul>
+                        </div> #} 
+                    </div>
+                </div>
+                
+                <div class="col-lg-8 col-sm-12">
+                    <div class="wrap-service-detail pd-top-40"> 
+                        {% if service is not empty %}
+                        	{{ service.description|raw }}
+                        {% else %}
+	                        <div class="textbox textbox-service-detail">
+	                            <h5 class="textbox-heading"><a href="#">Lorem ipsum dolor</a></h5>
+	                            <div class="textbox-content">
+	                                <p>
+	                                    In dignissim lorem metus, a cursus quam pulvinar id. In hac habitasse platea dictumst. Nullam faucibus, dui ut cursus auctor, odio ante maximus urna, vitae accumsan dui diam vel orci. Pellentesque dignissim molestie dolor at placerat. Donec eu cursus diam. Sed nec augue quis lorem congue maximus. Cras vehicula et lacus sit amet convallis. Vestibulum varius sapien eget ullamcorper volutpat. Mauris accumsan nunc sit amet turpis semper, at porta augue varius. In volutpat erat sapien, sed porta odio dignissim nec. Praesent et lorem est. Pellentesque eget neque nec turpis fringilla fringilla. Sed euismod consequat leo, at auctor dui vulputate id. Suspendisse eget ultricies urna.
+	                                </p>
+	                            </div>
+	                        </div>
+	                        <div class="textbox textbox-service-detail">
+	                            <h5 class="textbox-heading"><a href="#">Lorem ipsum dolor</a></h5>
+	                            <div class="textbox-content">
+	                                <p>
+	                                    In dignissim lorem metus, a cursus quam pulvinar id. In hac habitasse platea dictumst. Nullam faucibus, dui ut cursus auctor, odio ante maximus urna, vitae accumsan dui diam vel orci. Pellentesque dignissim molestie dolor at placerat. Donec eu cursus diam. Sed nec augue quis lorem congue maximus. Cras vehicula et lacus sit amet convallis. Vestibulum varius sapien eget ullamcorper volutpat. Mauris accumsan nunc sit amet turpis semper, at porta augue varius. In volutpat erat sapien, sed porta odio dignissim nec. Praesent et lorem est. Pellentesque eget neque nec turpis fringilla fringilla. Sed euismod consequat leo, at auctor dui vulputate id. Suspendisse eget ultricies urna.
+	                                </p>
+	                            </div>
+	                        </div>
+                            <div class="text-center mt-5">
+                                <a href="{{ url('app_contact', {'suject': service.name|default('Lorem ipsum')}) }}" class="style2 btn btn-effect" id="btn-message">
+                                    {{ 'app.contact.button'|trans|upper }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div> 
+                </div> 
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

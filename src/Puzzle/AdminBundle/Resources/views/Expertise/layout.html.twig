@@ -1,0 +1,13 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.title"|trans }}{% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+	<i class="fa fa-chevron-right"></i>
+	<span>{{ "expertise.title"|trans|capitalize }}</span>
+	<i class="fa fa-chevron-right"></i>
+{% endblock %}
+

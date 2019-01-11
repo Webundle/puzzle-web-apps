@@ -1,0 +1,61 @@
+admin_media_file_list:
+    path:     /file/list
+    defaults: { _controller: MediaBundle:Admin:listFiles }
+
+admin_media_file_browse:
+    path:     /file/browse
+    defaults: { _controller: MediaBundle:Admin:browseFiles }
+
+admin_media_file_upload:
+    path:     /file/upload
+    defaults: { _controller: MediaBundle:Admin:uploadFile }
+
+admin_media_file_add:
+    path:     /file/add
+    defaults: { _controller: MediaBundle:Admin:addFile }
+
+admin_media_file_show:
+    path:     /file/{id}/show
+    defaults: { _controller: MediaBundle:Admin:showFile }
+
+admin_media_file_delete:
+    path:     /file/{id}/delete
+    defaults: { _controller: MediaBundle:Admin:deleteFile }
+
+# Folder
+admin_media_folder_list:
+    path:     /folder/list
+    defaults: { _controller: MediaBundle:Admin:listFolders }
+
+admin_media_folder_browse:
+    path:     /folder/browse
+    defaults: { _controller: MediaBundle:Admin:browseFolders }
+
+admin_media_folder_create:
+    path:     /folder/create
+    defaults: { _controller: MediaBundle:Admin:createFolder }
+
+admin_media_folder_show:
+    path:     /folder/{id}/show
+    defaults: { _controller: MediaBundle:Admin:showFolder }
+
+admin_media_folder_compress:
+    path:     /folder/{id}/compress
+    defaults: { _controller: MediaBundle:Admin:compressFolder }
+
+admin_media_folder_update:
+    path:     /folder/{id}/update
+    defaults: { _controller: MediaBundle:Admin:updateFolder }
+
+admin_media_folder_update_files_add:
+    path:     /{id}/update/files/add
+    defaults: { _controller: MediaBundle:Admin:updateFolderByAddingFiles }
+
+admin_media_folder_update_files_remove:
+    path:     /folder/{id}/update/files/remove
+    defaults: { _controller: MediaBundle:Admin:updateFolderByRemovingFiles }
+
+admin_media_folder_delete:
+    path:     /folder/{id}/delete
+    defaults: { _controller: MediaBundle:Admin:deleteFolder }
+

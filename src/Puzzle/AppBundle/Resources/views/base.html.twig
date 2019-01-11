@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{{ render_app_head_title() }}{% endblock %}</title>
+        {{ render_app_head_meta() }}
+        
+        {# {{ render_facebook_meta() }} #}
+
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body class="style3">
+        <div id="loading-overlay">
+            <div class="loader"></div>
+        </div>
+        {% block body %}
+            <div id="wrapper" class="clearfix" {% block bodyattributes %}{% endblock %}>
+                {% block header %}{% endblock %}
+                {% block asideleft %}{% endblock %}
+                {% block asideright %}{% endblock %}
+                {% block slides %}{% endblock %}
+                {% block content %}{% endblock %}
+            </div>
+            {% block footer %}{% endblock %}
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
+

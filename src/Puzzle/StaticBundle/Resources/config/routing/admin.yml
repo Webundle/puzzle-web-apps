@@ -1,0 +1,34 @@
+# Admin
+admin_static_page_list:
+    path:     /page/list
+    defaults: { _controller: StaticBundle:Admin:listPages }
+
+admin_static_page_create:
+    path:     /page/create
+    defaults: { _controller: StaticBundle:Admin:createPage }
+
+admin_static_page_update:
+    path:     /page/{id}/update
+    defaults: { _controller: StaticBundle:Admin:updatePage }
+
+admin_static_page_delete:
+    path:     /page/{id}/delete
+    defaults: { _controller: StaticBundle:Admin:deletePage }
+
+# Admin
+admin_static_template_list:
+    path:     /template/list
+    defaults: { _controller: StaticBundle:Admin:listTemplates }
+    
+admin_static_template_create:
+    path:     /template/create
+    defaults: { _controller: StaticBundle:Admin:createTemplate }
+
+admin_static_template_update:
+    path:     /template/{id}/update
+    defaults: { _controller: StaticBundle:Admin:updateTemplate }
+
+admin_static_template_delete:
+    path:     /template/{id}/delete
+    defaults: { _controller: StaticBundle:Admin:deleteTemplate }
+  

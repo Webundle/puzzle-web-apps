@@ -1,0 +1,82 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr': {'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid" data-uk-grid-margin>
+        <div class="uk-width-large-1-2">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">                        
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.username, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.username, {'attr': {'class': 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.plainPassword.first, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.plainPassword.first, {'attr': {'class': 'md-input'}}) }}
+                        {{ form_errors(form.plainPassword) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.plainPassword.second, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-large-1-2">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.credentialsExpiredAt, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.credentialsExpiredAt, {'id' : 'credentials_expired_at', 'attr': {'style': 'width:100%'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.accountExpiredAt, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.accountExpiredAt, {'id' : 'account_expired_at', 'attr': {'style': 'width:100%'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.enabled, {'attr': {'data-switchery': true}}) }}
+                        </div>
+                        {{ form_label(form.enabled, null, {'label_attr': {'class': 'uk-display-block uk-margin-small-top uk-form-label'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.locked, {'attr': {'data-switchery': true}}) }}
+                        </div>
+                        {{ form_label(form.locked, null, {'label_attr': {'class': 'uk-display-block uk-margin-small-top uk-form-label'}}) }}
+                    </div>
+                </div>
+            </div>
+            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData': form.picture, 'data': contact is defined ? contact.picture : null, 'suffix': 'picture', 'context': 'contact/contact'} %}
+        </div>
+    </div>
+    <div class="uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_user_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if user is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

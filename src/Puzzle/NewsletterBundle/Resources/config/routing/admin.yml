@@ -1,0 +1,65 @@
+# Group
+admin_newsletter_group_list:
+    path:     /group/list
+    defaults: { _controller: NewsletterBundle:Admin:listGroups }
+
+admin_newsletter_group_create:
+    path:     /group/create
+    defaults: { _controller: NewsletterBundle:Admin:createGroup }
+
+admin_newsletter_group_update:
+    path:     /group/{id}/update
+    defaults: { _controller: NewsletterBundle:Admin:updateGroup }
+
+admin_newsletter_group_delete:
+    path:     /group/{id}/delete
+    defaults: { _controller: NewsletterBundle:Admin:deleteGroup }
+
+# Subscriber
+admin_newsletter_subscriber_list:
+    path:     /list
+    defaults: { _controller: NewsletterBundle:Admin:listSubscribers }
+    
+admin_newsletter_subscriber_create:
+    path:     /subscriber/create
+    defaults: { _controller: NewsletterBundle:Admin:createSubscriber }
+
+admin_newsletter_subscriber_import:
+    path:     /subscriber/import
+    defaults: { _controller: NewsletterBundle:Admin:importSubscribers }
+    
+admin_newsletter_subscriber_export:
+    path:     /subscriber/export
+    defaults: { _controller: NewsletterBundle:Admin:exportSubscribers }
+    
+admin_newsletter_subscriber_show:
+    path:     /subscriber/{id}/show
+    defaults: { _controller: NewsletterBundle:Admin:showSubscriber }
+
+admin_newsletter_subscriber_update:
+    path:     /subscriber/{id}/update
+    defaults: { _controller: NewsletterBundle:Admin:updateSubscriber }
+
+admin_newsletter_subscriber_delete:
+    path:     /subscriber/{id}/delete
+    defaults: { _controller: NewsletterBundle:Admin:deleteSubscriber }
+    
+    
+
+# Template
+admin_newsletter_template_list:
+    path:     /template/list
+    defaults: { _controller: NewsletterBundle:Admin:listTemplates }
+    
+admin_newsletter_template_create:
+    path:     /template/create
+    defaults: { _controller: NewsletterBundle:Admin:createTemplate }
+
+admin_newsletter_template_update:
+    path:     /template/{id}/update
+    defaults: { _controller: NewsletterBundle:Admin:updateTemplate }
+
+admin_newsletter_template_delete:
+    path:     /template/{id}/delete
+    defaults: { _controller: NewsletterBundle:Admin:deleteTemplate }
+  

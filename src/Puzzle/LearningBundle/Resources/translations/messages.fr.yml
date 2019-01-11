@@ -1,0 +1,50 @@
+#Blog
+learning:
+    navigation:
+        title: 'Enseignements'
+        description: 'Gérer les actualités'
+        icon: '&#xE029;'
+        sub_menu:
+            posts: 'Articles'
+            categories: 'Catégories'
+            comments: 'Commentaires'
+    content:
+        bundle_name: 'Enseignements'
+        post:
+            list: 'Liste des articles'
+            show: 'Détails de l''article'
+            create: 'Nouvel article'
+            update: 'Modifier l''article'
+            remove: 'Etes-vous sûr de vouloir supprimer l''article'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''articles'
+        category:
+            list: 'Liste des catégories'
+            show: 'Détails de la catégorie'
+            create: 'Nouvelle catégorie'
+            update: 'Modifier la catégorie'
+            remove: 'Etes-vous sûr de vouloir supprimer la catégorie'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de catégories'
+    property:
+        category:
+            name: 'Nom'
+            slug: 'Slug'
+            description: 'Description'
+            picture: 'Image'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+        post:
+            name: 'Nom'
+            category: 'Catégorie'
+            author: 'Auteur'
+            short_description: 'Courte description (20 caractères min, 100 max)'
+            description: 'Description'
+            picture: 'Image de couverture'
+            audio: 'Fichier audio'
+            video: 'Vidéo'
+            document: 'Document'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+            enable_comments: 'Commentaires'
+            visible: 'Visible'
+            tags: 'Etiquettes'
+            speaker: 'Orateur'

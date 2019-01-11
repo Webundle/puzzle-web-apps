@@ -1,0 +1,372 @@
+{% trans_default_domain 'app' %}
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'app.about.title'|trans }}{% endblock %}
+
+{% block content %}
+	<div class="page-title parallax parallax1" {% if page is not empty and page.picture is not empty %}style="background-image: url({{ page.picture }})"{% endif %}>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="page-title-content text-center">
+                <div class="page-title-heading ">
+                    <h2 class="title text-white font-weight-700">
+                    	{{ page is not empty ? page.name|upper : 'app.about.expertise'|trans|upper }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="flat-row flat-about-us style3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md12">
+                    {{ page is not empty ? page.content|raw : 'app.about.description'|trans|raw }}
+                </div>
+            </div>
+        </div>    
+    </section>
+
+    <section class="flat-team">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flat-title">
+                        <h2 class="title center-title">{{ 'app.staff.title'|trans }}</h2>
+                    </div>
+                    <div class="team-wrap clearfix">
+                        <div class="themesflat-carousel-box data-effect clearfix" data-gap="30" data-column="4" data-column2="3" data-column3="1" data-dots= "false" data-auto="false">
+                        	<div class="owl-carousel">
+                        		{% set staffs = expertise_staffs() %}
+                        		{% if staffs is not empty %}
+                        			{% for staff in staffs %}
+		                                <div class="team-member text-center">
+		                                    <div class="team-image">
+		                                        <a href="#" title=""><img src="{{ asset(staff.picture) }}" alt=""></a>
+		                                        <div class="overlay"></div>
+		                                        <div class="team-desc">
+		                                            <ul class="social">
+		                                                <li>
+		                                                    <a class="facebook data-hover" href="{{ asset(staff.facebook) }}" title="Facebook">
+		                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                                <li>
+		                                                    <a class="twitter data-hover" href="{{ asset(staff.twitter) }}" title="Twitter">
+		                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                                <li>
+		                                                    <a class="google data-hover" href="{{ asset(staff.googlePlus) }}" title="Google Plus">
+		                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                                <li>
+		                                                    <a class="linkedin data-hover" href="{{ asset(staff.linkedIn) }}" title="Linkedin">
+		                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+		                                                    </a>
+		                                                </li>
+		                                            </ul>
+		                                        </div>
+		                                    </div>
+		                                    <div class="team-info">
+		                                        <div class="name">
+		                                            <a href="#" title="">{{ staff.fullName }}</a>
+		                                        </div>
+		                                        <div class="job">
+		                                            {{ staff.position }}
+		                                        </div>
+		                                    </div>
+		                                </div>
+                        			{% endfor %}
+                        		{% else %}
+	                                <div class="team-member text-center">
+	                                    <div class="team-image">
+	                                        <a href="#" title=""><img src="{{ asset('bundles/app/images/style3/expert2.png') }}" alt=""></a>
+	                                        <div class="overlay"></div>
+	                                        <div class="team-desc">
+	                                            <ul class="social">
+	                                                <li>
+	                                                    <a class="facebook data-hover" href="" title="Facebook">
+	                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="twitter data-hover" href="" title="Twitter">
+	                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="google data-hover" href="" title="Google Plus">
+	                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="linkedin data-hover" href="" title="Linkedin">
+	                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </ul><!-- /.social -->
+	                                        </div>
+	                                    </div><!-- /.team-image -->
+
+	                                    <div class="team-info">
+	                                        <div class="name">
+	                                            <a href="#" title="">Oliver Giroud</a>
+	                                        </div>
+	                                        <div class="job">
+	                                            Supervisor
+	                                        </div>
+	                                        
+	                                    </div><!-- /.team-info -->
+	                                </div> <!-- /.team-member -->
+
+	                                <div class="team-member text-center">
+	                                    <div class="team-image">
+	                                        <a href="#" title=""><img src="{{ asset('bundles/app/images/style3/expert3.png') }}" alt=""></a>
+	                                        <div class="overlay"></div>
+	                                        <div class="team-desc">
+	                                            <ul class="social">
+	                                                <li>
+	                                                    <a class="facebook data-hover" href="" title="Facebook">
+	                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="twitter data-hover" href="" title="Twitter">
+	                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="google data-hover" href="" title="Google Plus">
+	                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="linkedin data-hover" href="" title="Linkedin">
+	                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </ul><!-- /.social -->
+	                                        </div>
+	                                    </div><!-- /.team-image -->
+	                                    <div class="team-info">
+	                                        <div class="name">
+	                                            <a href="#" title="">Alicia Burrows</a>
+	                                        </div>
+	                                        <div class="job">
+	                                            Employee
+	                                        </div>
+	                                    </div><!-- /.team-info -->
+	                                </div> <!-- /.team-member -->
+
+	                                <div class="team-member text-center">
+	                                    <div class="team-image">
+	                                        <a href="#" title=""><img src="{{ asset('bundles/app/images/style3/expert4.png') }}" alt=""></a>
+	                                        <div class="overlay"></div>
+	                                        <div class="team-desc">
+	                                            <ul class="social">
+	                                                <li>
+	                                                    <a class="facebook data-hover" href="" title="Facebook">
+	                                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="twitter data-hover" href="" title="Twitter">
+	                                                        <i class="fab fa-twitter" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="google data-hover" href="" title="Google Plus">
+	                                                        <i class="fab fa-google-plus-g" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                                <li>
+	                                                    <a class="linkedin data-hover" href="" title="Linkedin">
+	                                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </ul><!-- /.social -->
+	                                        </div>
+	                                    </div><!-- /.team-image -->
+	                                    <div class="team-info">
+	                                        <div class="name">
+	                                            <a href="#" title="">Tanisa Krush</a>
+	                                        </div>
+	                                        <div class="job">
+	                                            Secretary
+	                                        </div>   
+	                                    </div><!-- /.team-info -->
+	                                </div> <!-- /.team-member -->
+                        		{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flat-testimonials style2 pd-top-80 pd-bottom-55 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flat-title style2">
+                        <h2 class="title center-title no-line-bottom">{{ 'app.testimonial.title'|trans }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flat-carousel">
+                        <div class="themesflat-carousel-box data-effect clearfix" data-gap="10" data-column="1" data-column2="1" data-column3="1" data-auto="false" data-dots = "true" data-nav = "true">
+                            <div class="owl-carousel owl-theme owl-loaded owl-carousel-testimonial">
+                            	{% set testimonials = expertise_testimonials() %}
+			        			{% if testimonials is not empty %}
+			        				{% for testimonial in testimonials %}
+			        					 <div class="testimonials style2 text-center">
+	                                        <div class="author-info">
+	                                        	<img src="{{ testimonial.picture }}">
+	                                            <h5 class="name"><a href="">{{ testimonial.author }}</a></h5>
+	                                            <p class="info">{{ testimonial.position }}, {{ testimonial.company }},</p>
+	                                            <div class="list-star">
+	                                                <i class="ion-star"></i>
+	                                                <i class="ion-star"></i>
+	                                                <i class="ion-star"></i>
+	                                                <i class="ion-star"></i>
+	                                                <i class="ion-ios-star-half"></i>
+	                                            </div>
+	                                        </div>
+	                                        <blockquote class="testimonial-text text-white">
+	                                            {{ testimonial.message }}
+	                                        </blockquote>
+	                                    </div>
+			        				{% endfor %}
+			        			{% else %}
+			        				<div class="testimonials style2 text-center">
+                                        <div class="author-info">
+                                            <h5 class="name"><a href="">Mr. Russell Brand </a></h5>
+                                            <p class="info">CEO Deer Inc,</p>
+                                            <div class="list-star">
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-ios-star-half"></i>
+                                            </div>
+                                        </div>
+                                        <blockquote class="testimonial-text text-white">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+                                        </blockquote>
+                                    </div>
+                                    <div class="testimonials style2 text-center">
+                                        <div class="author-info">
+                                            <h5 class="name"><a href="">Mr. Russell Brand </a></h5>
+                                            <p class="info">CEO Deer Inc,</p>
+                                            <div class="list-star">
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-ios-star-half"></i>
+                                            </div>
+                                        </div>
+                                        <blockquote class="testimonial-text text-white">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+                                        </blockquote>
+                                    </div>
+                                    <div class="testimonials style2 text-center">
+                                        <div class="author-info">
+                                            <h5 class="name"><a href="">Mr. Russell Brand </a></h5>
+                                            <p class="info">CEO Deer Inc,</p>
+                                            <div class="list-star">
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-star"></i>
+                                                <i class="ion-ios-star-half"></i>
+                                            </div>
+                                        </div>
+                                        <blockquote class="testimonial-text text-white">
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+                                        </blockquote>
+                                    </div>
+			        			{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="partner-clients">
+        <div class="container">
+        	<div class="row">
+                <div class="col-md-12">
+                    <div class="flat-title style2">
+                        <h2 class="title center-title no-line-bottom">{{ 'app.partner.title'|trans }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                	{% set partners = expertise_partners() %}
+                	{% if partners is not empty %}
+                		<div class="slide-client owl-carousel" data-auto="true" data-item="5" data-item2="3" data-item3="2" data-nav="false" data-dots="false">
+                    		{% for partner in partners %}
+                    			<div class="client">
+	                                <a href="{{ partner.location|default('#') }}">
+	                                    <img src="{{ partner.picture }}"  alt="{{ partner.name }}">
+	                                    <img src="{{ partner.picture }}" alt="{{ partner.name }}">
+	                                </a>
+	                            </div>
+                    		{% endfor %}
+                        </div>
+                	{% else %}
+                		<div class="slide-client owl-carousel" data-auto="true" data-item="5" data-item2="3" data-item3="2" data-nav="false" data-dots="false">
+                            <div class="client">
+                                <a href="#">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}"  alt="partner">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}" alt="partner">
+                                </a>
+                            </div>
+                            <div class="client">
+                                <a href="#">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}"  alt="partner">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}" alt="partner">
+                                </a>
+                            </div>
+                            <div class="client">
+                                <a href="#">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}"  alt="partner">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}" alt="partner">
+                                </a>
+                            </div>
+                            <div class="client">
+                                <a href="#">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}"  alt="partner">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}" alt="partner">
+                                </a>
+                            </div>
+                            <div class="client">
+                                <a href="#">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}"  alt="partner">
+                                    <img src="{{ asset('bundles/app/images/partner-logo-1.png') }}" alt="partner">
+                                </a>
+                            </div>
+                        </div>
+                	{% endif %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

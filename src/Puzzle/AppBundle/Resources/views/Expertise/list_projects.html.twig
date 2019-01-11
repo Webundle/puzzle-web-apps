@@ -1,0 +1,213 @@
+{% trans_default_domain 'app' %}
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ 'app.project.title'|trans }}{% endblock %}
+
+{% block content %}
+	<div class="page-title parallax parallax1">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="page-title-content text-center">
+                <div class="page-title-heading ">
+                    <h2 class="title text-white font-weight-700">
+                        {{ 'app.project.title'|trans|upper }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrap-content main-project project-v2">
+            <section class="flat-projects style3 pd-top-80 pd-bottom-80 clearfix">
+                <div class="container-fluid">
+                	{% if projects is not empty %}
+                		<div class="row">
+	                        <div class="col-md-12">
+	                            <div class="flat-portfolio portfolio-project">
+	                                <ul class="portfolio-filter clearfix">
+	                                    <li class="active"><a href="#" data-filter="*">All</a></li>
+				                		{% set services = expertise_services() %}
+				                		{% for service in services %}
+						                    <li><a href="#" data-filter=".{{ service.slug }}">{{ service.name }}</a></li>
+				                		{% endfor %}
+	                                </ul>                  
+	                            </div> 
+	                        </div>
+	                    </div>
+	                    <div class="portfolio-wrap">
+	                        <div class="flat-imagebox isotope-project">
+	                        	{% for project in projects %}
+		                            <div class="imagebox style3 {{ project.service.slug }}">
+		                                <div class="imagebox-image">
+		                                    <img src="{{ project.pictures|first }}" alt="{{ project.name }}">
+		                                    <div class="overlay"></div>
+		                                </div>
+		                                <div class="imagebox-content">
+		                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': project.id}) }}">{{ project.name }}</a></h3>
+		                                    <div class="meta-project">
+		                                        <a href="#">{{ project.location }}</a>
+		                                        <a href="#">{{ project.client }}</a>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        {% endfor %}
+	                        </div>
+	                    </div>
+                	{% else %}
+                		<div class="row">
+	                        <div class="col-md-12">
+	                            <div class="flat-portfolio portfolio-project">
+	                                <ul class="portfolio-filter clearfix">
+	                                    <li class="active"><a href="#" data-filter="*">All</a></li>
+	                                    <li><a href="#" data-filter=".family">Family</a></li>
+	                                    <li><a href="#" data-filter=".warehouse ">Warehouse   </a></li>
+	                                    <li><a href="#" data-filter=".building">Building </a></li>
+	                                    <li><a href="#" data-filter=".kitchen">Kitchen</a></li>
+	                                    <li><a href="#" data-filter=".office">Office</a></li>
+	                                    <li><a href="#" data-filter=".interior">Interior </a></li>
+	                                </ul>                  
+	                            </div> 
+	                        </div>
+	                    </div>
+	                    <div class="portfolio-wrap">
+	                        <div class="flat-imagebox isotope-project">
+	                            <div class="imagebox style3 interior kitchen warehouse family">
+	                                <div class="imagebox-image ">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-1.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                            <div class="imagebox style3 interior family">
+	                                <div class="imagebox-image ">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-2.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                            <div class="imagebox style3 interior kitchen">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-3.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                            <div class="imagebox style3 office warehouse">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-4.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                            <div class="imagebox style3 office building family">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-5.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="imagebox style3 office building">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-6.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="imagebox style3 office building">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-7.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="imagebox style3 office building">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-8.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="imagebox style3 office building">
+	                                <div class="imagebox-image">
+	                                    <img src="{{ asset('bundles/app/images/projects/project-9.png') }}" alt="standell">
+	                                    <div class="overlay"></div>
+	                                </div>
+	                                <div class="imagebox-content">
+	                                    <h3 class="heading"><a href="{{ url('app_expertise_project_show', {'id': 1}) }}">Lorem Ipsum Dolor</a></h3>
+	                                    <div class="meta-project">
+	                                        <a href="#">Lorem</a>
+	                                        <a href="#">Ipsum</a>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                        </div>
+	                    </div>
+                	{% endif %}   
+                </div>
+            </section>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    {% javascripts
+        'bundles/app/js/jquery-fancybox.js'
+        'bundles/app/js/jquery-isotope.js'
+        output="compiled/js/app-project-list.min.js" 
+    %}
+    	<script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

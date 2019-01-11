@@ -1,0 +1,8 @@
+services:
+        # Twig extension
+    app.twig.extension:
+        class: Puzzle\AppBundle\Twig\AppExtension
+        public: false
+        arguments: [ '@router', '@request_stack', '@security.authorization_checker', '@translator', '%app%' ]
+        tags:
+          - { name: twig.extension }

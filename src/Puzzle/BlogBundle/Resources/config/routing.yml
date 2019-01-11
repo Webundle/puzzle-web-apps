@@ -1,0 +1,9 @@
+blog_admin:
+    resource: '@BlogBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%blog'
+    host: '%admin_host%'
+    options:
+        expose: true
+
+blog_app:
+    resource: '@BlogBundle/Resources/config/routing/app.yml'

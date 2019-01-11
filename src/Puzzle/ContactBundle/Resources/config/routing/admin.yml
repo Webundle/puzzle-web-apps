@@ -1,0 +1,64 @@
+    # Contact
+admin_contact_list:
+    path:     /list
+    defaults: { _controller: ContactBundle:Admin:listContacts }
+    
+admin_contact_create:
+    path:     /create
+    defaults: { _controller: ContactBundle:Admin:createContact }
+
+admin_contact_import:
+    path:     /import
+    defaults: { _controller: ContactBundle:Admin:importContacts }
+    
+admin_contact_export:
+    path:     /export
+    defaults: { _controller: ContactBundle:Admin:exportContacts }
+    
+admin_contact_show:
+    path:     /{id}/show
+    defaults: { _controller: ContactBundle:Admin:showContact }
+
+admin_contact_update:
+    path:     /{id}/update
+    defaults: { _controller: ContactBundle:Admin:updateContact }
+
+admin_contact_delete:
+    path:     /{id}/delete
+    defaults: { _controller: ContactBundle:Admin:deleteContact }
+
+# Group
+admin_contact_group_list:
+    path:     /group/list
+    defaults: { _controller: ContactBundle:Admin:listGroups }
+    
+admin_contact_group_create:
+    path:     /group/create
+    defaults: { _controller: ContactBundle:Admin:creategroup }
+
+admin_contact_group_show:
+    path:     /group/{id}/show
+    defaults: { _controller: ContactBundle:Admin:showGroup }
+    
+admin_contact_group_update:
+    path:     /group/{id}/update
+    defaults: { _controller: ContactBundle:Admin:updateGroup }
+
+admin_contact_group_delete:
+    path:     /group/{id}/delete
+    defaults: { _controller: ContactBundle:Admin:deleteGroup }
+
+# Request
+admin_contact_request_list:
+    path:     /request/list
+    defaults: { _controller: ContactBundle:Admin:listRequests }
+    
+admin_contact_request_show:
+    path:     /request/{id}/show
+    defaults: { _controller: ContactBundle:Admin:showRequest }
+
+admin_contact_request_delete:
+    path:     /request/{id}/delete
+    defaults: { _controller: ContactBundle:Admin:deleteRequest }
+
+    

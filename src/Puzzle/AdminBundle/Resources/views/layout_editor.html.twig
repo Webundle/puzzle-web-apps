@@ -1,0 +1,41 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+        'bundles/admin/skins/tinymce/material_design/skin.min.css'
+        'bundles/admin/libs/kendo-ui/styles/kendo.common-material.min.css'
+        'bundles/admin/libs/kendo-ui/styles/kendo.material.min.css'
+        'bundles/admin/libs/materialize-tags/css/materialize-tags.css'
+        
+        filter='cssrewrite' 
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}" media="all" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/admin/libs/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('bundles/admin/libs/ckeditor/adapters/jquery.js') }}"></script>
+    {% javascripts 
+        'bundles/admin/js/forms_wysiwyg.js'
+        'bundles/admin/js/kendoui_custom.js'
+        'bundles/admin/libs/typeahead.js/typeahead.bundle.min.js'
+        'bundles/admin/js/kendoui.js'
+        'bundles/admin/libs/materialize-tags/js/materialize-tags.min.js'
+
+        output="compiled/js/base_admin_editor.min.js" 
+        %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        // Datetime Picker
+        $(".datepicker").kendoDateTimePicker({
+            format: "dd-MM-yyyy HH:mm",
+            // value: $(this).value()
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,60 @@
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3 class="uk-modal-title">Commentaires</h3>
+    </div>
+    <div>
+        <div class="uk-margin-large-bottom">
+            <ul class="uk-comment-list" id="list-comments" {# style="height:300px;overflow-y:auto" #}>
+
+                {% for comment in comments %}
+                    <li id="{{ comment.id }}">
+                        <article class="uk-comment">
+                            <header class="uk-comment-header">
+                                <img class="md-user-image uk-comment-avatar" src="{{ comment.user.picture }}" alt="">
+                                <h4 class="uk-comment-title">{{ comment.user.firstName }} {{ comment.user.lastName }}</h4>
+                                <div class="uk-comment-meta">{{ comment.createdAt|date('d/m-Y H:i') }}</div>
+                            </header>
+                            <div class="uk-comment-body">
+                                <p>{{ comment.content }}</p>
+                            </div>
+                        </article>
+                        <div class="uk-text-right">
+                            <a href="" class="thumb_up"><i class="material-icons">&#xE8DC;</i></a>
+                            <a href="" class="thumb_down"><i class="material-icons">&#xE8DB;</i></a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#add-comment").click(function(e){
+        e.preventDefault();
+        
+        var content = $("#comment-content").val();
+        var url = $(this).attr('href');
+        var cardId = $("#card_id_comment").val();
+
+        if(content != null){
+
+            // Send the data using post
+            var posting = $.post(url, {content:content, card:cardId});
+
+            // Put the results in a div
+            posting.done(function(data) {
+
+                var totalComments = $("#total-comments-card-" + cardId),
+                    totalCommentsData = parseInt(totalComments.html());
+
+                totalComments.html(totalCommentsData + 1);
+
+                $("#list-comments").append(data);
+            });
+
+            $("#comment-content").val("");
+        }
+    });
+
+</script>

@@ -1,0 +1,11 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header"><h3>{{ "newsletter.content.subscriber.update"|trans }} <em>{{ subscriber.email }}</em></h3></div>
+    {% include 'AdminBundle:Newsletter:form_subscriber.html.twig' with {'form': form} %}
+</div>
+
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+</script>

@@ -1,0 +1,19 @@
+services:
+#    calendar.example:
+#        class: CalendarBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    calendar.moment_listener:
+        class: Puzzle\CalendarBundle\Listener\AgendaListener
+        arguments: [ "@doctrine.orm.entity_manager"]
+        tags:
+            - { name: kernel.event_listener, event: "calendar.share_agenda", method: onShare }
+    calendar.moment_listener:
+            class: Puzzle\CalendarBundle\Listener\MomentListener
+            arguments: ["@doctrine", "@scheduling.manager", "@scheduling.cron", "@scheduling.tools"]
+    # Twig extension
+    calendar.twig.extension:
+        class: Puzzle\CalendarBundle\Twig\CalendarExtension
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
+        tags:
+            - { name: twig.extension }

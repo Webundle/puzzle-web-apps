@@ -1,0 +1,29 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Expertise:layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "expertise.content.staff.update"|trans|capitalize }} {{ staff }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_expertise_staff_list') }} ">
+       {{ 'expertise.content.staff.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "expertise.content.staff.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Expertise:form_staff.html.twig' with { 'form' : form, 'staff' : staff } %}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}
+
+

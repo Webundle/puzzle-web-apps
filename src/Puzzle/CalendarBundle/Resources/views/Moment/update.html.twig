@@ -1,0 +1,256 @@
+{% trans_default_domain 'messages' %}
+
+{% set subactive = "admin_calendar_moments" %}
+
+{% extends 'CalendarBundle::layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "calendar.content.moment.update"|trans|capitalize }} {% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            <h1>{{ "calendar.title"|trans|capitalize }} - {{ "calendar.content.moment.update"|trans|capitalize }}</h1>
+            <span class="sub_heading">
+                <a href="{{ url('admin_calendar_moment', {'id': moment.id}) }}">
+                   <i class="material-icons">&#xE5C4;</i>
+                    {{ "button.back"|trans }}
+                </a>
+                /<em>{{ moment.title }}</em>
+            </span>
+        </div>
+        <div id="page_content_inner">
+            {{ form_start(form, {'attr' : {'class': 'uk-form-stacked'}}) }}
+                <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+                    <div class="uk-width-xLarge-7-10  uk-width-large-7-10">
+                        <div class="md-card">
+                            <div class="md-card-content">
+                                <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                                    <div class="uk-width-large-1-1">
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.color) }}
+                                            <div id="kUI_color_picker_create"></div>
+                                            {{ form_widget(form.color, {'id': 'color'}) }}
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.title) }}
+                                            {{ form_widget(form.title) }}
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.slug) }}
+                                            {{ form_widget(form.slug) }}
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.location) }}
+                                            {{ form_widget(form.location) }}
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.agenda) }}
+                                            {{ form_widget(form.agenda) }}
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.visibility) }}
+                                            {{ form_widget(form.visibility, {'id': 'visibility'}) }}
+                                        </div>
+                                        <div class="uk-form-row {% if moment.visibility != "share" %}uk-hidden{% endif %}" id="members-container">
+                                            <div>{{ form_label(form.memberList) }}</div>
+                                            {{ form_widget(form.memberList, {'id': 'autocomplete-members'}) }}
+                                            <input type="hidden" id="members-id" name="members" value="" />
+                                            <input type="hidden" id="members-list-url" value="{{ url('admin_users') }}">
+                                            <input type="hidden" id="members" value="{% for member in moment.members %}{{ member.fullName }}, {% endfor %}"/>
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.tags) }}
+                                            {{ form_widget(form.tags, {'value': moment.tags|join(',')}) }}
+                                        </div>
+                                        <div class="uk-form-row">
+                                            {{ form_label(form.description) }}
+                                            {{ form_widget(form.description, {'id': 'wysiwyg_ckeditor'}) }}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+                        <div class="md-card">
+                            <div class="md-card-content">
+                                <div class="uk-form-row">
+                                    {{ form_label(form.startedAt) }}
+                                    {{ form_widget(form.startedAt, {'id': 'started_at', 'value': moment.startedAt|date('d-m-Y H:i')}) }}
+                                </div>
+                                <div class="uk-form-row">
+                                    {{ form_label(form.endedAt) }}
+                                    {{ form_widget(form.endedAt, {'id': 'ended_at', 'value': moment.endedAt|date('d-m-Y H:i')}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md-card">
+                            <div class="md-card-toolbar">
+                                <div class="uk-float-right">
+                                    {{ form_widget(form.isRecurrent) }}
+                                </div>
+                                {{ form_label(form.isRecurrent) }}
+                            </div>
+                            <div class="md-card-content">
+                                <section>
+                                    <div class="uk-form-row">
+                                        {{ form_label(form.recurrenceIntervale) }}
+                                        {% if recurrence is empty %}
+                                            {{ form_widget(form.recurrenceIntervale) }}
+                                        {% else %}
+                                            {{ form_widget(form.recurrenceIntervale, {'value': recurrence.intervale}) }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="uk-form-row">
+                                        {{ form_label(form.recurrenceUnity) }}
+                                        {% if recurrence is empty %}
+                                            {{ form_widget(form.recurrenceUnity) }}
+                                        {% else %}
+                                            {{ form_widget(form.recurrenceUnity, {'value': recurrence.unity}) }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="uk-form-row">
+                                        {{ form_label(form.recurrenceExcludedDays) }}
+                                        {% if recurrence is empty %}
+                                           {{ form_widget(form.recurrenceExcludedDays, {'id': 'kUI_multiselect_recurrence_excluded_days'}) }}
+                                        {% else %}
+                                            {{ form_widget(form.recurrenceExcludedDays, {'id': 'kUI_multiselect_recurrence_excluded_days', 'value': recurrence.excludedDays|join(',')}) }}
+                                        {% endif %}
+                                        
+                                    </div>
+                                    <div class="uk-form-row">
+                                        {{ form_label(form.recurrenceDueAt) }}
+                                        {% if recurrence is empty %}
+                                           {{ form_widget(form.recurrenceDueAt, {'id': 'recurrence_due_at'}) }}
+                                        {% else %}
+                                            {{ form_widget(form.recurrenceDueAt, {'id': 'recurrence_due_at', 'value': recurrence.dueAt|date('d-m-Y H:i')}) }}
+                                        {% endif %}
+                                        
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <div class="md-card">
+                            <div class="md-card-content">
+                                <div class="uk-form-row">
+                                    <div class="uk-float-right">
+                                        {{ form_widget(form.enableComments) }}
+                                    </div>
+                                    {{ form_label(form.enableComments) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md-card">
+                            <div class="md-card-toolbar">
+                                <div class="md-card-toolbar-actions">
+                                    <a href="#choose_files_modal" data-uk-modal="{ center:false }" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.add"|trans }}" id="choose_files_btn" alt="{{ "button.add"|trans }}">
+                                        <i class="md-icon material-icons">&#xE146;</i>
+                                    </a>
+                                </div>
+                                <h3 class="md-card-toolbar-heading-text">
+                                    {{ form_label(form.picture) }}
+                                </h3>
+                            </div>
+                            <div class="md-card-content {% if moment.picture is empty %}uk-hidden{% endif %}" id="target_container_picture">
+                                <img src="{{ moment.picture }}" alt="" class="img_large" id="target_picture"/>
+                                {{ form_widget(form.picture, {'id' : 'files_to_add_picture'}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md-fab-wrapper">
+                    {{ form_widget(form.save, {'id': 'save'}) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $("#autocomplete-members").html($("#members").val());
+        // Shared agenda
+        $("#visibility").change(function(e){
+            if ($(this).val() == "share"){
+                $("#members-container").removeClass('uk-hidden');
+            }else {
+                $("#members-container").addClass('uk-hidden');
+            }
+        });
+
+        var $kUI_multiselect_recurrence_excluded_days = $('#kUI_multiselect_recurrence_excluded_days');
+        if($kUI_multiselect_recurrence_excluded_days.length) {
+            $kUI_multiselect_recurrence_excluded_days.kendoMultiSelect();
+        }
+
+        // Choose files
+        $("#choose_files_btn").click(function(){
+            altair_form_file_upload.choose_files_modal("picture", "calendar/moments");
+        });
+
+        // Color Picker
+        var color =  $("#color").val() ? $("#color").val() : "#fff";
+        var $kUI_color_picker = $('#kUI_color_picker_create');
+
+        if($kUI_color_picker.length) {
+            $kUI_color_picker.kendoColorPalette({
+                value: color,
+                columns: 20,
+                tileSize: {
+                    width: 24,
+                    height: 16
+                },
+                palette: [
+                    "#e53935", "#d81b60", "#8e24aa", "#5e35b1", "#3949ab",
+                    "#1e88e5", "#039be5", "#00acc1", "#00897b", "#43a047",
+                    "#7cb342", "#c0ca33", "#fdd835", "#ffb300", "#fb8c00",
+                    "#f4511e", "#6d4c41", "#757575", "#546e7a"
+                ],
+                change: function(e){
+                    $("#color").val(e.value);
+                }
+            });
+        }
+
+        // Datetime Picker
+        $("#started_at, #ended_at, #recurrence_due_at").kendoDateTimePicker({
+           format: "dd-MM-yyyy HH:mm"
+        });
+
+        // AutoComplete
+        $("#autocomplete-members").kendoAutoComplete({
+            minLength: 2,
+            filter : "contains",
+            separator: ", ",
+            dataValueField : "id",
+            dataTextField : "fullName",
+            template: 
+            '<div class="k-list-wrapper">'+
+            '<span class="k-state-default k-list-wrapper-content">' +
+            '<p>#: data.fullName #(#: data.email #)</p>' +
+            '</span>' +
+            '</div>',
+            footerTemplate: 'Total #: instance.dataSource.total() #',
+            dataSource: {
+                transport: {
+                    read: {
+                        method: 'POST',
+                        dataType: "json",
+                        url: $("#members-list-url").val()
+                    }
+                }
+            },
+            select: function (e){ 
+                var selectedOne =  this.dataItem(e.item.index());
+                $("#members-id").val(selectedOne.id);
+            },
+            height: 200
+        }).data("kendoAutoComplete");
+    </script>
+{% endblock %}
+

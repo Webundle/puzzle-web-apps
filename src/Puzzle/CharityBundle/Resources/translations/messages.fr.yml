@@ -1,0 +1,74 @@
+#Charity
+charity:
+    title: 'Actions Sociales'
+    description: ''
+    navigation:
+        cause: 'Actions'
+        category: 'Catégories'
+        donation: 'Donations'
+        volunteer: 'Volontaires'
+    content:
+        cause:
+            list: 'Liste des actions'
+            show: 'Détails de l''action'
+            create: 'Nouvelle action'
+            update: 'Modifier l''action'
+            remove: 'Etes-vous sûr de vouloir supprimer l''action'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''actions'
+        category:
+            list: 'Liste des catégories'
+            show: 'Détails de la catégorie'
+            create: 'Nouvelle catégorie'
+            update: 'Modifier la catégorie'
+            remove: 'Etes-vous sûr de vouloir supprimer la catégorie'
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de catégories'
+        donation:
+            list: 'Liste des donations'
+            show: 'Détails de la donation'
+            create: 'Nouvelle donation'
+            update: 'Modifier la '
+            remove: 'Etes-vous sûr de vouloir supprimer la '
+            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de donations'
+    property:
+        category:
+            name: 'Nom'
+            description: 'Description'
+            picture: 'Image'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+        cause:
+            name: 'Nom'
+            description: 'Description'
+            category: 'Catégorie'
+            totalAmount: 'Montant Total'
+            paidAmount: 'Montant réçu'
+            startedAt: 'Date début'
+            endedAt: 'Date fin'
+            picture: 'Image'
+            created_at: 'Date de création'
+            updated_at: 'Date d''édition'
+            donations: 'Donations'
+            tags: 'Etiquettes'
+            amountRatio: 'Pourcentage de dons'
+            status: 'Statut'
+        donation:
+            author: 'Nom'
+            address: 'Adresse'
+            phone: 'Téléphone'
+            email: 'Email'
+            cause: 'Action'
+            status: 'Statut'
+            totalAmount: 'Montant total'
+            donationLines: 'Echelons'
+            amountRatio: 'Pourcentage'
+            createdAt: 'Enregistrée le'
+            updatedAt: 'Révisée le'
+        donationLine:
+            donatedAt: 'Date'
+            amount: 'Montant'
+            status: 'Statut'
+    default_value:
+        donationLine:
+            status:
+                paid: 'Payé'
+                unpaid: 'Intention'

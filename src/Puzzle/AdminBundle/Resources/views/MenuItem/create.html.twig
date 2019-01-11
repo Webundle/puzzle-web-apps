@@ -1,0 +1,45 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header"><h3>{{ "admin.content.menuItem.create"|trans }} <em>{{ menu.name }}</em></h3></div>
+    {{ form_start(form) }}
+    <div class="uk-modal-body">
+        <div class="uk-form-row">
+            {#{{ form_label(form.page) }}#}
+            {{ form_widget(form.page, {'id': 'page'}) }}
+        </div>
+        <div class="uk-form-row">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'id': 'name'}) }}
+        </div>
+        <div class="uk-form-row">
+            {#{{ form_label(form.parent) }}#}
+            {{ form_widget(form.parent) }}
+        </div>
+        <div class="uk-form-row">
+            {% set position = menu.menuItems|length + 1 %}
+            {{ form_label(form.position) }}
+            {{ form_widget(form.position, {'value': position, 'attr': {'min': 1, 'max': position}}) }}
+        </div>
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" class="md-btn md-btn-flat uk-modal-close">{{ "button.close"|trans }}</button>
+        {{ form_widget(form.save) }}
+    </div>
+    {{ form_end(form) }}
+</div>
+
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+    
+    $('#page').change(function(){
+        if ($(this).val().trim() != '') {
+            $('#name').val($('#page option:selected').text());
+        }else{
+            $('#name').val('');
+        }
+
+        $("#name").focus();
+    });
+</script>

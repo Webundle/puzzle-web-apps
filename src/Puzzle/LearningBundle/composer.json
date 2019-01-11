@@ -1,0 +1,38 @@
+{
+    "name" : "puzzle/Learning-bundle",
+    "description" : "Manage Learnings",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Qwincy Percy",
+        "email" : "qwincypercy@fermentuse.com"
+    }],
+    "keywords" : [
+        "Learning bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "php": ">=5.3.9",
+        "symfony/symfony": "2.8.*",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
+        "twig/twig" : "*",
+        "puzzle/user-bundle": "dev-master",
+        "puzzle/admin-bundle": "dev-master",
+        "puzzle/media-bundle": "dev-master"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Puzzle\\LearningBundle" : ""
+        }
+    },
+    "target-dir" : "Puzzle/LearningBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "some_version-dev"
+        }
+    }
+}

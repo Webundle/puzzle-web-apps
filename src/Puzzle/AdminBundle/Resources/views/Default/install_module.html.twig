@@ -1,0 +1,53 @@
+<form class="uk-form-stacked" action="{{ url('blog_category_create_callback')}}" method="POST">
+    <div class="md-card">
+        <div class="md-card-toolbar md-bg-grey-800">
+            <h3 class="md-card-toolbar-heading-text md-color-light-green-50">
+                Nouvelle catégorie
+            </h3>
+        </div>
+        <div class="md-card-content">
+            <div class="uk-margin-medium-bottom">
+                <label for="name" class="uk-form-label">Nom</label>
+                <input type="text" class="md-input" id="name" name="name"/>
+            </div>
+            <div class="uk-margin-medium-bottom">
+                <label for="parent" class="uk-form-label">Catégorie parente</label>
+                <select id="parent" name="parent" data-md-selectize>
+                    <option value=""></option>
+                    {% for item in categories %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="togglable uk-hidden">
+                <label for="description" class="uk-form-label">Description</label>
+                <textarea class="md-input" id="description" name="description" rows="3"></textarea>
+            </div>
+            <div class="uk-text-center">
+                <a href="#" class="uk-text-primary" id="show_more">
+                    Afficher tous les champs
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="md-card uk-margin-medium-bottom togglable uk-hidden">
+        <div class="md-card-toolbar">
+            <div class="md-card-toolbar-actions">
+                <a href="#choose_files_modal" data-uk-tooltip="{pos:'bottom'}" title="Ajouter une image" id="choose_files_btn">
+                    <i class="md-icon material-icons">&#xE146;</i>
+                </a>
+            </div>
+            <h3 class="md-card-toolbar-heading-text">
+                Image de couverture
+            </h3>
+        </div>
+        <div class="md-card-content uk-hidden" id="target_container">
+            <img src="" alt="" class="img_large" id="target"/>
+            <input type="hidden" name="picture" id="files_to_add" value="">
+        </div>
+    </div>
+    <div class="uk-margin-medium-top uk-text-center">
+        <button type="submit" class="md-btn md-btn-success">Ajouter</button>
+    </div>
+</form>

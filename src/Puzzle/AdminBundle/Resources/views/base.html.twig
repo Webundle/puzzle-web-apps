@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{{ render_admin_head_title() }}{% endblock %}</title>
+        {{ render_admin_head_meta() }}
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body {% block bodyattributes %}{% endblock %}>
+        {% block body %}
+        	{% block header %}{% endblock %}
+            {% block side %}{% endblock %}
+            {% block section %}
+            	<div id="page_content">
+            	    {% block breacrumbs %}{% endblock %}
+                    {% block alert %}{% endblock %}
+                    {% block content %}{% endblock %}
+                </div>
+            {% endblock %}
+            {% block modal %}{% endblock %}
+            {% block footer %}{% endblock %}
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

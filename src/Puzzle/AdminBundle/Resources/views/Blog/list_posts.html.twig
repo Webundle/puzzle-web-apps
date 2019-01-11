@@ -1,0 +1,117 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Blog:layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "blog.post.list"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_blog_post_create') }}">
+       	<span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+	<em>{{ "blog.post.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+<div id="page_content_inner">
+    <div class="md-card">
+        {% if posts is not empty %}
+            <div class="md-card-toolbar toggle-action uk-hidden">
+                <div class="md-card-toolbar-actions">
+                    <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                        <a class="uk-text-primary uk-text-bold">
+                            {{ 'layout.multiple_actions'|trans }}
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <div class="uk-dropdown uk-dropdown-small">
+                            <ul class="uk-nav uk-nav-dropdown">
+                                <li>
+                                    <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                        <i class="fa fa-trash-o uk-text-danger"></i> 
+                                        {{ "button.remove"|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{ posts|length|default('0') }}" id="toggle-items-count">
+                    <input type="hidden" value="0" id="toggle-items-checked-count">
+                </div>
+            </div>
+        {% endif %}
+        <div class="md-card-content">
+            <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ "blog.post.name"|trans }}</th>
+                    <th>{{ "blog.post.category"|trans }}</th>
+                    <th>{{ "blog.post.updated_at"|trans }}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr class="toggleable" id="item-{{ post.id }}">
+                            <td>
+                                <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                    <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ post.id }}">&#xE835;</i>
+                                </a>
+                            </td>
+                            <td>
+                            	<div class="uk-text-truncate" style="width: 250px;">
+                                    <a href="{{ url('admin_blog_post_update', {'id': post.id}) }}" title="{{ post.name }}">
+                                        {{ post.name }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td>{{ post.category.name }}</td>
+                            <td>{{ post.updatedAt|date('d-m-y H:i') }}</td>
+                            <td class="uk-text-right">
+                                <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                    <a><i class="fa fa-ellipsis-h"></i></a>
+                                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
+                                        <ul class="uk-nav uk-nav-dropdown">
+                                            <li>
+                                                <a href="{{ url('admin_blog_post_update', {'id': post.id}) }}">
+                                                    <i class="fa fa-pencil"></i>
+                                                    {{ "button.update"|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                {% if post.gallery is not empty %}
+                                                    <a href="{{ url('admin_media_folder_show', {'id': post.gallery}) }}" target="blank">
+                                                        <i class="fa fa-list"></i>
+                                                        {{ "blog.post.manage_gallery"|trans }}
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ url('admin_media_folder_list') }}" target="blank">
+                                                        <i class="fa fa-list"></i>
+                                                        {{ "blog.post.manage_gallery"|trans }}
+                                                    </a>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_blog_post_delete', {'id': post.id}) }}" data-label="{{ post.name }}" class="remove-item">
+                                                    <i class="fa fa-trash-o uk-text-danger"></i>
+                                                    {{ "button.remove"|trans }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+parameters:
+    static:
+        title: static.title
+        description: static.description
+        icon: static.icon
+        enable: true
+        dependencies: 'media,user'
+        page_translatable_fields: 'name,content,slug'
+        roles:
+            manage:
+                label: 'ROLE_STATIC_MANAGE'
+                description: static.role.manage
+
+

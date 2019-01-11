@@ -1,0 +1,28 @@
+<a href="#" class="user_action_icon">
+  <i class="material-icons md-24 md-light">&#xE7F4;</i>
+  {% if notifications|length > 0 %}
+    <span class="uk-badge">{{notifications|length }}</span>
+  {% endif %}
+</a>
+<div class="uk-dropdown uk-dropdown-xlarge">
+  <div class="md-card-content">
+    <ul class="md-list md-list-addon" style="text-align:center;overflow-y: auto;max-height: 196px;">
+      {% for notification in notifications %}
+        <li>
+          <div class="md-list-addon-element">
+            <span class="md-user-letters md-bg-cyan">{{notification.author[0:2] }}</span>
+          </div>
+          <div class="md-list-content">
+              <span class="md-list-heading">
+                <a href="{{url('account_notification', {'id': notification.id})}}">{{notification.author }}</a>
+              </span>
+              <span class="uk-text-small uk-text-muted">{{notification.message}}</span>
+          </div>
+          
+        </li>
+      {% else %}
+          <li><h3>Aucune notification</h3></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>                                         

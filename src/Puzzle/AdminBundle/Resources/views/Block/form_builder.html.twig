@@ -1,0 +1,63 @@
+{% trans_default_domain 'messages' %}
+
+{% set countElements = items|length  > 0 ?  items|length : 1 %}
+<input type="hidden" name="countElements" id="count_elements" value="{{ countElements }}">					
+
+<div class="m-scrollable" data-scrollbar-shown="false" data-scrollable="true" style="max-height:200px">
+	<div id="container-element" class="config">
+		{% set count = 1 %}
+		{% if items|length > 0 %}
+			{% for name,value in items %}
+				<div class="uk-grid uk-margin-bottom uk-margin-small-top" id="container_elements_{{ count }}">
+					<div class="uk-width-medium-2-5">
+						<div class="form-group">
+							<input type="text" name="name_{{ count }}" class="md-input" placeholder="{{ "text.name"|trans }}" value="{{ name }}">
+						</div>
+					</div>
+					<div class="uk-width-medium-2-5">
+						<div class="uk-form-row">
+							<input type="text" name="value_{{ count }}" class="md-input" placeholder="{{ "text.value"|trans }}" value="{{ value }}">
+						</div>
+					</div>
+					<div class="uk-width-medium-1-5 uk-text-right">
+						<div class="uk-form-row text-left uk-margin-top">
+							<a href="#" id="{{ count }}" class="remove_element_link uk-text-danger" title="{{ "action.remove"|trans }}">
+								{{ "button.remove"|trans }}
+								<i class="fa fa-times-circle" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				{% set count = count + 1 %}
+			{% endfor %}
+		{% else %}
+			<div class="uk-grid uk-margin-bottom uk-margin-small-top" id="container_elements_{{ count }}">
+				<div class="uk-width-medium-2-5">
+					<div class="form-group">
+						<input type="text" name="name_1" class="md-input" placeholder="{{ "text.name"|trans }}" value="">
+					</div>
+				</div>
+				<div class="uk-width-medium-2-5">
+					<div class="uk-form-row">
+						<input type="text" name="value_1" class="md-input" placeholder="{{ "text.value"|trans }}" value="">
+					</div>
+				</div>
+				<div class="uk-width-medium-1-5 uk-text-right">
+					<div class="uk-form-row text-left uk-margin-top">
+						<a href="#" id="1" class="remove_element_link uk-text-danger" title="{{ "action.remove"|trans }}">
+							{{ "button.remove"|trans }}
+							<i class="fa fa-times-circle" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+</div>
+<div class="uk-text-center">
+	<a href="#" class="add-element-link" title="{{ "button.add"|trans }}">
+		<i class="fa fa-plus-circle text-info"></i>
+		{{ "button.add"|trans }}
+	</a>
+</div>
+<input type="hidden" id="prototype" value='<div class="uk-width-medium-2-5"><div class="uk-form-row"><input type="text" id="name_index" name="name_index" class="md-input" required placeholder="{{ "layout.name"|trans }}"></div></div><div class="uk-width-medium-2-5"><div class="uk-form-row"><input type="text" name="value_index" class="md-input" required placeholder="{{ "layout.value"|trans }}"></div></div><div class="uk-width-medium-1-5 uk-text-right"><div class="uk-form-row text-left uk-margin-top"><a href="#" id="index" class="remove_element_link uk-text-danger">{{ "button.remove"|trans }} <i class="fa fa-times-circle" aria-hidden="true"></i></a></div></div>'>

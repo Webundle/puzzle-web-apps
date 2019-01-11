@@ -1,0 +1,29 @@
+<div class="uk-grid uk-margin-bottom uk-margin-top" id="container_donation_line_{{number}}">
+    <div class="uk-width-medium-1-4">
+        <input class="md-input" type="text" name="donation_line_date_{{number}}" id="donation_line_date_{{number}}" data-uk-datepicker="{format:'DD-MM-YYYY'}" placeholder="Date">
+    </div>
+    <div class="uk-width-medium-1-4">
+        <input type="number" name="donation_line_amount_{{number}}" id="donation_line_amount_{{number}}" required class="md-input" placeholder="Montant"/>
+    </div>
+    <div class="uk-width-medium-1-4 uk-margin-small-top">
+        <select id="donation_line_status_{{number}}" data-md-selectize name="donation_line_status_{{number}}" required>
+            <option value="">Etat</option>
+            <option value="0">Intention</option>
+            <option value="1">Payé</option>
+        </select>
+    </div>
+    <div class="uk-width-medium-1-4 uk-margin-small-top uk-text-right">
+        <a href="#" data-tooltip title="Retirer la ligne" id="{{number}}" class="remove_line"><i class="md-icon material-icons">&#xE872;</i></a>
+        <input type="hidden" id="donation_line_{{number}}" value="">
+    </div>
+</div>
+
+<script type="text/javascript">
+    altair_forms.init();
+    // Remove command line form
+        $(".remove_line").click(function(e){
+            e.preventDefault();
+            $("#container_donation_line_" + $(this).attr('id')).fadeOut("fast");
+            
+        });
+</script>

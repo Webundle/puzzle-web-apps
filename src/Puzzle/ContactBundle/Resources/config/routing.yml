@@ -1,0 +1,11 @@
+contact_app:
+    resource: '@ContactBundle/Resources/config/routing/app.yml'
+    prefix:   '/contact'
+    host: '%host%'
+
+contact_admin:
+    resource: '@ContactBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%contact'
+    host: '%admin_host%'
+    options:
+        expose: true

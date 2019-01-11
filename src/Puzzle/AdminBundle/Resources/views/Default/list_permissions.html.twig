@@ -1,0 +1,59 @@
+{% trans_default_domain 'messages' %}
+
+{% set active = "admin" %}
+
+{% set subactive = "admin_access_controls" %}
+
+{% extends 'AdminBundle::layout_table.html.twig' %}
+
+{% block title %}{{ parent() }} - Réglages{% endblock %}
+
+{% block content %}
+    <div id="page_content">
+        <div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
+            <h1>{{ "admin.title"|trans }} - {{"admin.content.access_control.list"|trans }}</h1>
+        </div>
+        <div id="page_content_inner">
+            <div class="uk-width-large-8-10 uk-container-center">
+                {% for key,module in modules %}
+                    <div class="uk-width-1-1 uk-margin-bottom">
+
+                        <div class="md-card">
+                            <div class="md-card-content">
+                                <ul class="uk-tab" data-uk-tab="{connect:'#{{ key }}', animation: 'slide-horizontal' }">
+                                    <li class="uk-active">
+                                        <a href="#">{{ module.title|trans }}</a>
+                                    </li>
+                                </ul>
+                                <ul id="{{ key }}" class="uk-switcher uk-margin">
+                                    <li>
+                                        <ul class="md-list">
+                                            {% for roleKey,role in module.roles %}
+                                                <li>
+                                                    <div class="uk-float-right">
+                                                        <a class="uk-text-muted uk-text-small show-modal" href="{{ url('admin_access_control_create', { 'module' : key, 'roleKey':roleKey }) }}" data-uk-tooltip title="Associer des utilisateurs">
+                                                            <i class="material-icons">add_circle_outline</i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="md-list-content">
+                                                        <span class="md-list-heading">{{ role.description|trans }}</span>
+                                                    </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="uk-modal" id="showModal"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('bundles/admin/js/pages/page_settings.min.js')}}"></script>
+{% endblock %}

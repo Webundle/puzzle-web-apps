@@ -1,0 +1,80 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <button type="button" class="uk-modal-close uk-close"></button>
+    <div class="uk-width-1-1">
+        {% if parent.name != "media" %}
+            <a href="{{ url('admin_media_folder_browse', {'folder':parent.parent.id}) }}" class="show-modal">
+                <i class="material-icons">arrow_back</i>
+                {{ "button.back"|trans }}
+            </a>/
+        {% endif %}
+        {{ parent.name|capitalize }}
+    </div>
+    <hr/>
+    <div style="height:400px;overflow-y:auto;overflow-x:hidden" class="uk-overflow-container">
+        <table class="uk-table uk-table-hover">
+            <tbody>
+                {% for folder in folders %}
+                    <tr id="item-{{ folder.id }}" class="toggleable">
+                        <th>
+                            <a href="{{ url('admin_media_folder_browse', {'folder': folder.id}) }}" class="show-modal">
+                                <i class="material-icons md-24">&#xE2C7;</i>
+                                {{ folder.name|capitalize }}
+                            </a>
+                        </th>
+                        <th class="uk-text-right">
+                            <a class="md-btn md-btn-flat md-btn-flat-primary uk-hidden toggleable-btn add_files_to_folder" href="{{ path('admin_media_folder_update_files_add', {'id': folder.id}) }}">
+                                Choisir
+                            </a>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Show ajax content in a modal
+    $( ".show-modal").click(function( event ) {
+        event.preventDefault();
+        var groupId = $(this).attr('id'),
+            url = encodeURI($(this).attr( "href" ));
+
+        $.get(url).done(function( data ) {
+            var modal = UIkit.modal("#showModal");
+            modal.show();
+            $("#showModal").html(data);
+        });
+    });
+    // Add files to folder
+    $(".add_files_to_folder").click(function(e){
+        e.preventDefault();
+        var files = [];
+        url = $(this).attr('href');
+
+        var ids = [];
+        $(".toggleable-btn-select.checked > i").each(function(){
+            files.push($(this).attr("id").replace('toggle-item-', ''));
+        });
+
+        if (files.length < 1) {
+            $("#addFilesToFolder").hide();
+            UIkit.modal.alert('Aucun fichier sélectionné !');
+        }else {
+            $.post(url, {files_to_add: files}, function(response){
+                if(response.status == 1){
+                    $("#addFilesToFolder").hide();
+                    UIkit.modal.alert('Fichiers ajoutés !');
+                    $(".toggleable-btn-select.checked").each(function(){
+                        $(this).closest('div.gallery_grid_file').fadeOut();
+                    });
+                }
+            });
+        }
+    });
+    // Buttons
+    $(".uk-modal-dialog").on('mouseenter', '.toggleable', togglize);
+    $(".uk-modal-dialog").on('mouseleave', '.toggleable', untogglize);
+</script>

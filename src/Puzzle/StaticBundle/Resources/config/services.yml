@@ -1,0 +1,8 @@
+services:
+    # Twig extension
+    static.twig.extension:
+        class: Puzzle\StaticBundle\Twig\StaticExtension
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
+        tags:
+            - { name: twig.extension }

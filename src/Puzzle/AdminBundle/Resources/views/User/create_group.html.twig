@@ -1,0 +1,39 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:User:layout_editor.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "user.content.group.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_user_group_list') }} ">
+       {{ 'user.content.group.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "user.content.group.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:User:form_group.html.twig' with { 'form': form } %}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="uk-modal" id="choose_files_modal">
+        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var $kUI_multiselect_users = $('#kUI_multiselect_users');
+        if($kUI_multiselect_users.length) {
+            $kUI_multiselect_users.kendoMultiSelect();
+        }
+    </script>
+{% endblock %}
+
+

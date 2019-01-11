@@ -1,0 +1,15 @@
+services:
+    admin.util.doctrine_query_parameter:
+        class: Puzzle\AdminBundle\Util\DoctrineQueryParameterUtil
+    
+    admin.validator:
+        class: Puzzle\AdminBundle\Service\Validator
+        arguments: [ '@doctrine.orm.entity_manager', "@translator" ]
+
+    # Twig extension
+    admin.twig.extension:
+        class: Puzzle\AdminBundle\Twig\AdminExtension
+        public: false
+        arguments: [ '@router', '@request_stack', '@security.authorization_checker', '@translator', '%admin%' ]
+        tags:
+          - { name: twig.extension }

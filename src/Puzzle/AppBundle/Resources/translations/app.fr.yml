@@ -1,0 +1,72 @@
+app:
+    home: 
+        title: 'Accueil'
+        slides:
+            first: '<b>#1</b> Tracking GPS'
+    about: 
+        title: 'A propos'
+        vision: 'Notre Vision'
+        values: 'Nos Valeurs'
+        expertise: 'Notre expertise'
+        team: 'Notre equipe'
+        description: |
+            <p>Vestibulum condimentum, risus sed rhoncus rutrum, urna lacus mollis urna, nec finibus 
+            mi velit advertis nisl. Proin vitae odio quis magna aliquet lacinia. Etiam auctor, nisi vel. 
+            Pellentesque ultrices nisl id quam iaculis, nec pulvinar augue vehicula.</p> 
+            <p>Etiam vestibulum turpis eu pretium venenatis. Aliquam non convallis tortor. 
+            Vestibulum pretium lobortis molis. Curabitur gravida dolor nec purus molestie, 
+            viverra congue duo dictum mauris, non volutpat arcu ipsum sed dolor. 
+            Maecenas suscipit risus vel neque convallis, at lobortis lectus placerat.</p>
+    vision: 
+        title: 'Notre vision'
+        overview: 'Présentation'
+        description: |
+            <p>Vestibulum condimentum, risus sed rhoncus rutrum, urna lacus mollis urna, nec finibus 
+            mi velit advertis nisl. Proin vitae odio quis magna aliquet lacinia. Etiam auctor, nisi vel. 
+            Pellentesque ultrices nisl id quam iaculis, nec pulvinar augue vehicula.</p> 
+            <p>Etiam vestibulum turpis eu pretium venenatis. Aliquam non convallis tortor. 
+            Vestibulum pretium lobortis molis. Curabitur gravida dolor nec purus molestie, 
+            viverra congue duo dictum mauris, non volutpat arcu ipsum sed dolor. 
+            Maecenas suscipit risus vel neque convallis, at lobortis lectus placerat.</p>
+    contact: 
+        title: 'Contacts'
+        description: |
+            <h2 class="heading">Nous sommes également très fiers de vous aider.</h2>
+            <p class="sub-heading">N'hésitez pas à nous contacter.</p>
+        button: 'Contactez-nous'
+        address: 'Nos coordonnées'
+        message: 'Laissez nous un message'
+    search_form: 'Saisir et appuyer Entrée'
+    service:
+        title: 'Nos Services'
+        list: 'Liste des services'
+        show: 'Détails du service'
+        description: |
+            Vestibulum condimentum, risus sed rhoncus rutrum, urna lacus mollis urna, nec finibus mi velit advertis nisl. 
+            Proin vitae odo quis magna aliquet lacinia. Etiam auctor, nisi vel. Pellentesque ultrices nisl id quam iaculis.
+        show_more: 'Voir plus de services'
+    feature:
+        title: 'Pourquoi nous choisir ?'
+        description: |
+            Vestibulum condimentum, risus sed rhoncus rutrum, urna lacus mollis urna, nec finibus mi velit advertis nisl. 
+            Proin vitae odo quis magna aliquet lacinia. Etiam auctor, nisi vel. Pellentesque ultrices nisl id quam iaculis.
+    project:
+        title: 'Nos Projets'
+        list: 'Liste des projets'
+        show: 'Détails du projet'
+        recent: 'Projet récent'
+        related: 'Projets de la même catégorie'
+        show_all: 'Voir tous les projets'
+    staff:
+        title: 'Nos experts'
+    testimonial:
+        title: 'Ce qu''on dit de nous'
+    partner:
+        title: 'Ceux qui nous font confiance'
+    show_more: 'Voir plus'
+    show_details: 'Voir les détails'
+    copyright: 'Copyright © %now%, Tous droits réservés, par'
+    subscribe: 
+        title: 'Souscrivez à notre Newsletter'
+        placeholder: 'Votre e-mail'
+        button: 'Souscrire' 
