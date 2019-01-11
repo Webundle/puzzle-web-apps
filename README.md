@@ -1,53 +1,57 @@
-Puzzle project
-==================
+# Puzzle project
+# ============
 
 Symfony project.
 
-Installation
+## **Installation**
 
-Step 1: Download the Bundle
+---
 
 Open a command console, enter your project directory and execute the following command to download the latest stable version of this bundle:
 
-`composer require webundle/puzzle-web-apps`
+```yaml
+composer require webundle/puzzle-web-apps
+```
 
+## **Default configurations**
+### 
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
 
-Step2: Configure
+```php
+<?php
+// app/AppKernel.php
 
-`admin:
-    website:
-        title: 'Admin Puzzle' # Customize with your own admin name
-        description: 'Lorem ipsum' # Customize with your own admin description
-        email: 'johndoe@exemple.ci' # Customize with your own admin email
-    time_format: "H:i"
-    date_format: "d-m-Y"
-    navigation:
-        nodes:
-            dashboard:
-                label: 'dashboard.title'
-                translation_domain: 'messages'
-                path: admin_homepage
-                attr:
-                    class: 'fa fa-home'
-                parent: ~
-                user_roles: ['ROLE_ADMIN']
-`
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
 
-Step 3: Security
+            new Puzzle\AdminBundle\PuzzleAdminBundle(),
+        );
 
-`
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Security**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
 security:
-    encoders:
-    #     # Symfony\Component\Security\Core\User\User: plaintext    
+    encoders:   
          Puzzle\UserBundle\Entity\User:
              algorithm:        sha512
              encode_as_base64: false
              iterations:       1
-
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
     providers:
         chain_provider:
             chain:
@@ -69,19 +73,15 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-#        login:
-#            pattern:  ^/demo/secured/login$
-#            security: false
             
         login:
             pattern: ^/login$
             anonymous: ~
-
+            
         registration:
             pattern: ^/registration$
             anonymous: ~
-
+            
         connect:
             pattern: ^/connect
             anonymous: ~
@@ -109,7 +109,7 @@ security:
                 # path: admin_homepage
                 domain: ~
                 always_remember_me: true
-
+                
         main:
             entry_point: security.authentication_entry_point
             pattern: '^/'
@@ -144,28 +144,18 @@ security:
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
-
+            
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - {path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^%admin_prefix%, host: "%admin_host%", roles: ROLE_ADMIN }
-        # - {path: ^/, roles: ROLE_USER }
-`
+```
 
-Step 4: Routing
-
-`
-app:
-    resource: "@AppBundle/Resources/config/routing.yml"
-    # prefix:   /{_locale}
-    host: "%host%"
-    options:
-        expose: true
-    # requirements:
-    #     _locale: en|fr
-
+### **Step 3: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
 admin:
     resource: "@AdminBundle/Resources/config/routing.yml"
     host: '%admin_host%'
@@ -182,85 +172,37 @@ JMSJobQueueBundle:
     resource: "@JMSJobQueueBundle/Controller/"
     type: annotation
     prefix: /jobs
+```
 
-`
+### **Step 4: Define hosts values**
+Defined hosts values by adding it in the `app/config/parameters.yml` file of your project:
+```yaml
+...
+host: <hostname>
+admin_host: 'admin.%host%' # or %host% if you don't use subdomain
+admin_prefix: '/' # or /admin/ if with you don't use subdomain
+```
 
-Step 5: Parameters
 
-`
-host: puzzle.ci
-admin_host: 'admin.%host%'
-admin_prefix: '/'
-`
-
-Blog Bundle
-===========
-
-Step 1: Enable
-
-Then, enable the bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
-
-`<?php
-// app/AppKernel.php
-
-// ...
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = array(
-            // ...
-
-            new Puzzle\BlogBundle\PuzzleBlogBundle(),
-        );
-
-        // ...
-    }
-
-    // ...
-}
-`
-Step 2: Register the Routes
-
-Load the bundle's routing definition in the application (usually in the `app/config/routing.yml` file):
-
-# app/config/routing.yml
-`puzzle_blog:
-    resource: "@PuzzleBlogBundle/Resources/config/routing.yml"`
-
-Step 3: Configure
-
-Then, enable management bundle via admin modules interface by adding it to the list of registered bundles in the `app/config/config.yml` file of your project under:
-
-`admin:
-    ...
-    modules_available: '...,blog'
+### **Step 5: Default configurations**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    website:
+        title: 'Admin Puzzle' # Customize with your own admin name
+        description: 'Lorem ipsum' # Customize with your own admin description
+        email: 'johndoe@exemple.ci' # Customize with your own admin email
+    time_format: "H:i" # customize time format
+    date_format: "d-m-Y" # customize date format
     navigation:
         nodes:
-            ...
-            # Blog
-            blog:
-                label: 'blog.title'
-                description: 'blog.description'
+            dashboard:
+                label: 'dashboard.title'
                 translation_domain: 'messages'
+                path: admin_homepage
                 attr:
-                    class: 'fa fa-newspaper-o'
+                    class: 'fa fa-home' # customize icon class
                 parent: ~
-                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
-            blog_post:
-                label: 'blog.post.sidebar'
-                description: 'blog.post.description'
-                translation_domain: 'messages'
-                path: 'admin_blog_post_list'
-                sub_paths: ['admin_blog_post_create', 'admin_blog_post_update', 'admin_blog_post_show']
-                parent: blog
-                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
-            blog_category:
-                label: 'blog.post.sidebar'
-                description: 'media.folder.description'
-                translation_domain: 'messages'
-                path: 'admin_blog_category_list'
-                sub_paths: ['admin_blog_category_create', 'admin_blog_category_update', 'admin_blog_category_show']
-                parent: blog
-                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
-`
+                user_roles: ['ROLE_ADMIN']
+```
+
