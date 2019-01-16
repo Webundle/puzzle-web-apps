@@ -35,7 +35,7 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         int $offset = null,
         bool $useCache = false
      ){
-        $query= self::getQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
+         $query= self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
         return $query->getResult();
     }
     
@@ -60,7 +60,7 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         int $offset = null,
         bool $useCache = false
      ){
-       $query = self::getQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
+         $query = self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
        return count($query->getResult()) > 0 ? $query->getResult()[0] : null;
     }
     
@@ -124,7 +124,7 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
      * @param bool $useCache
      * @return array|mixed|\Doctrine\DBAL\Driver\Statement|NULL
      */
-    public function getQuery(
+    public function customGetQuery(
         array $fields = null,
         array $joins = null,
         array $criteria = null,

@@ -206,3 +206,81 @@ admin:
                 user_roles: ['ROLE_ADMIN']
 ```
 
+
+---
+
+## **Blog Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\AdminBundle\PuzzleBlogBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@BlogBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all blog routes by typing: `php app/console debug:router | grep blog`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Blog
+            blog:
+                label: 'blog.title'
+                description: 'blog.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-newspaper-o'
+                parent: ~
+                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
+            blog_post:
+                label: 'blog.navigation.post'
+                description: 'blog.post.description'
+                translation_domain: 'messages'
+                path: 'admin_blog_post_list'
+                sub_paths: ['admin_blog_post_create', 'admin_blog_post_update', 'admin_blog_post_show']
+                parent: blog
+                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
+            blog_category:
+                label: 'blog.navigation.category'
+                description: 'blog.category.description'
+                translation_domain: 'messages'
+                path: 'admin_blog_category_list'
+                sub_paths: ['admin_blog_category_create', 'admin_blog_category_update', 'admin_blog_category_show']
+                parent: blog
+                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
+
+```
