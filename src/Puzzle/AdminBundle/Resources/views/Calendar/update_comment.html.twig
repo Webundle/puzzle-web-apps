@@ -1,0 +1,27 @@
+<div class="uk-modal-dialog">
+    <form class="uk-form-stacked" action="{{ url('blog_comment_update_callback', {'id': category.id })}}" method="POST">
+        <div class="uk-margin-medium-bottom">
+            <label for="name">Auteur</label>
+            <input type="text" class="md-input" id="author" name="author" value="{{ comment.author }}" readonly />
+        </div>
+        <div class="uk-margin-medium-bottom">
+            <label for="name">Article</label>
+            <input type="text" class="md-input" id="post" name="post" value="{{ comment.post.name }}" readonly />
+        </div>
+        <div class="uk-margin-medium-bottom">
+            <label for="task_title">Commentaire</label>
+            <textarea class="md-input" id="content" cols="30" rows="5" name="content" placeholder="Commentaire" readonly>{{ comment.content }}</textarea>
+        </div>
+
+        <div class="uk-margin-medium-bottom">
+            <div class="uk-float-right">
+                <input type="checkbox" data-switchery {% if comment.isVisible == 1 %}checked{% endif %} name="is_visible" id="is_visible" />
+            </div>
+            <label class="uk-display-block uk-margin-small-top" for="is_visible">Rendre visible</label>
+        </div>
+        
+        <div class="uk-modal-footer uk-text-right">
+            <button type="button" class="md-btn md-btn-flat uk-modal-close">Fermer</button><button type="submit" class="md-btn md-btn-flat md-btn-flat-primary" id="snippet_new_save">Modifier</button>
+        </div>
+    </form>
+</div>

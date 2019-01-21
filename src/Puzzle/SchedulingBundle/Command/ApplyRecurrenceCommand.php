@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ApplyRecurrenceCommand
 {
+    const NAME = 'scheduling:recurrence:apply';
 	/**
 	 * @var OutputInterface
 	 */
@@ -28,7 +29,7 @@ class ApplyRecurrenceCommand
 	 */
 	protected function configure()
 	{
-		$this->setName('scheduler:recurrence:apply')
+		$this->setName(self::NAME)
 			 ->setDescription('Update recurrence')
 			 ->addArgument("recurrenceId");
 	}
@@ -50,7 +51,7 @@ class ApplyRecurrenceCommand
 		
 		$this->intervale = $recurrence->getIntervale();
 		
-		$this->getContainer()->get('scheduler')->applyRecurrence($this->recurrenceId);
+		$this->getContainer()->get('scheduling.manager')->applyRecurrence($this->recurrenceId);
 	}
 	
 	

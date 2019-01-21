@@ -1,0 +1,147 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr' : {'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-xLarge-7-10 uk-width-large-7-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                        <div class="uk-width-large-1-1">
+                            <div class="uk-form-row">
+                                {{ form_label(form.color) }}
+                                <div id="kUI_color_picker_create" class="uk-width-1-1"></div>
+                                {{ form_widget(form.color, {'id': 'color'}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.title, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.title, {'attr' : {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.location, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.location, {'attr' : {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.agenda, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.agenda, {'attr': {'data-md-selectize': true}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.visibility, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.visibility, {'id': 'visibility', 'attr': {'data-md-selectize': true}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.tags, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {% if moment is defined %}
+                                    {{ form_widget(form.tags, {'value': moment.tags|join(','), 'attr': {'data-role': 'materialtags'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.tags, {'attr': {'data-role': 'materialtags'}}) }}
+                                {% endif %}
+                            </div>
+                            <div class="uk-form-row {% if moment is defined and moment.visibility != "share" %}uk-hidden{% endif %}" id="members-container">
+                                <div>{{ form_label(form.memberList) }}</div>
+                                {{ form_widget(form.memberList, {'id': 'autocomplete-members', 'attr': {'class': 'uk-width-1-1 md-input autocomplete'}}) }}
+                                <input type="hidden" id="members-id" name="members" value="" />
+                                <input type="hidden" id="members-list-url" value="{{ url('admin_user_list') }}">
+                                {% if moment is defined %}
+                                    <input type="hidden" id="members" value="{% for member in moment.members %}{{ member.fullName }}, {% endfor %}"/>
+                                {% endif %}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_widget(form.description, {'id': 'wysiwyg_ckeditor'}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.startedAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {% if moment is defined %}
+                            {{ form_widget(form.startedAt, {'id': 'started_at', 'value': moment.startedAt|date('d-m-Y H:i')}) }}
+                        {% else %}
+                            {{ form_widget(form.startedAt, {'id': 'started_at'}) }}
+                        {% endif %}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.endedAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {% if moment is defined %}
+                            {{ form_widget(form.endedAt, {'id': 'ended_at', 'value': moment.startedAt|date('d-m-Y H:i')}) }}
+                        {% else %}
+                            {{ form_widget(form.endedAt, {'id': 'ended_at'}) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="md-card">
+                <div class="md-card-toolbar">
+                    <div class="uk-float-right">
+                        {{ form_widget(form.isRecurrent, {'attr': {'data-switchery': true}}) }}
+                    </div>
+                    {{ form_label(form.isRecurrent, null, {'label_attr': {'class' : 'uk-display-block uk-margin-small-top uk-form-label'}}) }}
+                </div>
+                <div class="md-card-content">
+                    <section>
+                        <div class="uk-form-row">
+                            {{ form_label(form.recurrenceIntervale, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                            {% if recurrence is defined and recurrence is not empty %}
+                                {{ form_widget(form.recurrenceIntervale, {'value': recurrence.intervale, 'attr' : {'class': 'md-input'}}) }}
+                            {% else %}
+                                {{ form_widget(form.recurrenceIntervale, {'attr' : {'class': 'md-input'}}) }}
+                            {% endif %}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.recurrenceUnity, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+
+                            {% if recurrence is defined and recurrence is not empty %}
+                                {{ form_widget(form.recurrenceUnity, {'value': recurrence.unity, 'attr' : {'class': 'md-input'}}) }}
+                            {% else %}
+                                {{ form_widget(form.recurrenceUnity, {'attr' : {'class': 'md-input'}}) }}
+                            {% endif %}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.recurrenceExcludedDays, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+
+                            {% if recurrence is defined and recurrence is not empty %}
+                                {{ form_widget(form.recurrenceExcludedDays, {'value': recurrence.excludedDays, 'attr' : {'class': 'md-input', 'id': 'kUI_multiselect_recurrence_excluded_days'}}) }}
+                            {% else %}
+                                {{ form_widget(form.recurrenceExcludedDays, {'id': 'kUI_multiselect_recurrence_excluded_days', 'attr' : {'class': 'md-input'}}) }}
+                            {% endif %}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.recurrenceDueAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                            {{ form_widget(form.recurrenceDueAt, {'id': 'recurrence_due_at'}) }}
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.enableComments, {'attr': {'data-switchery': true}}) }}
+                        </div>
+                        {{ form_label(form.enableComments, null, {'label_attr': {'class' : 'uk-display-block uk-margin-small-top uk-form-label'}}) }}
+                    </div>
+                </div>
+            </div>
+
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': moment is defined ? moment.picture : null, 'type': 'picture', 'context': 'calendar/moment', 'multiple': false })) }}
+        </div>
+    </div>
+    <div class="uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_calendar_moment_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if moment is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

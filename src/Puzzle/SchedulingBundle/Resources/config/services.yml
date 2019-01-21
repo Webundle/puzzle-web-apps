@@ -2,6 +2,7 @@ parameters:
     scheduling.manager.class: Puzzle\SchedulingBundle\Service\SchedulingManager
     scheduling.cron.class: Puzzle\SchedulingBundle\Service\SchedulingCron
     scheduling.tools.class: Puzzle\SchedulingBundle\Service\SchedulingTools
+    scheduling.listener.class: Puzzle\SchedulingBundle\Listener\SchedulingListener
     
 services:
     scheduling.cron:
@@ -14,3 +15,10 @@ services:
     scheduling.manager:
         class: "%scheduling.manager.class%"
         arguments: ["@doctrine.orm.entity_manager", "@scheduling.cron", "@scheduling.tools"]
+
+    scheduling.listener:
+        class: "%scheduling.listener.class%"
+        arguments: ["@doctrine.orm.entity_manager", "@scheduling.manager", "@scheduling.cron", "@scheduling.tools"]
+        tags:
+            - { name: kernel.event_listener, event: "scheduling.schedule", method: onSchedule }
+            - { name: kernel.event_listener, event: "scheduling.unschedule", method: onUnschedule }

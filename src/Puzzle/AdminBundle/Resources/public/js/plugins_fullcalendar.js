@@ -42,7 +42,7 @@ altair_fullcalendar = {
                 eventLimit: true,
                 timeFormat: '(HH)(:mm)',
                 events: {
-                    url: Routing.generate('admin_calendar_moments'),
+                    url: Routing.generate('admin_calendar_moment_list'),
                     type: 'POST',
                     data: {}
                 }

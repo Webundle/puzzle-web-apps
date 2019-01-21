@@ -8175,7 +8175,7 @@ body.CodeMirror-fullscreen-active .CodeMirror-fullscreen #code_editor_close {
 }
 .fc-toolbar .fc-button {
   margin-top: 8px;
-  border-radius: 50% !important;
+  /*border-radius: 50% !important;*/
 }
 .fc-toolbar .fc-button:hover {
   background: rgba(0, 0, 0, 0.08);
@@ -8235,7 +8235,7 @@ body.CodeMirror-fullscreen-active .CodeMirror-fullscreen #code_editor_close {
   position: absolute;
   color: #727272;
   left: 0;
-  top: 4px;
+  top: 2px;
   width: 100%;
   height: 100%;
   display: block;

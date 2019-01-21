@@ -1,0 +1,162 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Calendar:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "calendar.moment.list"|trans|capitalize }}{% endblock %}
+
+{% if mode != "list" %}
+    {% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{asset("bundles/admin/libs/fullcalendar/dist/fullcalendar.css")}}">
+    {% endblock %}
+{% endif %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_calendar_moment_create') }}">
+       	<span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+	<em>{{ "calendar.moment.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+<div id="page_content_inner">
+    <div class="uk-width-1-1 uk-text-right uk-margin-bottom">
+        {% if mode == "list" %}
+            <a href="{{ url('admin_calendar_moment_list', {'mode':'calendar'})}}" class="md-btn">
+                <i class="material-icons uk-text-primary">&#xE616;</i>
+                {{ 'calendar.moment.mode_calendar'|trans }}
+            </a>
+        {% else %}
+            <a href="{{ url('admin_calendar_moment_list', {'mode':'list'})}}" class="md-btn">
+                <i class="material-icons uk-text-primary">&#xE1DB;</i>
+                {{ 'calendar.moment.mode_list'|trans }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="md-card">
+        {% if moments is not empty %}
+            <div class="md-card-toolbar toggle-action uk-hidden">
+                <div class="md-card-toolbar-actions">
+                    <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                        <a class="uk-text-primary uk-text-bold">
+                            {{ 'layout.multiple_actions'|trans }}
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <div class="uk-dropdown uk-dropdown-small">
+                            <ul class="uk-nav uk-nav-dropdown">
+                                <li>
+                                    <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                        <i class="fa fa-trash-o uk-text-danger"></i> 
+                                        {{ "button.remove"|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{ moments|length|default('0') }}" id="toggle-items-count">
+                    <input type="hidden" value="0" id="toggle-items-checked-count">
+                </div>
+            </div>
+        {% endif %}
+        <div class="md-card-content">
+            {% if mode == "list" %}
+                <div class="uk-overflow-container uk-margin-bottom">
+                    <table id="dt_default" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{ "calendar.moment.title"|trans }}</th>
+                                <th>{{ "calendar.moment.location"|trans }}</th>
+                                <th>{{ "calendar.moment.started_at"|trans }}</th>
+                                <th>{{ "calendar.moment.ended_at"|trans }}</th>
+                                <th>{{ "calendar.moment.visibility.name"|trans }}</th>
+                                <th>{{ "calendar.moment.is_recurrent.title"|trans }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for moment in moments %}
+                                <tr class="toggleable" id="item-{{ moment.id }}">
+                                    <td>
+                                        <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ moment.id }}">&#xE835;</i>
+                                        </a>
+                                    </td>
+                                    <td><a href="{{ url('admin_calendar_moment_update', {'id': moment.id}) }}">{{ moment.title }}</a></td>
+                                    <td>{{ moment.location }}</td>
+                                    <td>{{ moment.startedAt|date("d-m-Y H:i") }}</td>
+                                    <td>{{ moment.endedAt|date("d-m-Y H:i") }}</td>
+                                    <td>
+                                        {% set visibility = "calendar.agenda.visibility."~ moment.visibility~".title" %}
+                                        {% if moment.visibility == "private" %}
+                                            {% set class = "md-bg-teal-400" %}
+                                        {% elseif moment.visibility == "share" %}
+                                            {% set class = "md-bg-blue-400" %}
+                                        {% else %}
+                                            {% set class = "md-bg-grey-400" %}
+                                        {% endif %}
+                                        <span class="uk-badge {{ class }}">{{ visibility|trans }}</span>
+                                    </td>
+                                    <td>
+                                        {% if moment.isRecurrent == 1   %}
+                                            <span class="uk-badge md-bg-green-400">{{ 'calendar.moment.is_recurrent.yes'|trans }}</span>
+                                        {% else %}
+                                            <span class="uk-badge md-bg-grey-400">{{ 'calendar.moment.is_recurrent.no'|trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="uk-text-right">
+                                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                            <a><i class="fa fa-ellipsis-h"></i></a>
+                                            <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
+                                                <ul class="uk-nav uk-nav-dropdown">
+                                                    <li>
+                                                        <a href="{{ url('admin_calendar_moment_update', {'id': moment.id}) }}">
+                                                            <i class="fa fa-pencil"></i>
+                                                            {{ "button.update"|trans }}
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_calendar_moment_delete', {'id': moment.id}) }}" data-text="{{ 'calendar.moment.delete'|trans({'%momentTitle%': moment.title}) }}" data-label="{{ moment.title }}" class="remove-item">
+                                                            <i class="fa fa-trash-o uk-text-danger"></i>
+                                                            {{ "button.remove"|trans }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div id="calendar_selectable"></div>
+                <input type="hidden" id="create_moment_url" value="{{ url('admin_calendar_moment_create') }}">
+                <input type="hidden" id="list_moments_url" value="{{ url('admin_calendar_moment_list') }}">
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if mode != "list" %}
+        {% javascripts 
+            'bundles/admin/libs/fullcalendar/dist/fullcalendar.min.js'
+            'bundles/admin/libs/fullcalendar/dist/lang/fr.js'
+            'bundles/admin/js/plugins_fullcalendar.js'
+            output='js/admin-moment-list.min.js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts%}
+    {% endif %}
+{% endblock %}

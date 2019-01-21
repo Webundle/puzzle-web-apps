@@ -38,11 +38,11 @@ class AbstractSchedulingType extends AbstractType
                     'class' => 'uk-form-label'
                 ],
                 'choices' => array(
-                    Notification::UNITY_HOUR => "scheduling.property.recurrence.unity.hour",
-                    Notification::UNITY_DAY => "scheduling.property.recurrence.unity.day",
-                    Notification::UNITY_WEEK => "scheduling.property.recurrence.unity.week",
-                    Notification::UNITY_MONTH => "scheduling.property.recurrence.unity.month",
-                    Notification::UNITY_YEAR => "scheduling.property.recurrence.unity.year",
+                    "scheduling.property.recurrence.unity.hour" =>  Notification::UNITY_HOUR,
+                    "scheduling.property.recurrence.unity.day" => Notification::UNITY_DAY,
+                    "scheduling.property.recurrence.unity.week" => Notification::UNITY_WEEK,
+                    "scheduling.property.recurrence.unity.month" => Notification::UNITY_MONTH,
+                    "scheduling.property.recurrence.unity.year" => Notification::UNITY_YEAR,
                 ),
                 'attr' => [
                     'data-md-selectize' => true,
@@ -58,13 +58,13 @@ class AbstractSchedulingType extends AbstractType
                     'class' => 'uk-form-label'
                 ],
                 'choices' => array(
-                    "2" => "scheduling.property.recurrence.excluded_days.monday",
-                    "3" => "scheduling.property.recurrence.excluded_days.tuesday",
-                    "4" => "scheduling.property.recurrence.excluded_days.wednesday",
-                    "5" => "scheduling.property.recurrence.excluded_days.thursday",
-                    "6" => "scheduling.property.recurrence.excluded_days.friday",
-                    "7" => "scheduling.property.recurrence.excluded_days.saturday",
-                    "1" => "scheduling.property.recurrence.excluded_days.sunday"
+                    "scheduling.property.recurrence.excluded_days.sunday" => "1",
+                    "scheduling.property.recurrence.excluded_days.monday" => "2",
+                    "scheduling.property.recurrence.excluded_days.tuesday" => "3",
+                    "scheduling.property.recurrence.excluded_days.wednesday" => "4",
+                    "scheduling.property.recurrence.excluded_days.thursday" => "5",
+                    "scheduling.property.recurrence.excluded_days.friday" => "6",
+                    "scheduling.property.recurrence.excluded_days.saturday" => "7"
                 ),
                 'attr' => [
                     'placeholder' => "scheduling.property.recurrence.excluded_days.placeholder"

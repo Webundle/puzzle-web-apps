@@ -1,0 +1,62 @@
+# Admin
+admin_calendar_agenda_list:
+    path:     /agenda/list
+    defaults: { _controller: 'CalendarBundle:Admin:listAgendas' }
+
+admin_calendar_agenda_create:
+    path:     /agenda/create
+    defaults: { _controller: 'CalendarBundle:Admin:createAgenda' }
+
+admin_calendar_agenda_show:
+    path:     /agenda/{id}
+    defaults: { _controller: 'CalendarBundle:Admin:showAgenda' }
+
+admin_calendar_agenda_update:
+    path:     /agenda/{id}/update
+    defaults: { _controller: 'CalendarBundle:Admin:updateAgenda' }
+    
+admin_calendar_agenda_delete:
+    path:     /agenda/{id}/delete
+    defaults: { _controller: 'CalendarBundle:Admin:deleteAgenda' }
+
+# Admin
+admin_calendar_moment_list:
+    path:     /moment/list
+    defaults: { _controller: 'CalendarBundle:Admin:listMoments' }
+
+admin_calendar_moment_create:
+    path:     /moment/create
+    defaults: { _controller: 'CalendarBundle:Admin:createMoment' }
+
+admin_calendar_moment_show:
+    path:     /moment/{id}/show
+    defaults: { _controller: 'CalendarBundle:Admin:showMoment' }
+
+admin_calendar_moment_update:
+    path:     /moment/{id}/update
+    defaults: { _controller: 'CalendarBundle:Admin:updateMoment' }
+
+admin_calendar_moment_delete:
+    path:     /moment/{id}/delete
+    defaults: { _controller: 'CalendarBundle:Admin:deleteMoment' }
+
+# Admin
+admin_calendar_comment_list:
+    path:     /comment/list
+    defaults: { _controller: 'CalendarBundle:Admin:listComments' }
+
+admin_calendar_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: 'CalendarBundle:Admin:updateComment' }
+    
+admin_calendar_comment_approve:
+    path:     /comment/{id}/approve
+    defaults: { _controller: 'CalendarBundle:Admin:approveComment' }
+    
+admin_calendar_comment_disapprove:
+    path:     /comment/{id}/disapprove
+    defaults: { _controller: 'CalendarBundle:Admin:disapproveComment' }
+
+admin_calendar_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: 'CalendarBundle:Admin:deleteComment' }

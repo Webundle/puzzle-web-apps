@@ -10,6 +10,7 @@ use Puzzle\SchedulingBundle\Service\SchedulingManager;
 use Puzzle\SchedulingBundle\Service\SchedulingTools;
 use Puzzle\SchedulingBundle\Event\SchedulingEvent;
 use Doctrine\ORM\EntityManager;
+use Puzzle\SchedulingBundle\Util\NotificationUtil;
 
 /**
  *
@@ -72,7 +73,7 @@ class SchedulingListener
 		    'targetEntityId' => $data['targetEntityId'],
 		];
 		
-		$recurrence = $this->em->getRepository("SchedulingBundle:Recurrence")->findOneBy($criteria);
+		$recurrence = $this->em->getRepository(Recurrence::class)->findOneBy($criteria);
 		
 		if ($recurrence === null) {
 			$recurrence = new Recurrence();
@@ -84,13 +85,13 @@ class SchedulingListener
 		}
 		
 		$dateNow = new \DateTime();
-		$dueAt = isset($data['recurrence_due_at']) ? new \DateTime($data['recurrence_due_at']) : null;
-		$nextRunAt = isset($data['recurrence_next_run_at']) ? new \DateTime($data['recurrence_next_run_at']) : new \DateTime();
-		$intervale = $this->schedulingTools->convertIntervale($data['recurrence_intervale'], $data['recurrence_unity']);
+		$dueAt = $data['recurrenceDueAt'];
+		$nextRunAt = $data['recurrenceNextRunAt'];
+		$intervale = $this->schedulingTools->convertIntervale($data['recurrenceIntervale'], $data['recurrenceUnity']);
 		
-		$recurrence->setExcludedDays($data['recurrence_excluded_days']);
-		$recurrence->setIntervale($data['recurrence_intervale']);
-		$recurrence->setUnity($data['recurrence_unity']);
+		$recurrence->setExcludedDays($data['recurrenceExcludedDays']);
+		$recurrence->setIntervale($data['recurrenceIntervale']);
+		$recurrence->setUnity($data['recurrenceUnity']);
 		$recurrence->setDueAt($dueAt);
 		
 		if ($nextRunAt->getTimestamp() < $dateNow->getTimestamp()) {
@@ -99,7 +100,7 @@ class SchedulingListener
 			$recurrence->setNextRunAt($nextRunAt->add(new \DateInterval("PT".$intervale."M")));
 		}
 		
-		$notification = $this->em->getRepository("SchedulingBundle:Notification")->findOneBy($criteria);
+		$notification = $this->em->getRepository(Notification::class)->findOneBy($criteria);
 		
 		if ($notification === null) {
 			$notification = new Notification();
@@ -110,11 +111,11 @@ class SchedulingListener
 			$this->em->persist($notification);
 		}
 		
-		$notification->setChannel($data['notification_channel']);
-		$notification->setIntervale($data['notification_intervale']);
-		$notification->setUnity($data['notification_unity']);
-		$notification->setCommand($data['notification_command']);
-		$notification->setCommandArgs($data['notification_command_args']);
+		$notification->setChannel($data['notificationChannel']);
+		$notification->setIntervale($data['recurrenceIntervale']);
+		$notification->setUnity($data['notificationUnity']);
+		$notification->setCommand($data['notificationCommand']);
+		$notification->setCommandArgs($data['notificationCommandArgs']);
 		
 		$nextRunAt = $recurrence->getNextRunAt();
 		$intervale = $this->schedulingTools->convertIntervale($notification->getIntervale(), $notification->getUnity());
@@ -145,18 +146,12 @@ class SchedulingListener
 		    'targetEntityId' => $data['targetEntityId'],
 		];
 		
-		$recurrence = $this->em->getRepository("SchedulingBundle:Recurrence")->findOneBy($criteria);
-		
+		$recurrence = $this->em->getRepository(Recurrence::class)->findOneBy($criteria);
 		if ($recurrence !== null) {
-			if ($recurrence->getJob()) {
-				$this->schedulingCron->remove($recurrence->getJob());
-			}
-			
 			$this->em->remove($recurrence);
 		}
 		
-		$notification = $this->em->getRepository("SchedulingBundle:Notification")->findOneBy($criteria);
-		
+		$notification = $this->em->getRepository(Notification::class)->findOneBy($criteria);
 		if ($notification !== null) {
 			if ($notification->getJob()) {
 				$this->schedulingCron->remove($notification->getJob());

@@ -19,23 +19,20 @@ class AbstractAgendaType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'calendar.property.agenda.name'
+                'label' => 'calendar.agenda.name'
             ])
             ->add('visibility', ChoiceType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'calendar.property.agenda.visibility.name',
+                'label' => 'calendar.agenda.visibility.name',
                 'choices' => array(
-                    'private' => "calendar.defaut_value.agenda.visibility.private",
-                    'share' => 'calendar.defaut_value.agenda.visibility.share',
-                    'public' => 'calendar.defaut_value.agenda.visibility.public',
+                    "calendar.agenda.visibility.private.title" => 'private',
+                    "calendar.agenda.visibility.share.title" => 'share',
+                    "calendar.agenda.visibility.public.title" => 'public',
                 ),
             ))
             ->add('memberList', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'calendar.property.agenda.members',
-                'attr' => [
-                    'class' => 'uk-width-1-1 md-input autocomplete'
-                ],
+                'label' => 'calendar.agenda.members',
                 'required' => false,
                 'mapped' =>false
             ))

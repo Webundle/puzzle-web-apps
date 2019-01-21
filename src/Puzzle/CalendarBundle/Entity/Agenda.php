@@ -4,11 +4,11 @@ namespace Puzzle\CalendarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Puzzle\UserBundle\Entity\User;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
-use Puzzle\AdminBundle\Traits\Nameable;
-use Puzzle\AdminBundle\Traits\SlugTrait;
-use Puzzle\AdminBundle\Traits\Describable;
+use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
+use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
+use Puzzle\UserBundle\Entity\User;
 
 /**
  * Agenda
@@ -21,9 +21,22 @@ use Puzzle\AdminBundle\Traits\Describable;
 class Agenda
 {
     use PrimaryKeyTrait, 
-        Nameable,
-        SlugTrait,
-        Describable;
+        Sluggable,
+        Timestampable,
+        Blameable
+    ;
+    
+    /**
+     * @ORM\Column(name="name", type="string", length=255)
+     * @var string
+     */
+    private $name;
+    
+    /**
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var string
+     */
+    private $description;
     
     /**
      * @ORM\Column(name="visibility", type="string", nullable=true)
@@ -35,12 +48,6 @@ class Agenda
      * @ORM\OneToMany(targetEntity="Moment", mappedBy="agenda")
      */
     private $moments;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Puzzle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
     
     /**
      * @ORM\ManyToMany(targetEntity="Puzzle\UserBundle\Entity\User")
@@ -61,9 +68,10 @@ class Agenda
         $this->moments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->members = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    public function getId() :? string {
-        return $this->id;
+    
+    
+    public function getSluggableFields() {
+        return ['name'];
     }
 
     public function setName($name) : self {
@@ -73,6 +81,24 @@ class Agenda
     
     public function getName() :? string {
         return $this->name;
+    }
+    
+    public function setDescription($description) :self {
+        $this->description = $description;
+        return $this;
+    }
+    
+    public function getDescription() :? string {
+        return $this->description;
+    }
+    
+    public function setVisibility($visibility) : self {
+        $this->visibility = $visibility;
+        return $this;
+    }
+    
+    public function getVisibility(){
+        return $this->visibility;
     }
 
     public function addMoment(Moment $moment) : self {
@@ -100,30 +126,12 @@ class Agenda
         return $this;
     }
 
-    public function removeMember(User $member) : self {
+    public function removeMember(User $member) :self {
         $this->members->removeElement($member);
         return $this;
     }
     
-    public function getMembers() :? Collection {
+    public function getMembers() :?Collection {
         return $this->members;
-    }
-
-    public function setVisibility($visibility) : self {
-        $this->visibility = $visibility;
-        return $this;
-    }
-
-    public function getVisibility(){
-        return $this->visibility;
-    }
-
-    public function setUser(User $user) : self {
-        $this->user = $user;
-        return $this;
-    }
-
-    public function getUser() :? User {
-        return $this->user;
     }
 }

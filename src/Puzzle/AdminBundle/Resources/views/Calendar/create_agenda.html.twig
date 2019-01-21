@@ -1,0 +1,49 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3>{{ "calendar.agenda.create"|trans }}</h3>
+    </div>
+    {% include 'AdminBundle:Calendar:form_agenda.html.twig' with {'form': form} %}
+</div>
+
+<script type="text/javascript">
+    // Shared agenda
+    $("#visibility").change(function(e){
+        if ($(this).val() == "share") {
+            $("#members-container").removeClass('uk-hidden');
+        }else {
+            $("#members-container").addClass('uk-hidden');
+        }
+    });
+    
+    // AutoComplete
+    $("#autocomplete-members").kendoAutoComplete({
+        minLength: 2,
+        filter : "contains",
+        separator: ", ",
+        dataValueField : "id",
+        dataTextField : "fullName",
+        template: 
+            '<div class="k-list-wrapper">'+
+            '<span class="k-state-default k-list-wrapper-content">' +
+            '<p>#: data.fullName #(#: data.email #)</p>' +
+            '</span>' +
+            '</div>',
+        footerTemplate: 'Total #: instance.dataSource.total() #',
+        dataSource: {
+            transport: {
+                read: {
+                    method: 'POST',
+                    dataType: "json",
+                    url: $("#members-list-url").val()
+                }
+            }
+        },
+        select: function (e){ 
+            var selectedOne =  this.dataItem(e.item.index());
+            $("#members-id").val(selectedOne.id);
+        },
+        height: 200
+    }).data("kendoAutoComplete");
+</script>

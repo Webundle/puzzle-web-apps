@@ -12,11 +12,14 @@ function untogglize() {
 $('body').on('click', '.show-modal', function( event ) {
     event.preventDefault();
     var groupId = $(this).attr('id'),
-        url = $(this).attr( "href" );
+        url = $(this).attr("href");
 
+    var modal = UIkit.modal("#showModal");
+    modal.show();
+    
+    $("#showModal").html('<div class="uk-text-center" style="margin-top:200px"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
+        
     $.get( url).done(function( data ) {
-        var modal = UIkit.modal("#showModal");
-        modal.show();
         $("#showModal").html(data);
     });
 })
@@ -24,13 +27,19 @@ $('body').on('click', '.show-modal', function( event ) {
 // Remove item
 $('body').on('click', '.remove-item', function(e){
     e.preventDefault();
-    var url = $(this).data('route');
-    var label = $(this).data('label');
+    var url = $(this).data('route'),
+        text = $(this).data('text'),
+        label = $(this).data('label');
 
     UIkit.modal('#remove_item_modal').show();
 
     $("#remove_item_url").attr('href', url);
-    $("#remove_item_label").html(label);
+    console.log(text);
+    if (text != undefined) {
+        $('#remove_item_text').html(text);
+    }else {
+        $("#remove_item_label").html(label);
+    }
 }) 
 
 // Mutiple select or unselect

@@ -1,0 +1,42 @@
+# Post
+app_blog_posts:
+    path:     /posts
+    defaults: { _controller: BlogBundle:App:listPosts }
+
+app_blog_post_show:
+    path:     /posts/{slug}
+    defaults: { _controller: BlogBundle:App:showPost }
+
+# Category
+app_blog_categories:
+    path:     /categories
+    defaults: { _controller: BlogBundle:App:listCategories }
+
+app_blog_category:
+    path:     /categories/{id}
+    defaults: { _controller: BlogBundle:App:showCategory }
+
+# Comment
+app_blog_comment_list:
+    path:     /posts/{id}/comments
+    defaults: { _controller: BlogBundle:App:listComments }
+    
+app_blog_comment_create:
+    path:     /posts/{id}/comments/create
+    defaults: { _controller: BlogBundle:App:createComment }
+
+app_blog_comment_update:
+    path:     /comments/{id}/update
+    defaults: { _controller: BlogBundle:App:updateComment }
+
+app_blog_comment_delete:
+    path:     /comments/{id}/delete
+    defaults: { _controller: BlogBundle:App:deleteComment } 
+
+app_blog_comment_vote_create:
+    path:     /comments/{id}/votes/create
+    defaults: { _controller: BlogBundle:App:createCommentVote } 
+
+app_blog_comment_vote_delete:
+    path:     /comments/votes/{id}/delete
+    defaults: { _controller: BlogBundle:App:deleteCommentVote } 

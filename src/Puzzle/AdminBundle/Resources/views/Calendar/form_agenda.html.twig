@@ -1,0 +1,36 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'method': 'POST'}) }}
+<div class="uk-modal-body uk-margin-top">
+    <div class="uk-margin-medium-bottom">
+        <div class="uk-form-row">
+            {{ form_label(form.name, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'md-input'}}) }}
+        </div>
+        <div class="uk-form-row">
+            {{ form_label(form.visibility, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+            {{ form_widget(form.visibility, {'id': 'visibility', 'attr': {'class': 'md-input'}}) }}
+        </div>
+        <div class="uk-form-row uk-hidden" id="members-container">
+            <div>{{ form_label(form.memberList) }}</div>
+            {{ form_widget(form.memberList, {'id': 'autocomplete-members', 'attr': {'class': 'uk-width-1-1 md-input autocomplete'}}) }}
+            <input type="hidden" id="members-id" name="members" value="" />
+            <input type="hidden" id="members-list-url" value="{{ url('admin_user_list') }}">
+        </div>
+    </div>
+</div>
+<div class="uk-modal-footer uk-text-right">
+    <button type="button" class="md-btn md-btn-flat uk-modal-close">
+        <i class="fa fa-arrow-left"></i>
+        {{ "button.close"|trans }}
+    </button>
+    <button class="md-btn md-btn-success" type="submit">
+        {% if agenda is defined %}
+            {{ 'button.update'|trans }}
+        {% else %}
+            {{ 'button.add'|trans }}
+        {% endif %}
+        <i class="fa fa-check"></i>
+    </button>
+</div>
+{{ form_end(form) }}

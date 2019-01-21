@@ -41,18 +41,6 @@ class MomentController extends Controller
         }
         $moments = $this->getDoctrine()->getRepository("CalendarBundle:Moment")->findAll();
         
-//         $criteria = [];
-//         $criteria[] = ['user', $this->getUser()->getId()];
-//         $criteria[] = ['me.id', $this->getUser()->getId()];
-        
-//         if ($request->get('visibility') !== null) {
-//             $criteria[] = ['visibility', $request->get('visibility')];
-//         }
-        
-//     	$moments = $this->getDoctrine()->getRepository("CalendarBundle:Moment")->customFindBy(
-//     	   null, ["members" => "me"], $criteria
-//     	);
-    	
   		if($request->getMethod() == "POST"){
   			$data = [];
   			

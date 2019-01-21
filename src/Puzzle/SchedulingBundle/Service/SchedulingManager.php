@@ -3,6 +3,8 @@
 namespace Puzzle\SchedulingBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Puzzle\SchedulingBundle\Entity\Recurrence;
+use Puzzle\SchedulingBundle\Entity\Notification;
 
 /**
  * 
@@ -48,29 +50,20 @@ class SchedulingManager
 	 */
 	public function schedule(string $targetAppName, string $targetEntityName, string $targetEntityId)
 	{
-	    $criteria = array(
+	    $criteria = [
 	        'targetAppName' => $targetAppName,
 	        'targetEntityName' => $targetEntityName,
 	        'targetEntityId' => $targetEntityId,
-	    );
+	    ];
 	    
-	    $recurrence = $this->em->getRepository("SchedulingBundle:Recurrence")->findOneBy($criteria);
+	    $recurrence = $this->em->getRepository(Recurrence::class)->findOneBy($criteria);
 	    
 		if ($recurrence !== null) {
-		    
 		    $now = new \DateTime();
 		    $dueAt = $recurrence->getDueAt();
 		    
-		    if($dueAt == null || $dueAt->getTimestamp() > $now->getTimestamp()){
-// 		        $jobId = $this->cron->schedule([
-// 		            'executeAfter' => $recurrence->getNextRunAt(),
-// 		            'command' => $recurrence->getCommand(),
-// 		            'args' => $recurrence->getCommandArgs()
-// 		        ], $recurrence->getJob());
-		        
-// 		        $recurrence->setJob($jobId);
-		        
-		        $notification = $this->em->getRepository("SchedulingBundle:Notification")->findOneBy($criteria);
+		    if ($dueAt == null || $dueAt->getTimestamp() > $now->getTimestamp()) {
+		        $notification = $this->em->getRepository(Notification::class)->findOneBy($criteria);
 		        
 		        if ($notification !== null) {
 		            $jobId = $this->cron->schedule([
@@ -91,5 +84,29 @@ class SchedulingManager
 		}
 		
 		return;
+	}
+	
+	public function applyRecurrence($recurrenceId) {
+	    /** @var Recurrence **/
+	    $recurrence = $this->em->getRepository(Recurrence::class)->find($recurrenceId);
+	    
+	    $dateNow = new \DateTime();
+	    $nextRunAt = $recurrence->getNextRunAt();
+	    $intervale = $this->schedulingTools->convertIntervale($recurrence->getIntervale(), $recurrence->getUnity());
+	    $repositoryName = ucfirst($recurrence->getTargetAppName()).'Bundle:'.ucfirst($recurrence->getTargetEntityName());
+	    
+	    if ($nextRunAt->getTimestamp() < $dateNow->getTimestamp()) {
+	        $recurrence->setNextRunAt($nextRunAt);
+	    }else {
+	        $recurrence->setNextRunAt($nextRunAt->add(new \DateInterval("PT".$intervale."M")));
+	    }
+	    
+	    $moment = $this->em->getRepository($repositoryName)->find($recurrence->getEntityId());
+	    $moment->setStartedAt($recurrence->getStartedAt()->add($intervale));
+	    $moment->setEndedAt($recurrence->getEndedAt()->add($intervale));
+	    
+	    $this->em->flush();
+	    
+	    return;
 	}
 }

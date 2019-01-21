@@ -1,0 +1,103 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Calendar:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "calendar.moment.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+    <a href=" {{ url('admin_calendar_moment_list') }} ">
+       {{ 'calendar.moment.list'|trans|capitalize }}
+    </a>
+	<i class="fa fa-chevron-right"></i>
+	<em>{{ "calendar.moment.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Calendar:form_moment.html.twig' with {'form': form} %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        // Shared agenda
+        $("#visibility").change(function(e){
+            if ($(this).val() == "share"){
+                $("#members-container").removeClass('uk-hidden');
+            }else {
+                $("#members-container").addClass('uk-hidden');
+            }
+        });
+
+        var $kUI_multiselect_recurrence_excluded_days = $('#kUI_multiselect_recurrence_excluded_days');
+        if($kUI_multiselect_recurrence_excluded_days.length) {
+            $kUI_multiselect_recurrence_excluded_days.kendoMultiSelect();
+        }
+
+        // Choose files
+        $("#choose_files_btn").click(function(){
+            altair_form_file_upload.choose_files_modal("picture", "calendar/moments");
+        });
+
+        // Color Picker
+        var color =  $("#color").val() ? $("#color").val() : "#fff";
+        var $kUI_color_picker = $('#kUI_color_picker_create');
+
+        if($kUI_color_picker.length) {
+            $kUI_color_picker.kendoColorPalette({
+                value: color,
+                columns: 20,
+                tileSize: {
+                    width: 24,
+                    height: 16
+                },
+                palette: [
+                    "#e53935", "#d81b60", "#8e24aa", "#5e35b1", "#3949ab",
+                    "#1e88e5", "#039be5", "#00acc1", "#00897b", "#43a047",
+                    "#7cb342", "#c0ca33", "#fdd835", "#ffb300", "#fb8c00",
+                    "#f4511e", "#6d4c41", "#757575", "#546e7a"
+                ],
+                change: function(e){
+                    $("#color").val(e.value);
+                }
+            });
+        }
+
+        // Datetime Picker
+        $("#started_at, #ended_at, #recurrence_due_at").kendoDateTimePicker({
+           format: "dd-MM-yyyy HH:mm"
+        });
+
+        // AutoComplete
+        $("#autocomplete-members").kendoAutoComplete({
+            minLength: 2,
+            filter : "contains",
+            separator: ", ",
+            dataValueField : "id",
+            dataTextField : "fullName",
+            template: 
+            '<div class="k-list-wrapper">'+
+            '<span class="k-state-default k-list-wrapper-content">' +
+            '<p>#: data.fullName #(#: data.email #)</p>' +
+            '</span>' +
+            '</div>',
+            footerTemplate: 'Total #: instance.dataSource.total() #',
+            dataSource: {
+                transport: {
+                    read: {
+                        method: 'POST',
+                        dataType: "json",
+                        url: $("#members-list-url").val()
+                    }
+                }
+            },
+            select: function (e){ 
+                var selectedOne =  this.dataItem(e.item.index());
+                $("#members-id").val(selectedOne.id);
+            },
+            height: 200
+        }).data("kendoAutoComplete");
+    </script>
+{% endblock %}

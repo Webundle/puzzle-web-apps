@@ -6,12 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Puzzle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\Collection;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
-use Puzzle\AdminBundle\Traits\Describable;
-use Puzzle\MediaBundle\Traits\Pictureable;
-use Puzzle\AdminBundle\Traits\SlugTrait;
-use Puzzle\AdminBundle\Traits\DatetimePeriodTrait;
-use Puzzle\AdminBundle\Traits\DatetimeTrait;
-use Puzzle\UserBundle\Traits\UserTrait;
+use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
+use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
 
 /**
  * Moment
@@ -22,18 +19,34 @@ use Puzzle\UserBundle\Traits\UserTrait;
 class Moment
 {
     use PrimaryKeyTrait,
-        Describable,
-        Pictureable,
-        SlugTrait,
-        DatetimePeriodTrait,
-        DatetimeTrait,
-        UserTrait;
+        Sluggable,
+        Timestampable,
+        Blameable
+    ;
     
     /**
      * @ORM\Column(name="title", type="string", length=255)
      * @var string
      */
     private $title;
+    
+    /**
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var string
+     */
+    private $description;
+    
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="started_at", type="datetime", nullable=true)
+     */
+    private $startedAt;
+    
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="ended_at", type="datetime", nullable=true)
+     */
+    private $endedAt;
     
     /**
      * @ORM\Column(name="location", type="string", length=255, nullable=true)
@@ -66,6 +79,12 @@ class Moment
     private $visibility;
     
     /**
+     * @ORM\Column(name="picture", type="string", nullable=true)
+     * @var string
+     */
+    private $picture;
+    
+    /**
      * @ORM\Column(name="is_recurrent", type="boolean")
      * @var string
      */
@@ -73,7 +92,7 @@ class Moment
     
     /**
      * @ORM\ManyToOne(targetEntity="Agenda", inversedBy="moments")
-     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $agenda;
     
@@ -102,94 +121,116 @@ class Moment
         $this->enableComments = false;
     }
     
-    public function setTitle(string $title){
+    public function getSluggableFields() {
+        return ['title'];
+    }
+    
+    public function setTitle (string $title) :self {
         $this->title = $title;
         return $this;
     }
     
-    public function getTitle() {
+    public function getTitle() :? string {
         return $this->title;
     }
     
-    public function setLocation(string $location){
+    public function setDescription($description) :self {
+        $this->description = $description;
+        return $this;
+    }
+    
+    public function getDescription() :?string {
+        return $this->description;
+    }
+    
+    public function setStartedAt (\DateTime $startedAt) :self {
+        $this->startedAt = $startedAt;
+        return $this;
+    }
+    
+    public function getStartedAt() :? \DateTime {
+        return $this->startedAt;
+    }
+    
+    public function setEndedAt(\DateTime $endedAt) :self {
+        $this->endedAt = $endedAt;
+        return $this;
+    }
+    
+    public function getEndedAt() :?\DateTime {
+        return $this->endedAt;
+    }
+    
+    public function setLocation(string $location) :self {
         $this->location = $location;
         return $this;
     }
     
-    public function getLocation(){
+    public function getLocation() :?string {
         return $this->location;
     }
     
-    public function setColor($color){
+    public function setColor($color) :self {
         $this->color = $color;
         return $this;
     }
     
-    public function getColor(){
+    public function getColor() :?string {
         return $this->color;
     }
     
-    public function setTags($tags){
+    public function setTags($tags) :self {
         $this->tags = $tags;
         return $this;
     }
     
-    public function addTag($tag){
+    public function addTag($tag) :self {
         $this->tags[] = $tag;
         $this->tags = array_unique($this->tags);
         return $this;
     }
     
-    public function removeTag($tag){
+    public function removeTag($tag) :self {
         $this->tags = array_diff($this->tags, [$tag]);
         return $this;
     }
     
-    public function getTags(){
+    public function getTags() {
         return $this->tags;
     }
     
-    public function setEnableComments($enableComments){
+    public function setEnableComments(bool $enableComments) :self {
         $this->enableComments = $enableComments;
         return $this;
     }
     
-    public function getEnableComments(){
+    public function getEnableComments() :?bool {
         return $this->enableComments;
     }
     
-    public function setPicture(string $picture = null){
+    public function setPicture(string $picture = null) :self {
         $this->picture = $picture;
         return $this;
     }
     
-    public function getPicture(){
+    public function getPicture() :?string {
         return $this->picture;
     }
     
-    public function setAgenda(Agenda $agenda = null){
+    public function setAgenda(Agenda $agenda) :self {
         $this->agenda = $agenda;
         return $this;
     }
     
-    public function getAgenda(){
+    public function getAgenda() :?Agenda {
         return $this->agenda;
     }
     
-    public function setUser(User $user = null){
-        $this->user = $user;
-        return $this;
-    }
-    
-    public function getUser(){
-        return $this->user;
-    }
-    
-    public function setMembers(Collection $members = null) : self {
+    public function setMembers(Collection $members) :self {
         $this->members = $members;
     }
     
-    public function addMember(User $member){
+    public function addMember(User $member) :self {
         if(! $this->getMembers() || $this->getMembers() && ! $this->getMembers()->contains($member)){
             $this->members[] = $member;
         }
@@ -197,30 +238,30 @@ class Moment
         return $this;
     }
     
-    public function removeMember(User $member){
+    public function removeMember(User $member) :self {
         $this->members->removeElement($member);
         return $this;
     }
     
-    public function getMembers(){
+    public function getMembers() :?Collection {
         return $this->members;
     }
     
-    public function setIsRecurrent(bool $isRecurrent){
+    public function setIsRecurrent(bool $isRecurrent) :self {
         $this->isRecurrent = $isRecurrent;
         return $this;
     }
     
-    public function getIsRecurrent(){
+    public function isRecurrent() :?bool {
         return $this->isRecurrent;
     }
     
-    public function setVisibility(string $visibility){
+    public function setVisibility(string $visibility) :self {
         $this->visibility = $visibility;
         return $this;
     }
     
-    public function getVisibility(){
+    public function getVisibility() :?string {
         return $this->visibility;
     }
 }

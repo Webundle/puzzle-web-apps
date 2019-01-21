@@ -566,71 +566,66 @@ calendar:
     title: 'Calendrier'
     description: 'Gérer les évenements et des agendas d''événements'
     icon: 'event'
-    role:
-        moment:
-            read: 'Consulter la liste des événements'
-            manage: 'Mettre à jour la liste des événements'
-        agenda:
-            read: 'Consulter la liste des agendas'
-            manage: 'Mettre à jour la liste des agendas'
-    navigation:
-        moment: 'Evénements'
-        agenda: 'Agendas'
-    content:
-        moment:
-            list: 'Liste des événements'
-            show: 'Détails de l''événement'
-            create: 'Nouvel événement'
-            import: 'Importer des évenements'
-            export: 'Exporter des évenements'
-            update: 'Modifier l''évenément'
-            remove: 'Etes-vous sûr de vouloir supprimer l''évenément'
-            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection d''évenéments'
-        agenda:
-            list: 'Liste des agendas'
-            show: 'Détails de l''agenda'
-            create: 'Nouvel agenda'
-            update: 'Modifier l''agenda'
-            remove: 'Etes-vous sûr de vouloir supprimer l''agenda'
-    property:
-        moment:
-            title : 'Titre'
-            started_at: 'Date de début'
-            ended_at: 'Date de fin'
-            location: 'Lieu'
-            description: 'Description'
-            color: 'Couleur'
-            tags: 'Etiquettes'
-            enable_comments: 'Commentaires'
-            is_recurrent: 'Recurrence'
-            picture: 'Image'
-            agenda: 'Agenda'
-            members: 'Membres'
-            visibility:
-                name: 'Visibilité'
-                private: 'Seulement Moi'
-                share: 'Moi et les personnes associées'
-                public: 'Tout le monde'
-        agenda:
-            name: 'Nom'
-            members: 'Membres'
-            visibility:
-                name: 'Visibilité'
-                private: 'Seulement Moi'
-                share: 'Moi et les personnes associées'
-                public: 'Tout le monde'
-    default_value:
-        moment:
-            visibility:
-                private: 'Privé'
-                public: 'Public'
-                share: 'Partagé'
-        agenda:
-            name: 'personnel'
-            visibility:
-                private: 'Privé'
-                public: 'Public'
-                share: 'Partagé'
+    moment:
+        navigation: 'Evénements'
+        description: 'Gérer les évenements'
+        list: 'Liste des événements'
+        show: 'Détails de l''événement'
+        create: 'Nouvel événement'
+        import: 'Importer des évenements'
+        export: 'Exporter des évenements'
+        update: 'Modifier l''évenément'
+        delete: 'Etes-vous sûr de vouloir supprimer l''évenément <b>%momentTitle%</b>'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection d''évenéments'
+        mode_list: 'Mode Liste'
+        mode_calendar: 'Mode Calendrier'
+        title : 'Titre'
+        started_at: 'Date de début'
+        ended_at: 'Date de fin'
+        location: 'Lieu'
+        description: 'Description'
+        color: 'Couleur'
+        tags: 'Etiquettes'
+        enable_comments: 'Commentaires'
+        is_recurrent:
+            title: 'Recurrence'
+            yes: 'Oui'
+            no: 'Non'
+        picture: 'Image'
+        agenda: 'Agenda'
+        members: 'Membres'
+        visibility:
+            name: 'Visibilité'
+            private: 
+                title: 'Privé'
+                description: 'Seulement Moi'
+            share:
+                title: 'Partagé'
+                description: 'Moi et les personnes associées'
+            public: 
+                title: 'Public'
+                description: 'Tout le monde'
+    agenda:
+        navigation: 'Agendas'
+        description: 'Gérer les agendas'
+        list: 'Liste des agendas'
+        show: 'Détails de l''agenda'
+        create: 'Nouvel agenda'
+        update: 'Modifier l''agenda'
+        delete: 'Etes-vous sûr de vouloir supprimer l''agenda <b>%agendaName%</b> et tous les évenements associés ?'
+        name: 'Nom'
+        members: 'Membres'
+        visibility:
+            name: 'Visibilité'
+            private: 
+                title: 'Privé'
+                description: 'Seulement Moi'
+            share:
+                title: 'Partagé'
+                description: 'Moi et les personnes associées'
+            public: 
+                title: 'Public'
+                description: 'Tout le monde'
     
 #Scheduling
 scheduling:
