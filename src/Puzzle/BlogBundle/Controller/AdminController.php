@@ -86,11 +86,15 @@ class AdminController extends Controller
             $em->persist($category);
             $em->flush();
             
+            $message = $this->get('translator')->trans('success.post', [
+                '%item%' => $category->getName()
+            ], 'messages');
+            
             if ($request->isXmlHttpRequest() === true) {
-                return new JsonResponse(['status' => true]);
+                return new JsonResponse($message);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('admin_blog_category_update', ['id' => $category->getId()]);
         }
             
@@ -132,11 +136,15 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
+            $message = $this->get('translator')->trans('success.put', [
+                '%item%' => $category->getName()
+            ], 'messages');
+            
             if ($request->isXmlHttpRequest() === true) {
-                return new JsonResponse(['status' => true]);
+                return new JsonResponse($message);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('admin_blog_category_update', ['id' => $category->getId()]);
         }
         
@@ -154,15 +162,19 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteCategoryAction(Request $request, Category $category) {
+        $message = $this->get('translator')->trans('success.delete', [
+            '%item%' => $category->getName()
+        ], 'messages');
         
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_blog_category_list');
     }
     
@@ -237,11 +249,15 @@ class AdminController extends Controller
             $em->persist($post);
             $em->flush();
             
+            $message = $this->get('translator')->trans('success.post', [
+                '%item%' => $post->getName()
+            ], 'messages');
+            
             if ($request->isXmlHttpRequest() === true) {
-                return new JsonResponse(['status' => true]);
+                return new JsonResponse($message);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('admin_blog_post_update', ['id' => $post->getId()]);
         }
         
@@ -290,11 +306,15 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
+            $message = $this->get('translator')->trans('success.put', [
+                '%item%' => $post->getName()
+            ], 'messages');
+            
             if ($request->isXmlHttpRequest() === true) {
-                return new JsonResponse(['status' => true]);
+                return new JsonResponse($message);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('admin_blog_post_update', ['id' => $post->getId()]);
         }
         
@@ -311,15 +331,20 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deletePostAction(Request $request, Post $post) {
+        $message = $this->get('translator')->trans('success.delete', [
+            '%item%' => $post->getName()
+        ], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($post);
         $em->flush();
         
+        
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_blog_post_list');
     }
     

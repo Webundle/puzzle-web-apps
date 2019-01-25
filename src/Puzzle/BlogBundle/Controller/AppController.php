@@ -12,7 +12,7 @@ use Puzzle\BlogBundle\Entity\CommentVote;
 
 /**
  * 
- * @author qwincy <qwincypercy@fermentuse.com>
+ * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
  *
  */
 class AppController extends Controller

@@ -1,6 +1,6 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Blog:layout_table.html.twig' %}
+{% extends 'AdminBundle:Blog:layout.html.twig' %}
 
 {% block title %}{{ parent() }} - {{ "blog.post.list"|trans|capitalize }}{% endblock %}
 
@@ -52,7 +52,7 @@
                     <th></th>
                     <th>{{ "blog.post.name"|trans }}</th>
                     <th>{{ "blog.post.category"|trans }}</th>
-                    <th>{{ "blog.post.updated_at"|trans }}</th>
+                    <th>{{ "blog.post.date"|trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -72,7 +72,7 @@
                                 </div>
                             </td>
                             <td>{{ post.category.name }}</td>
-                            <td>{{ post.updatedAt|date('d-m-y H:i') }}</td>
+                            <td><small>{{ post.updatedAt|date('d-m-y H:i') }}</small></td>
                             <td class="uk-text-right">
                                 <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
                                     <a><i class="fa fa-ellipsis-h"></i></a>
@@ -98,7 +98,7 @@
                                                 {% endif %}
                                             </li>
                                             <li>
-                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_blog_post_delete', {'id': post.id}) }}" data-label="{{ post.name }}" class="remove-item">
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_blog_post_delete', {'id': post.id}) }}" data-text="{{ 'blog.post.delete'|trans({'%postName%': post.name}) }}" data-label="{{ post.name }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
                                                     {{ "button.remove"|trans }}
                                                 </a>
