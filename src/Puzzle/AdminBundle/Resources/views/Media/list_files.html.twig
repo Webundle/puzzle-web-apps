@@ -1,6 +1,6 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Media:layout_table.html.twig' %}
+{% extends 'AdminBundle:Media:layout.html.twig' %}
 
 {% set pageTitle = "media."~type|default('file')~".list" %}
 
@@ -24,54 +24,50 @@
 
 {% block content %}
     <div id="page_content_inner">
-        <div class="md-card">
-            {% if files is not empty %}
-                <div class="md-card-toolbar">
-                    <div class="md-card-toolbar-actions">
-                        <div class="uk-button-dropdown" data-uk-dropdown>
-                            <button class="md-btn">
-                                {% if type is defined and type is not empty %}
-                                    {% set filterTitle = "media.filter."~type %}
-                                    {{ filterTitle|trans }}
-                                {% else %}
-                                    {{ 'media.filter.title'|trans }}
-                                {% endif %}
-                                <i class="material-icons">&#xE313;</i>
-                            </button>
-                            <div class="uk-dropdown uk-dropdown-small uk-text-left">
-                                <ul class="uk-nav uk-nav-dropdown">
-                                    {% if type is defined and type is not empty %}
-                                        <li>
-                                            <a href="{{ url('admin_media_file_list') }}">
-                                                <i class="fa fa-file uk-margin-right"></i>
-                                                {{ "media.filter.all"|trans }}
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                    <li>
-                                        <a href="{{ url('admin_media_file_list', {'type': 'audio' }) }}">
-                                            <i class="fa fa-file-audio-o uk-margin-right"></i>
-                                            {{ "media.filter.audio"|trans }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('admin_media_file_list', {'type': 'picture' }) }}">
-                                            <i class="fa fa-photo uk-margin-right"></i>
-                                            {{ "media.filter.picture"|trans }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('admin_media_file_list', {'type': 'video' }) }}">
-                                            <i class="fa fa-video-camera uk-margin-right"></i>
-                                            {{ "media.filter.video"|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <div class="uk-width-1-1 uk-text-right uk-margin-bottom">
+            <div class="uk-button-dropdown" data-uk-dropdown>
+                <button class="md-btn">
+                    {% if type is defined and type is not empty %}
+                        {% set filterTitle = "media."~type~".filter" %}
+                        {{ filterTitle|trans }}
+                    {% else %}
+                        {{ 'media.file.filter_title'|trans }}
+                    {% endif %}
+                    <i class="material-icons">&#xE313;</i>
+                </button>
+                <div class="uk-dropdown uk-dropdown-small uk-text-left">
+                    <ul class="uk-nav uk-nav-dropdown">
+                        {% if type is defined and type is not empty %}
+                            <li>
+                                <a href="{{ url('admin_media_file_list') }}">
+                                    <i class="fa fa-file uk-margin-right"></i>
+                                    {{ "media.file.filter_all"|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="{{ url('admin_media_file_list', {'type': 'audio' }) }}">
+                                <i class="fa fa-file-audio-o uk-margin-right"></i>
+                                {{ "media.audio.filter"|trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('admin_media_file_list', {'type': 'picture' }) }}">
+                                <i class="fa fa-photo uk-margin-right"></i>
+                                {{ "media.picture.filter"|trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('admin_media_file_list', {'type': 'video' }) }}">
+                                <i class="fa fa-video-camera uk-margin-right"></i>
+                                {{ "media.video.filter"|trans }}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            {% endif %}
+            </div>
+        </div>
+        <div class="md-card">
             <div class="md-card-content">
                 <div class="uk-width-large-1-1 uk-margin-bottom">
                     {# <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
@@ -97,8 +93,8 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th>{{ 'media.file.property.name'|trans }}</th>
-                        <th>{{ 'media.file.property.date'|trans }}</th>
+                        <th>{{ 'media.file.name'|trans }}</th>
+                        <th>{{ 'media.file.date'|trans }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -143,7 +139,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_media_file_delete', {'id': file.id}) }}" data-label="{{ file.name }}" class="remove-item">
+                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_media_file_delete', {'id': file.id}) }}"  data-text="{{ 'media.file.delete'|trans({'%fileName%': file.name}) }}" data-label="{{ file.name }}" class="remove-item">
                                                         <i class="fa fa-trash-o uk-text-danger"></i>
                                                         {{ "button.remove"|trans }}
                                                     </a>
@@ -207,15 +203,15 @@
                                 <input class="md-input" name="file" id="files_to_add_file"/>
                             </div>
                             <div class="uk-form-row uk-hidden alternate">
-                                <label for="path" class="uk-form-label">{{ 'media.file.property.url'|trans }}</label>
+                                <label for="path" class="uk-form-label">{{ 'media.file.url'|trans }}</label>
                                 <input class="md-input" name="path" id="path"/>
                             </div>
                             <div class="uk-form-row alternate uk-hidden">
-                                <label for="path" class="uk-form-label">{{ 'media.file.property.name'|trans }}</label>
+                                <label for="path" class="uk-form-label">{{ 'media.file.name'|trans }}</label>
                                 <input class="md-input" name="name" id="name"/>
                             </div>
                             <div class="uk-form-row">
-                                <label for="caption" class="uk-form-label">{{ 'media.file.property.caption'|trans }}</label>
+                                <label for="caption" class="uk-form-label">{{ 'media.file.caption'|trans }}</label>
                                 <input class="md-input" name="caption" id="caption"/>
                             </div>
                             <div class="uk-form-row uk-hidden alternate">
@@ -240,15 +236,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts
-        'bundles/admin/js/page_contact_list.js'
-        
-        output="compiled/js/admin_media_file.min.js" 
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 {% endblock %}

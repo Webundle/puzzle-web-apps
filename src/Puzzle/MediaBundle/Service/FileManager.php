@@ -257,16 +257,28 @@ class FileManager {
      */
     public function zipDir($source)
     {
-        $outZipPath = $source . '.gz';
+        $outZipPath = $source . '.zip';
         $pathInfo = pathInfo($source);
-        $parentPath = $pathInfo['dirname'];
         $dirName = $pathInfo['basename'];
         
-        $z = new \ZipArchive();
-        $z->open($outZipPath, \ZipArchive::CREATE);
-        $z->addEmptyDir($dirName);
-        self::folderToZip($source, $z, strlen("$parentPath/"));
-        $z->close();
+        $webDir = explode('../web/', $source);
+        $parentDir = getcwd().DIRECTORY_SEPARATOR.($webDir[1] ?? 'uploads'.DIRECTORY_SEPARATOR.$dirName);
+        $outZipPath = $parentDir.'.zip';
+        
+        // create new archive
+        $zipFile = new \PhpZip\ZipFile();
+        try{
+            $zipFile
+                ->addDirRecursive($source, $parentDir) // add files from the directory
+                ->saveAsFile($outZipPath) // save the archive to a file
+                ->close(); // close archive
+        }
+        catch(\PhpZip\Exception\ZipException $e){
+            // handle exception
+        }
+        finally{
+            $zipFile->close();
+        }
         
         return $outZipPath;
     }

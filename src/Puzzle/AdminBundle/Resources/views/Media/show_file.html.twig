@@ -1,39 +1,39 @@
 {% trans_default_domain 'messages' %}
 
-<div class="uk-modal-dialog uk-modal-dialog-large">
+<div class="uk-modal-dialog">
     <div class="uk-modal-body">
         <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
-            <div class="uk-width-medium-2-3 uk-text-center">
-                <embed src="{{ file.path }}" height="300" controls id="item_{{ file.id }}" /></embed>
+            <div class="uk-width-1-1 uk-text-center">
+                <embed src="{{ file.path }}" width="100%" controls id="item_{{ file.id }}" /></embed>
             </div>
-            <div class="uk-width-medium-1-3">
+            <div class="uk-width-1-1">
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.name'|trans }}</label> :
+                    <label class="uk-text-bold">{{ 'media.file.name'|trans }}</label> :
                     {{ file.name }}
                 </div>
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.caption'|trans }}</label> :
+                    <label class="uk-text-bold">{{ 'media.file.caption'|trans }}</label> :
                     {{ file.caption }}
                 </div>
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.extension'|trans }}</label> :
+                    <label class="uk-text-bold">{{ 'media.file.extension'|trans }}</label> :
                     {{ file.extension }}
                 </div>
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.size'|trans }}</label> :
+                    <label class="uk-text-bold">{{ 'media.file.size'|trans }}</label> :
                     {{ file.sizeConvert }}
                 </div>
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.path'|trans }}</label> :
+                    <label class="uk-text-bold">{{ 'media.file.path'|trans }}</label> :
                     <a href="{{ file.path }}">{{ file.path }}</a>
                 </div>
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.createdAt'|trans }}</label> :
-                    {{ file.createdAt|date('d-m-Y H:i') }}
+                    <label class="uk-text-bold">{{ 'media.file.createdAt'|trans }}</label> :
+                    <small>{{ file.createdAt|date('d-m-Y H:i') }}</small>
                 </div>
                 <div class="uk-margin-small-bottom">
-                    <label class="uk-text-bold">{{ 'media.file.property.updatedAt'|trans }}</label> :
-                    {{ file.updatedAt|date('d-m-Y H:i') }}
+                    <label class="uk-text-bold">{{ 'media.file.updatedAt'|trans }}</label> :
+                    <small>{{ file.updatedAt|date('d-m-Y H:i') }}</small>
                 </div>
             </div>
         </div>

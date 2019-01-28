@@ -60,8 +60,8 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         int $offset = null,
         bool $useCache = false
      ){
-         $query = self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
-       return count($query->getResult()) > 0 ? $query->getResult()[0] : null;
+        $query = self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
+        return count($query->getResult()) > 0 ? $query->getResult()[0] : null;
     }
     
     /**

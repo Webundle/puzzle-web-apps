@@ -37,7 +37,7 @@ class AdminController extends Controller
 	        $criteria[] = ['name', '%'.$request->get('search').'%', 'LIKE'];
 	    }
 	    
-	    switch ($type){
+	    switch ($type) {
 	        case "picture":
 	            $filters .= "*.(". MediaUtil::supportedPictureExtensions().")";
 	            $criteria[] = ['p.id', null, 'IS NOT NULL']; // fieldName, Value, Operator

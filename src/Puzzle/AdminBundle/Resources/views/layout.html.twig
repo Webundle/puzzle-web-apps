@@ -188,6 +188,7 @@
             'bundles/admin/libs/datatables-tabletools/js/dataTables.tableTools.js'
             'bundles/admin/js/datatables_uikit.js'
             'bundles/admin/js/plugins_datatables.js'
+            'bundles/admin/js/page_contact_list.js'
 
             output="compiled/js/base_admin_prod.min.js" 
             %}
@@ -215,6 +216,7 @@
             'bundles/admin/libs/datatables-tabletools/js/dataTables.tableTools.js'
             'bundles/admin/js/datatables_uikit.js'
             'bundles/admin/js/plugins_datatables.js'
+            'bundles/admin/js/page_contact_list.js'
 
             output="compiled/js/base_admin_dev.min.js" 
             %}
@@ -240,7 +242,8 @@
             $("body").on('mouseleave', '.toggleable', untogglize);
 
             // Table
-            var t = document.getElementById('#dt_individual_search');
+            var t = document.getElementById('dt_individual_search');
+            
             if (t != undefined && t != null) {
                 $('#dt_individual_search').DataTable({
                     "destroy": true,

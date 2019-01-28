@@ -19,28 +19,29 @@ class AbstractFolderType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'media.folder.property.name'
+                'label' => 'media.folder.name'
             ])
             ->add('tag', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'media.folder.property.tag',
+                'label' => 'media.folder.tag',
                 'required' => false
             ])
             ->add('filter', ChoiceType::class, array(
                 'translation_domain' => 'messages',
+                'label' => 'media.folder.filter',
                 'choices' => array(
-                    "media.filter.all" => "*",
-                    "media.filter.picture" => MediaUtil::supportedPictureExtensions(),
-                    "media.filter.audio" => MediaUtil::supportedAudioExtensions(),
-                    "media.filter.video" => MediaUtil::supportedVideoExtensions(),
-                    "media.filter.document" => MediaUtil::supportedDocumentExtensions(),
-                    "media.filter.customize" => "customize",
+                    "media.file.filter_all" => "*",
+                    "media.picture.filter" => MediaUtil::supportedPictureExtensions(),
+                    "media.audio.filter" => MediaUtil::supportedAudioExtensions(),
+                    "media.video.filter" => MediaUtil::supportedVideoExtensions(),
+                    "media.document.filter" => MediaUtil::supportedDocumentExtensions(),
+                    "media.file.filter_customize" => "customize",
                 ),
                 'mapped' => false
             ))
             ->add('allowedExtensions', TextType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'media.folder.property.allowed_extensions',
+                'label' => 'media.folder.allowed_extensions',
                 'required' => false
             ))
         ;

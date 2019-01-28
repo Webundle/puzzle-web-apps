@@ -31,7 +31,7 @@
                                 </a>
                             </div>
                             <div class="uk-text-center" style="height:40px">
-                                <a class="folder_image_title uk-text-truncate uk-text-bold uk-text-primary" title="{{ folderDefault.name }}" href="{{ url('admin_media_folder_show', {'id': folderDefault.id}) }}">{{ folderDefault.name|trans|capitalize }}</a>
+                                <a class="folder_image_title uk-text-truncate uk-text-bold uk-text-primary" title="{{ 'media.folder.default'|trans }}" href="{{ url('admin_media_folder_show', {'id': folderDefault.id}) }}">{{ 'media.folder.default'|trans|capitalize }}</a>
                             </div>
                         </div>
                     {% endif %}
