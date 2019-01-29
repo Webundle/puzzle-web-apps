@@ -29,7 +29,22 @@ class AppKernel extends Kernel
     {
         $bundles = array(
             // ...
-
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Symfony\Bundle\MonologBundle\MonologBundle(),
+            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
+            new JMS\JobQueueBundle\JMSJobQueueBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new JMS\AopBundle\JMSAopBundle(),
+            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
+            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Puzzle\AdminBundle\PuzzleAdminBundle(),
         );
 
@@ -187,6 +202,7 @@ admin_prefix: '/' # or /admin/ if with you don't use subdomain
 ### **Step 5: Default configurations**
 Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
 ```yaml
+# Admin Configuration
 admin:
     website:
         title: 'Admin Puzzle' # Customize with your own admin name
@@ -204,6 +220,179 @@ admin:
                     class: 'fa fa-home' # customize icon class
                 parent: ~
                 user_roles: ['ROLE_ADMIN']
+
+# App Configuration
+app:
+    website:
+        title: ''
+        description: ''
+        type: ''
+        email: ''
+        phoneNumber: ''
+        contact: ''
+    resetting:
+        retry_ttl: 3600
+        address: ''
+    navigation:
+        nodes:
+            home:
+                label: 'app.home.title'
+                translation_domain: 'app'
+                path: app_homepage
+```
+
+
+---
+
+## **User Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\UserBundle\UserBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all user routes by typing: `php bin/console debug:router | grep user`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            
+            # User
+            user:
+                label: 'user.title'
+                description: 'user.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-users'
+                parent: ~
+                user_roles: ['ROLE_ADMIN']
+            user_list:
+                label: 'user.account.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_user_list'
+                sub_paths: ['admin_user_create', 'admin_user_update', 'admin_user_show']
+                parent: user
+                user_roles: ['ROLE_ADMIN']
+            user_group:
+                label: 'user.group.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_user_group_list'
+                sub_paths: ['admin_user_group_create', 'admin_user_group_update', 'admin_user_group_show']
+                parent: user
+                user_roles: ['ROLE_ADMIN']
+```
+
+---
+
+## **Media Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\MediaBundle\MediaBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@MediaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all media routes by typing: `php bin/console debug:router | grep media`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            
+            # Media
+            media:
+                label: 'media.title'
+                description: 'media.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-cloud'
+                parent: ~
+                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+            media_file:
+                label: 'media.file.sidebar'
+                description: 'media.file.description'
+                translation_domain: 'messages'
+                path: 'admin_media_file_list'
+                parent: media
+                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+            media_folder:
+                label: 'media.folder.sidebar'
+                description: 'media.folder.description'
+                translation_domain: 'messages'
+                path: 'admin_media_folder_list'
+                sub_paths: ['admin_media_folder_create', 'admin_media_folder_update', 'admin_media_folder_show']
+                parent: media
+                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
 ```
 
 
@@ -228,7 +417,7 @@ class AppKernel extends Kernel
         $bundles = array(
             // ...
 
-            new Puzzle\AdminBundle\PuzzleBlogBundle(),
+            new Puzzle\BlogBundle\BlogBundle(),
         );
 
         // ...
@@ -247,7 +436,7 @@ blog:
     prefix:   /
 
 ```
-See all blog routes by typing: `php app/console debug:router | grep blog`
+See all blog routes by typing: `php bin/console debug:router | grep blog`
 
 ### **Step 3: Configure**
 Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
@@ -284,3 +473,169 @@ admin:
                 user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
 
 ```
+
+
+---
+
+## **Calendar Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\CalendarBundle\CalendarBundle(),
+            new Puzzle\SchedulingBundle\SchedulingBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@CalendarBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all caendar routes by typing: `php bin/console debug:router | grep calendar`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            
+            # Calendar
+            calendar:
+                label: 'calendar.title'
+                description: 'calendar.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-calendar'
+                parent: ~
+                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+            calendar_agenda:
+                label: 'calendar.agenda.sidebar'
+                description: 'calendar.agenda.description'
+                translation_domain: 'messages'
+                path: 'admin_calendar_agenda_list'
+                parent: calendar
+                user_roles: ['ROLE_CALENDAR', 'ROLE_ADMIN']
+            calendar_moment:
+                label: 'calendar.moment.sidebar'
+                description: 'calendar.moment.description'
+                translation_domain: 'messages'
+                path: 'admin_calendar_moment_list'
+                sub_paths: ['admin_calendar_moment_create', 'admin_calendar_moment_update', 'admin_calendar_moment_show']
+                parent: calendar
+                user_roles: ['ROLE_CALENDAR', 'ROLE_ADMIN']
+```
+
+### **Step 4: Requirements**
+For this bundle to work, you have to install [supervisord](http://supervisord.org/installing.html)
+
+
+---
+
+## **Contact Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\ContactBundle\ContactBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@ContactBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all contact routes by typing: `php bin/console debug:router | grep contact`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Contact
+            contact:
+                label: 'contact.title'
+                description: 'contact.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-book'
+                parent: ~
+                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+            contact_list:
+                label: 'contact.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_contact_list'
+                sub_paths: ['admin_contact_create', 'admin_contact_update']
+                parent: contact
+                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+            contact_group:
+                label: 'contact.group.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_contact_group_list'
+                sub_paths: ['admin_contact_group_create', 'admin_contact_group_update']
+                parent: contact
+                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+            contact_request:
+                label: 'contact.request.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_contact_request_list'
+                sub_paths: ['admin_contact_request_create', 'admin_contact_request_update']
+                parent: contact
+                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+```
+
