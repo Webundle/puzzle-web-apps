@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="uk-width-large-3-10">
-            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData': form.picture, 'data': contact is defined ? contact.picture : null, 'suffix': 'picture', 'context': 'contact/contact'} %}
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': contact is defined ? contact.picture : null, 'type': 'picture', 'context': 'contact/contact', 'multiple': false })) }}
         </div>
     </div>
     <div class="uk-text-center uk-margin-top">

@@ -68,6 +68,7 @@ class AppController extends Controller
             
             $em->persist($request);
         }
+        
         // Contact Group
         if (! empty($data['group'])) {
             $group = $em->getRepository(Group::class)->find($data['group']);
@@ -86,7 +87,7 @@ class AppController extends Controller
         $em->flush();
         
         if ($requestHttp->isXmlHttpRequest() === true){
-            return new JsonResponse($this->get('translator')->trans('contact.content.request.success', [], 'messages'));
+            return new JsonResponse($this->get('translator')->trans('contact.request.success', [], 'messages'));
         }
         
         return $this->redirectToRoute('app_homepage');

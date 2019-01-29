@@ -1,39 +1,19 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Contact:layout_editor.html.twig' %}
-
-{% block title %}{{ parent() }} - {{ "contact.content.group.update"|trans|capitalize }} {{ group }} {% endblock %}
-
-{% block breadcrumbmodule %}
-    {{ parent() }}
-    <a href=" {{ url('admin_contact_group_list') }} ">
-       {{ 'contact.content.group.list'|trans|capitalize }}
-    </a>
-    <i class="fa fa-chevron-right"></i>
-    <em>{{ "contact.content.group.update"|trans|capitalize }}</em>
-{% endblock %}
-
-{% block content %}
-    <div id="page_content_inner">
-        {% include 'AdminBundle:Contact:form_group.html.twig' with { 'form': form, 'group': group } %}
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3>{{ "contact.group.update"|trans }}</h3>
     </div>
-{% endblock %}
-
-{% block modal %}
-    <div class="uk-modal" id="choose_files_modal">
-        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
-        </div>
+    <div class="uk-modal-body">
+        {% include 'AdminBundle:Contact:form_group.html.twig' with {'form': form, 'group': group} %}
     </div>
-{% endblock %}
+</div>
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        var $kUI_multiselect_contacts = $('#kUI_multiselect_contacts');
-        if($kUI_multiselect_contacts.length) {
-            $kUI_multiselect_contacts.kendoMultiSelect();
-        }
-    </script>
-{% endblock %}
+<script type="text/javascript">
+    var $kUI_multiselect_contacts = $('#kUI_multiselect_contacts');
+    if($kUI_multiselect_contacts.length) {
+        $kUI_multiselect_contacts.kendoMultiSelect();
+    }
+</script>
 
 

@@ -4,10 +4,6 @@ layout:
     delete_list: ' Etes-vous sur de vouloir supprimer la sélection'
     multiple_actions: 'Actions groupées'
     actions: 'Actions'
-    
-website:
-    name: "Puzzle"
-    email: 'contact@gmail.com'
 
 locale:
     fr: 'Français'
@@ -345,58 +341,52 @@ contact:
     title: 'Contact'
     description: 'Gérer les contacts et groupes de contacts'
     icon: 'contacts'
-    navigation:
-        contact: 'Contacts'
-        group: 'Groupes'
-        request: 'Requêtes'
-    content:
-        contact:
-            list: 'Liste des contacts'
-            create: 'Nouveau contact'
-            show: 'Détails du contact'
-            import: 'Importer des contacts'
-            export: 'Exporter des contacts'
-            update: 'Modifier le contact'
-            remove: 'Etes-vous sûr de vouloir supprimer le contact'
-            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de contacts'
-        group:
-            list: 'Liste des groupes'
-            show: 'Détails du groupe'
-            create: 'Nouveau groupe'
-            update: 'Modifier le groupe'
-            remove: 'Etes-vous sûr de vouloir supprimer le groupe'
-            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
-        request:
-            list: 'Liste des requêtes'
-            show: 'Détails de la requête'
-            mark: 'Marquer lu'
-            remove: 'Etes-vous sûr de vouloir supprimer la requête'
-            remove_list: 'Etes-vous sûr de vouloir supprimer la sélection de requêtes'
-            success: 'Votre requête a été envoyée avec succès.'
-    property:
-        group:
-            name: 'Nom'
-            description: 'Description'
-            contacts: 'Contacts'
-        request:
-            subject: 'Sujet'
-            message: 'Message'
-            markAsRead: 'Marquer comme lu'
-            contact: 'Par'
-            createdAt: 'Envoyé le'
-            updatedAt: 'Mis à jour le'
-        contact:
-            firstName: 'Prénoms'
-            lastName: 'Nom'
-            fullName: 'Nom & Prénoms'
-            email: 'E-mail'
-            phoneNumber: 'Téléphone'
-            company: 'Entreprise'
-            position: 'Poste'
-            location: 'Lieu de résidence'
-            picture: 'Image'
-            subject: 'Sujet'
-            message: 'Message'
+    sidebar: 'Contacts'
+    firstName: 'Prénoms'
+    lastName: 'Nom'
+    fullName: 'Nom & Prénoms'
+    email: 'E-mail'
+    phoneNumber: 'Téléphone'
+    company: 'Entreprise'
+    position: 'Poste'
+    location: 'Lieu de résidence'
+    picture: 'Image'
+    subject: 'Sujet'
+    message: 'Message'
+    list: 'Liste des contacts'
+    create: 'Nouveau contact'
+    show: 'Détails du contact'
+    import: 'Importer des contacts'
+    export: 'Exporter des contacts'
+    update: 'Modifier le contact'
+    delete: 'Etes-vous sûr de vouloir supprimer le contact <em>%contact%</em>'
+    delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de contacts'
+    group:
+        sidebar: 'Groupes'
+        name: 'Nom'
+        description: 'Description'
+        contacts: 'Contacts'
+        list: 'Liste des groupes'
+        show: 'Détails du groupe'
+        create: 'Nouveau groupe'
+        update: 'Modifier le groupe'
+        delete: 'Etes-vous sûr de vouloir supprimer le groupe <em>%groupName%</em>'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
+    request:
+        sidebar: 'Requêtes'
+        subject: 'Sujet'
+        message: 'Message'
+        markAsRead: 'Marquer comme lu'
+        contact: 'Par'
+        createdAt: 'Envoyé le'
+        updatedAt: 'Mis à jour le'
+        list: 'Liste des requêtes'
+        show: 'Détails de la requête'
+        mark: 'Marquer lu'
+        delete: 'Etes-vous sûr de vouloir supprimer la requête <em>%request%</em>'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de requêtes'
+        success: 'Votre requête a été envoyée avec succès.'
+
 
 # Static
 static:
@@ -556,7 +546,6 @@ user:
             
 #Calendar
 calendar:
-    email: 'contact@redeln-inphb.org'
     title: 'Calendrier'
     description: 'Gérer les évenements et des agendas d''événements'
     icon: 'event'

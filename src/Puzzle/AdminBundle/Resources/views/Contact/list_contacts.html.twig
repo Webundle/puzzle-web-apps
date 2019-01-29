@@ -1,8 +1,8 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Contact:layout_table.html.twig' %}
+{% extends 'AdminBundle:Contact:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "contact.content.contact.list"|trans|capitalize }}{% endblock %}
+{% block title %}{{ parent() }} - {{ "contact.list"|trans|capitalize }}{% endblock %}
 
 {% block headingactions %}
 <div class="heading_actions">
@@ -15,7 +15,7 @@
 
 {% block breadcrumbmodule %}
     {{ parent() }}
-    <em>{{ "contact.content.contact.list"|trans|capitalize }}</em>
+    <em>{{ "contact.list"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
@@ -50,12 +50,12 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>{{ "contact.property.contact.fullName"|trans }}</th>
-                    <th>{{ "contact.property.contact.email"|trans }}</th>
-                    <th>{{ "contact.property.contact.phoneNumber"|trans }}</th>
-                    <th>{{ "contact.property.contact.company"|trans }}</th>
-                    <th>{{ "contact.property.contact.position"|trans }}</th>
-                    <th>{{ "contact.property.contact.location"|trans }}</th>
+                    <th>{{ "contact.fullName"|trans }}</th>
+                    <th>{{ "contact.email"|trans }}</th>
+                    <th>{{ "contact.phoneNumber"|trans }}</th>
+                    <th>{{ "contact.company"|trans }}</th>
+                    <th>{{ "contact.position"|trans }}</th>
+                    <th>{{ "contact.location"|trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -91,7 +91,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_contact_delete', {'id': contact.id}) }}" data-label="{{ contact }}" class="remove-item">
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_contact_delete', {'id': contact.id}) }}" data-text="{{ 'contact.delete'|trans({'%contact%': contact})}}"  data-label="{{ contact }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
                                                     {{ "button.remove"|trans }}
                                                 </a>

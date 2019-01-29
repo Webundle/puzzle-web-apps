@@ -64,7 +64,7 @@ class AdminController extends Controller
             $em->persist($contact);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => (string) $contact], 'messages'));
             return $this->redirectToRoute('admin_contact_update', ['id' => $contact->getId()]);
         }
         
@@ -104,7 +104,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => (string) $contact], 'messages'));
             return $this->redirectToRoute('admin_contact_update', ['id' => $contact->getId()]);
         }
         
@@ -150,13 +150,13 @@ class AdminController extends Controller
     	    $filename = $dirname.'/'.$basename;
     	    $fp = fopen($filename, 'w');
     	    fputcsv($fp, [
-    	        $this->get('translator')->trans('contact.property.contact.full_name', [], 'messages'),
-    	        $this->get('translator')->trans('contact.property.contact.email', [], 'messages'),
-    	        $this->get('translator')->trans('contact.property.contact.phone', [], 'messages'),
-    	        $this->get('translator')->trans('contact.property.contact.company', [], 'messages'),
-    	        $this->get('translator')->trans('contact.property.contact.position', [], 'messages'),
-    	        $this->get('translator')->trans('contact.property.contact.location', [], 'messages'),
-    	        $this->get('translator')->trans('contact.property.contact.picture', [], 'messages'),
+    	        $this->get('translator')->trans('contact.full_name', [], 'messages'),
+    	        $this->get('translator')->trans('contact.email', [], 'messages'),
+    	        $this->get('translator')->trans('contact.phone', [], 'messages'),
+    	        $this->get('translator')->trans('contact.company', [], 'messages'),
+    	        $this->get('translator')->trans('contact.position', [], 'messages'),
+    	        $this->get('translator')->trans('contact.location', [], 'messages'),
+    	        $this->get('translator')->trans('contact.picture', [], 'messages'),
     	    ]);
     	    foreach ($contacts as $contact){
     	        fputcsv($fp, [
@@ -256,15 +256,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteContactAction(Request $request, Contact $contact) {
+        $message =  $this->get('translator')->trans('success.delete', ['%item%' => (string)$contact], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($contact);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_contact_list');
     }
     
@@ -299,8 +301,8 @@ class AdminController extends Controller
             $em->persist($group);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
-            return $this->redirectToRoute('admin_contact_group_update', ['id' => $group->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_contact_group_list');
         }
         
         return $this->render("AdminBundle:Contact:create_group.html.twig", [
@@ -325,11 +327,11 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_contact_group_update', ['id' => $group->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_contact_group_list');
         }
         
-        return $this->render("ContactBundle:Group:update_group.html.twig", [
+        return $this->render("AdminBundle:Contact:update_group.html.twig", [
             'group' => $group,
             'form' => $form->createView(),
         ]);
@@ -342,15 +344,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteGroupAction(Request $request, Group $group) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $group->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($group);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_contact_group_list');
     }
     
@@ -389,15 +393,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteRequestAction(Request $requestHttp, \Puzzle\ContactBundle\Entity\Request $request) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $request->getSubject()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($request);
         $em->flush();
         
         if ($requestHttp->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
-        return $this->redirectToRoute('admin_contact_group_list');
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('admin_contact_request_list');
     }
 }

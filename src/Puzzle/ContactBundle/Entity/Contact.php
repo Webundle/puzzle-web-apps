@@ -134,7 +134,7 @@ class Contact
         return $this;
     }
 
-    public function getPosition() :? int {
+    public function getPosition() :?string {
         return $this->position;
     }
 

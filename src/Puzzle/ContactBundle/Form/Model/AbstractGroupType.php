@@ -20,16 +20,16 @@ class AbstractGroupType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.group.name'
+                'label' => 'contact.group.name'
             ])
             ->add('description', TextareaType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.group.description',
+                'label' => 'contact.group.description',
                 'required' => false
             ])
             ->add('contacts', EntityType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.group.contacts',
+                'label' => 'contact.group.contacts',
                 'class' => Contact::class,
                 'choice_label' => 'fullName',
                 'multiple' => true,

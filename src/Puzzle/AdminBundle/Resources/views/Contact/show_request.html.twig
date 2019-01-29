@@ -1,14 +1,17 @@
 {% trans_default_domain 'messages' %}
 
 <div class="uk-modal-dialog">
-    <div class="uk-modal-header"><h3>{{ "contact.content.request.show"|trans }}</h3></div>
+    <div class="uk-modal-header"><h3>{{ "contact.request.show"|trans }}</h3></div>
     <div class="uk-modal-body">
+    	<div class="uk-margin-small-bottom">
+	        <p>{{ request.subject }}</p>
+	    </div>
 	    <div class="uk-margin-small-bottom">
 	        <p>{{ request.message }}</p>
 	    </div>
 	    <div class="uk-margin-small-bottom">
-	    	{{ request.markedAsRead == false  ? 'contact.property.request.createdAt'|trans : 'contact.property.request.updatedAt'|trans }} {{ request.markedAsRead == false ? request.createdAt|date('d-m-Y H:i') : request.updatedAt|date('d-m-Y H:i') }}, 
-	    	{{ 'contact.property.request.contact'|trans|lower }} <a href="{{ url('admin_contact_show', {'id': request.contact.id}) }}">{{ request.contact.fullName }}</a>
+	    	{{ request.markedAsRead == false  ? 'contact.request.createdAt'|trans : 'contact.request.updatedAt'|trans }} {{ request.markedAsRead == false ? request.createdAt|date('d-m-Y H:i') : request.updatedAt|date('d-m-Y H:i') }}, 
+	    	{{ 'contact.request.contact'|trans|lower }} <a href="{{ url('admin_contact_show', {'id': request.contact.id}) }}">{{ request.contact.fullName }}</a>
 	    </div>
 	</div>
 	<div class="uk-modal-footer uk-text-right">

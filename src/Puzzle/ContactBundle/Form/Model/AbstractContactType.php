@@ -6,10 +6,9 @@ use Puzzle\ContactBundle\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * @author AGNES Gnagne Cédric <cecenho55@gmail.com>
@@ -20,39 +19,39 @@ class AbstractContactType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.firstName'
+                'label' => 'contact.firstName'
             ])
             ->add('lastName', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.lastName'
+                'label' => 'contact.lastName'
             ])
             ->add('email', EmailType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.email'
+                'label' => 'contact.email'
             ])
             ->add('phoneNumber', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.phoneNumber',
+                'label' => 'contact.phoneNumber',
                 'required' => false
             ])
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.picture',
+                'label' => 'contact.picture',
                 'required' => false
             ))
             ->add('company', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.company',
+                'label' => 'contact.company',
                 'required' => false
             ])
             ->add('position', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.position',
+                'label' => 'contact.position',
                 'required' => false
             ])
             ->add('location', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'contact.property.contact.location',
+                'label' => 'contact.location',
                 'required' => false
             ])
         ;
