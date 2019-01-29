@@ -32,11 +32,11 @@ admin_user_group_create:
 
 admin_user_group_show:
     path:   /group/{id}/show
-    defaults: { _controller: UserBundle:Group:showGroup }
+    defaults: { _controller: UserBundle:Admin:showGroup }
 
 admin_user_group_update:
     path:   /group/{id}/update
-    defaults: { _controller: UserBundle:Group:updateGroup }
+    defaults: { _controller: UserBundle:Admin:updateGroup }
 
 admin_user_group_delete:
     path:   /group/{id}/delete

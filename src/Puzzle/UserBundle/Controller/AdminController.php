@@ -16,11 +16,52 @@ use Puzzle\MediaBundle\MediaEvents;
 use Puzzle\MediaBundle\Event\FileEvent;
 use Puzzle\UserBundle\UserEvents;
 use Puzzle\UserBundle\Event\UserEvent;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
 
 class AdminController extends Controller
 {
+    /**
+     * Login form
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function loginAction(Request $request)
+    {
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+        
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
+        } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
+            $error = $session->get(Security::AUTHENTICATION_ERROR);
+            $session->remove(Security::AUTHENTICATION_ERROR);
+        } else {
+            $error = null;
+        }
+        
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
+        
+        $csrfToken = $this->has('form.csrf_provider')
+        ? $this->get('form.csrf_provider')->generateCsrfToken('authenticate')
+        : null;
+        
+        return $this->render('AdminBundle:User:login.html.twig', array(
+            'last_username'  => $lastUsername,
+            'error'          => $error,
+            'csrf_token'     => $csrfToken
+        ));
+    }
+    
     /***
-     * Show Users
+     * List users
      * 
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -32,7 +73,7 @@ class AdminController extends Controller
     }
     
     /***
-     * Create User
+     * Create user
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -53,8 +94,8 @@ class AdminController extends Controller
             $user->setRoles(explode(',', $roles));
             
             // Update Security account
-            $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiredAt']));
-            $user->setAccountExpiresAt(new \DateTime($data['credentialsExpiredAt']));
+            $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiresAt']));
+            $user->setAccountExpiresAt(new \DateTime($data['accountExpiresAt']));
             
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -83,7 +124,7 @@ class AdminController extends Controller
                 ]));
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $user->getFullName()], 'messages'));
             return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
         }
         
@@ -94,7 +135,7 @@ class AdminController extends Controller
     }
     
     /***
-     * Update User
+     * Update user
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -107,15 +148,20 @@ class AdminController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['admin_user_create'];
+            $data = $request->request->all()['admin_user_update'];
             
             // Update roles
             $roles = $request->request->get('roles') !== "" ? $request->request->get('roles') : $data['roles'];
             $user->setRoles(explode(',', $roles));
             
             // Update Security account
-            $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiredAt']));
-            $user->setAccountExpiresAt(new \DateTime($data['credentialsExpiredAt']));
+            if (isset($data['credentialsExpiresAt']) && $data['credentialsExpiresAt']) {
+                $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiresAt']));
+            }
+            
+            if (isset($data['accountExpiresAt']) && $data['accountExpiresAt']) {
+                $user->setAccountExpiresAt(new \DateTime($data['accountExpiresAt']));
+            }
             
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -128,25 +174,9 @@ class AdminController extends Controller
                 ]));
             }
             
-            $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
-            if ($user->getPicture() === null || $user->getPicture() !== $picture) {
-                $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $picture,
-                    'context' => MediaUtil::extractContext(User::class),
-                    'user' => $this->getUser(),
-                    'closure' => function($filename) use ($user) {
-                        $user->setPicture($filename);
-                    }
-                 ]));
-            }
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $user->getFullName()], 'messages'));
             return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
         }
         
@@ -156,23 +186,27 @@ class AdminController extends Controller
         ]);
     }
     
+    
     /**
      * Delete a user
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteUserAction(Request $request, User $user) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $user->getFullName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_user_list');
     }
+    
     
     /***
      * Show groups
@@ -205,7 +239,7 @@ class AdminController extends Controller
             $em->persist($group);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $group->getName()], 'messages'));
             return $this->redirectToRoute('admin_user_group_update', ['id' => $group->getId()]);
         }
         
@@ -226,16 +260,15 @@ class AdminController extends Controller
             'action' => $this->generateUrl('admin_user_group_update', ['id' => $group->getId()])
         ]);
         $form->handleRequest($request);
-        
         if ($form->isSubmitted() === true && $form->isValid() === true) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_user_group_update', ['id' => $group->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_user_group_list', ['id' => $group->getId()]);
         }
         
-        return $this->render("UserBundle:Group:update_group.html.twig", [
+        return $this->render("AdminBundle:User:update_group.html.twig", [
             'group' => $group,
             'form' => $form->createView(),
         ]);
@@ -248,15 +281,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteGroupAction(Request $request, Group $group) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $group->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($group);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_user_group_list');
     }
 }

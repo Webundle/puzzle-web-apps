@@ -11,21 +11,27 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @author AGNES Gnagne Cédric <cecenho55@gmail.com>
  * 
  */
-class UserCreateType extends AbstractUserType
+class UserRegisterType extends AbstractUserType
 {
     public function buildForm(FormBuilderInterface $builder, array $options){
         parent::buildForm($builder, $options);
-        $builder->remove('picture');
+        $builder
+            ->remove('phoneNumber')
+            ->remove('credentialsExpiredAt')
+            ->remove('accountExpiredAt')
+            ->remove('enabled')
+            ->remove('picture')
+            ->remove('locked');
     }
     
     public function configureOptions(OptionsResolver $resolver) {
         parent::configureOptions($resolver);
         
-        $resolver->setDefault('csrf_token_id', 'user_create');
-        $resolver->setDefault('validation_groups', ['Create']);
+        $resolver->setDefault('csrf_token_id', 'user_register');
+        $resolver->setDefault('validation_groups', ['Register']);
     }
     
     public function getBlockPrefix() {
-        return 'admin_user_create';
+        return 'app_user_register';
     }
 }

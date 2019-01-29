@@ -22,29 +22,29 @@ class AbstractUserType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.firstName'
+                'label' => 'user.account.firstName'
             ])
             ->add('lastName', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.lastName'
+                'label' => 'user.account.lastName'
             ])
             ->add('email', EmailType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.email'
+                'label' => 'user.account.email'
             ])
             ->add('phoneNumber', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.phoneNumber',
+                'label' => 'user.account.phoneNumber',
                 'required' => false
             ])
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.picture',
+                'label' => 'user.account.picture',
                 'required' => false
             ))
             ->add('username', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.username',
+                'label' => 'user.account.username',
             ])
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
@@ -52,35 +52,35 @@ class AbstractUserType extends AbstractType
                 'options' => ['required' => false],
                 'first_options'  => [
                     'translation_domain' => 'messages',
-                    'label' => 'user.property.user.password'
+                    'label' => 'user.account.password'
                 ],
                 'second_options'  => [
                     'translation_domain' => 'messages',
-                    'label' => 'user.property.user.password_repeated'
+                    'label' => 'user.account.password_confirmation'
                 ],
                 'required' => false
             ))
-            ->add('credentialsExpiredAt', TextType::class, [
+            ->add('credentialsExpiresAt', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.credentialsExpiredAt',
+                'label' => 'user.account.credentialsExpiresAt',
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('accountExpiredAt', TextType::class, [
+            ->add('accountExpiresAt', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.accountExpiredAt',
+                'label' => 'user.account.accountExpiresAt',
                 'mapped' => false,
                 'required' => false
             ])
             ->add('enabled', CheckboxType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.enabled',
+                'label' => 'user.account.enabled',
                 'required' => false,
                 'mapped' => false,
             ))
             ->add('locked', CheckboxType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'user.property.user.locked',
+                'label' => 'user.account.locked',
                 'required' => false,
                 'mapped' => false,
             ))

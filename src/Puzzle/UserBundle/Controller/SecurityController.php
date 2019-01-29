@@ -10,6 +10,10 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Puzzle\UserBundle\UserEvents;
 use Puzzle\UserBundle\Entity\User;
 use Puzzle\UserBundle\Event\UserEvent;
+use Puzzle\UserBundle\Form\Type\UserRegisterType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Puzzle\UserBundle\Form\Type\UserResetPasswordType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * 
@@ -18,128 +22,111 @@ use Puzzle\UserBundle\Event\UserEvent;
  */
 class SecurityController extends Controller
 {
-	/**
-	 * Login
-	 * 
-	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
-	public function loginAction(Request $request)
-	{
-	    if ($request->getHost() === $this->getParameter("admin_host") || $request->query->get('scope') === 'admin'){
-	        return $this->redirect($this->generateUrl('admin_login'));
-	    }
-	    
-	    return $this->forward('UserBundle:Security:loginForm', ['template' => "AppBundle:Security:login.html.twig"]);
-	}
 	
-	/**
-	 * Admin Login
-	 *
-	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
-	public function adminLoginAction(Request $request){
-	    return $this->forward('UserBundle:Security:loginForm', ['template' => "AdminBundle:Security:login.html.twig"]);
-	}
-	
-	/**
-	 * Login form
-	 *
-	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
-	public function loginFormAction(Request $request, $template)
-	{
-	    /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
-	    $session = $request->getSession();
-	    
-	    // get the error if any (works with forward and redirect -- see below)
-	    if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
-	        $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
-	    } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
-	        $error = $session->get(Security::AUTHENTICATION_ERROR);
-	        $session->remove(Security::AUTHENTICATION_ERROR);
-	    } else {
-	        $error = null;
-	    }
-	    
-	    if (!$error instanceof AuthenticationException) {
-	        $error = null; // The value does not come from the security component.
-	    }
-	    
-	    // last username entered by the user
-	    $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
-	    
-	    $csrfToken = $this->has('form.csrf_provider')
-	    ? $this->get('form.csrf_provider')->generateCsrfToken('authenticate')
-	    : null;
-	    
-	    return $this->render($template, array(
-	        'last_username'  => $lastUsername,
-	        'error'          => $error,
-	        'csrf_token'     => $csrfToken
-	    ));
-	}
-	
-	
-	/**
-	 * Logout Admin
-	 *
-	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
-	 */
-	public function logoutAction(Request $request)
-	{
-		$this->get('security.token_storage')->setToken(null);
-		$request->getSession()->invalidate();
-		
-		$response = $this->redirectToRoute('login', array('scope' => $request->query->get('scope')));
-		$response->headers->clearCookie('REMEMBERME');
-		
-		return $response;
-	}
-	
-	/**
-	 *
-	 * Register
-	 *
-	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-	 */
-	public function registrationAction(Request $request)
-	{
-		$data = $request->request->all();
-		
-		$user = new User();
-		$em = $this->getDoctrine()->getManager();
-		
-		$user->setEmail($data['email']);
-		$user->setUsername($data['email']);
-		$user->setFirstName($data['first_name']);
-		$user->setLastName($data['last_name']);
-		$user->setPassword(hash('sha512', $data['password']));
-		$user->setRoles(array("ROLE_USER"));
-		
-		$em->persist($user);
-		$em->flush();
-		
-		/** User $user */
-		$this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($user, [
-		    'plainPassword' => $data['plainPassword']['first']
-		]));
-		
-		$roles = $user->getRoles();
-		
-		if (!is_array($roles)) {
-			$roles = array($roles);
-		}
-		
-		$token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $roles);
-		$this->get('security.token_storage')->setToken($token);
-		$request->getSession()->set('_security_main', serialize($token));
-		
-		return $this->redirectToRoute('app_homepage');
-	}
-	
+    /**
+     * @param Request $request
+     * @param string $token
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmEmailAction(Request $request, $email) {
+        return $this->render('AppBundle:User:confirm_email.html.twig', ['email' => (string) $email]);
+    }
+    
+    /**
+     * Resetting reset user password: send email
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function resettingSendEmailAction(Request $request) {
+        if ($username = $request->request->get('username')) {
+            /** @var \Doctrine\ORM\EntityManager $em */
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            /** @var \ApiBundle\Repository\UserRepository $er */
+            $er = $em->getRepository(User::class);
+            /** @var User $user */
+            $user = $er->loadUserByUsername($username);
+            
+            if (null !== $user && false === $user->isPasswordRequestNonExpired($this->getParameter('app.resetting.retry_ttl'))) {
+                if (null === $user->getConfirmationToken()) {
+//                     $user->setConfirmationToken(TokenGenerator::generate(12));
+                }
+                
+                /** @var \Symfony\Component\Translation\TranslatorInterface $translator */
+                $translator = $this->get('translator');
+                $subject = $translator->trans('resetting.email.subject', [], 'app');
+                $body = $this->renderView('AppBundle:User:resetting_email.txt.twig', [
+                    'username' => $username,
+                    'confirmationUrl' => $this->generateUrl('app_user_resetting_reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+                ]);
+                $this->sendEmail($this->getParameter('app.resetting.address'), $user->getEmail(), $subject, $body);
+                
+                $user->setPasswordRequestedAt(new \DateTime());
+                $em->flush();
+            }
+        }
+        
+        return new RedirectResponse($this->generateUrl('app_user_resetting_check_email', ['username' => $username]));
+    }
+    
+    /**
+     * Resetting reset user password: check email
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function resettingCheckEmailAction(Request $request) {
+        if (!$request->query->get('username')) {
+            return new RedirectResponse($this->generateUrl('app_user_resetting_request'));
+        }
+        
+        return $this->render('AppBundle:User:resetting_check_email.html.twig', [
+            'tokenLifetime' => ceil($this->getParameter('app.resetting.retry_ttl') / 3600)
+        ]);
+    }
+    
+    /**
+     * Resetting reset user password: show form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function resettingResetAction(Request $request, $token) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        /** @var \ApiBundle\Repository\UserRepository $er */
+        $er = $em->getRepository(User::class);
+        
+        /** @var User $user */
+        if (!$user = $er->findOneBy(['confirmationToken' => $token])) {
+            throw $this->createNotFoundException();
+        }
+        
+        $form = $this->createForm(UserResetPasswordType::class, $user, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('app_user_resetting_reset', ['token' => $token])
+        ]);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPasswordRequestedAt(null);
+            $user->setConfirmationToken(null);
+            $user->setPasswordChanged(true);
+            $user->setEnabled(true);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('app_security_login'));
+        }
+        return $this->render('AppBundle:User:resetting_reset.html.twig', ['form' => $form->createView()]);
+    }
+    
+    private function sendEmail($from, $to, string $subject, string $body) {
+        $message = \Swift_Message::newInstance()
+        ->setFrom($from)
+        ->setTo($to)
+        ->setSubject($subject)
+        ->setBody($body);
+        
+        $this->get('mailer')->send($message);
+    }
 }

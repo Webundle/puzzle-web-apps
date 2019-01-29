@@ -7,7 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 use Puzzle\MediaBundle\Traits\Pictureable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-                        
+use Doctrine\Common\Collections\Collection;
+                                
   /**
   * User
   *
@@ -118,11 +119,19 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
        */
       private $roles = array();
       
+      /**
+       * @var array
+       * @ORM\ManyToMany(targetEntity="Group", mappedBy="users")
+       */
+      private $groups;
+      
+      
       public function __construct() {
           $this->roles = [];
           $this->enabled = true;
           $this->locked = false;
           $this->passwordChanged = false;
+          $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
       }
       
       /**
@@ -392,5 +401,34 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
     
     public function __toString() {
         return $this->getFullName() ?: $this->username;
+    }
+    
+    public function setGroups (Collection $groups) :self {
+        foreach ($groups as $group) {
+            $this->addGroup($group);
+        }
+        
+        return $this;
+    }
+    
+    public function addGroup(Group $group) :self {
+        if ($this->groups->count() === 0 || $this->groups->contains($group) === false) {
+            $this->groups->add($group);
+            $group->addUser($this);
+        }
+        
+        return $this;
+    }
+    
+    public function removeGroup(Group $group) :self {
+        if ($this->groups->contains($group) === true) {
+            $this->groups->removeElement($group);
+        }
+        
+        return $this;
+    }
+    
+    public function getGroups() :?Collection {
+        return $this->groups;
     }
 }

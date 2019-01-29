@@ -2,7 +2,7 @@
 
 {% extends 'AdminBundle:User:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "user.account.create"|trans|capitalize }} {% endblock %}
+{% block title %}{{ parent() }} - {{ "user.account.update"|trans|capitalize }} {{ user }} {% endblock %}
 
 {% block breadcrumbmodule %}
     {{ parent() }}
@@ -10,15 +10,14 @@
        {{ 'user.account.list'|trans|capitalize }}
     </a>
     <i class="fa fa-chevron-right"></i>
-    <em>{{ "user.account.create"|trans|capitalize }}</em>
+    <em>{{ "user.account.update"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
     <div id="page_content_inner">
-        {% include 'AdminBundle:User:form_user.html.twig' with { 'form': form } %}
+        {% include 'AdminBundle:User:form_user.html.twig' with { 'form': form, 'user': user } %}
     </div>
 {% endblock %}
-
 
 {% block javascripts %}
     {{ parent() }}
@@ -26,7 +25,7 @@
         'bundles/admin/js/kendoui_custom.js'
         'bundles/admin/js/kendoui.js'
 
-        output="compile/js/admin_user_create.min.js" 
+        output="compile/js/admin_user_update.min.js" 
         %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

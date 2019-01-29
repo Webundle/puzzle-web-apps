@@ -4,6 +4,7 @@ namespace Puzzle\UserBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Puzzle\UserBundle\Form\Model\AbstractUserType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * 
@@ -12,6 +13,11 @@ use Puzzle\UserBundle\Form\Model\AbstractUserType;
  */
 class UserUpdateType extends AbstractUserType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options){
+        parent::buildForm($builder, $options);
+        $builder->remove('picture');
+    }
+    
     public function configureOptions(OptionsResolver $resolver) {
         parent::configureOptions($resolver);
         

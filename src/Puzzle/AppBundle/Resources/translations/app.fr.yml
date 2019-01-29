@@ -70,3 +70,48 @@ app:
         title: 'Souscrivez à notre Newsletter'
         placeholder: 'Votre e-mail'
         button: 'Souscrire' 
+
+    user:
+        registration:
+            email:
+                subject: 'Bienvenue %fullName%'
+                message: |
+                    Bonjour %fullName%
+                    
+                    Pour valider votre compte utilisateur, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>
+                    
+                    Ce lien ne peut être utilisé qu'une seule fois pour valider votre compte.
+                    
+                    Pour vous permettre d'accéder à votre compte un mot de passe aléatoire à été généré.<br/><br/>
+                    
+                    <strong>Nom d'utilisateur:</strong> %username% <br/>
+
+                    <strong>Mot de passe:</strong> %plainPassword% <br/><br/>
+                    
+                    N'oubliez surtout pas de le modifier après votre prémiere connexion.
+                    
+                    Cordialement,
+                    L'équipe
+                    
+            confirmed: 'Félicitations %username%, votre compte est maintenant activé.'
+        resetting:
+            request:
+                username: 'Nom d''utilisateur ou adresse e-mail'
+                submit: 'Réinitialiser le mot de passe'
+            check_email: |
+                Un e-mail a été envoyé. Il contient un lien sur lequel il vous faudra cliquer pour réinitialiser votre mot de passe.
+                Remarque: Vous ne pouvez demander un nouveau mot de passe que toutes les %tokenLifetime% heures.
+                
+                Si vous ne recevez pas un e-mail, vérifiez votre dossier spam ou essayer à nouveau.
+                
+            reset:
+                submit: 'Modifier le mot de passe'
+            email:
+                subject: 'Réinitialisation de votre mot de passe'
+                message: |
+                    Bonjour %username% !
+                    
+                    Pour réinitialiser votre mot de passe, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>
+                    
+                    Cordialement,
+                    L'équipe

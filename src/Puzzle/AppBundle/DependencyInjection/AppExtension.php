@@ -28,5 +28,7 @@ class AppExtension extends Extension
         $container->setParameter('app', $config);
         $container->setParameter('app.navigation', $config['navigation']);
         $container->setParameter('app.website', $config['website']);
+        $container->setParameter('app.resetting.retry_ttl', $config['resetting']['retry_ttl']);
+        $container->setParameter('app.resetting.address', $config['resetting']['address']);
     }
 }

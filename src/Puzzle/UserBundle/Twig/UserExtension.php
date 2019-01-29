@@ -2,6 +2,7 @@
 namespace Puzzle\UserBundle\Twig;
 
 use Doctrine\ORM\EntityManager;
+use Puzzle\UserBundle\Entity\User;
 
 /**
  *
@@ -27,7 +28,7 @@ class UserExtension extends \Twig_Extension
 	
 	public function getUserById($id) {
 	    try {
-	        return $this->em->getRepository("UserBundle:User")->find($id);
+	        return $this->em->getRepository(User::class)->find($id);
 	    } catch (\Exception $e) {
 	        return null;
 	    }

@@ -8,9 +8,16 @@ account_admin:
     options:
         expose: true
 
-user_admin:
+admin:
     resource: '@UserBundle/Resources/config/routing/admin.yml'
     prefix:   '%admin_prefix%user'
     host: '%admin_host%'
+    options:
+        expose: true
+
+app:
+    resource: '@UserBundle/Resources/config/routing/app.yml'
+    host: '%host%'
+    prefix: '/account'
     options:
         expose: true

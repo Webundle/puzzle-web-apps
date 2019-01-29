@@ -1,0 +1,84 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:User:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "user.account.show"|trans|capitalize }} {{ user.fullName|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_user_list') }} ">
+       {{ 'user.account.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "user.account.show"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block headingactions %}
+    <div class="heading_actions">
+        <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+            <a class="md-btn md-btn-flat " href="#" data-uk-modal="{ center:true }">
+                {{ 'layout.actions'|trans|upper }}
+                <i class="material-icons">&#xE5D4;</i>
+            </a>
+            <div class="uk-dropdown uk-dropdown-small">
+                <ul class="uk-nav">
+                    <li>
+                        <a href="{{ url('admin_user_update', {'id': user.id})}}">
+                            <i class="material-icons md-icon md-24">&#xE145;</i>
+                            {{ "button.update"|trans }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_user_delete', {'id': user.id}) }}" data-label="{{ user }}" class="remove-item">
+                            <i class="fa fa-trash-o uk-text-danger"></i>
+                            {{ "button.remove"|trans }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+            <div class="uk-width-large-7-10 uk-container-center">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+                            <div class="uk-width-large-7-10 uk-container-center">
+                                <section>
+                                    <p>
+                                        <label class="uk-text-small uk-text-muted">{{"user.account.fullName"}}</label> : {{ user.fullName|capitalize }}
+                                    </p>
+                                    <p>
+                                        <label class="uk-text-small uk-text-muted">{{"user.account.email"}}</label> : 
+                                        {{ user.email }}
+                                    </p>
+                                    <p>
+                                        <label class="uk-text-small uk-text-muted">{{"user.account.phone"}}</label> : 
+                                        {{ user.phone }}
+                                    </p>
+                                    <p>
+                                        <label class="uk-text-small uk-text-muted">{{"user.account.company"}}</label> :
+                                        {{ user.company }}
+                                    </p>
+                                    <p>
+                                        <label class="uk-text-small uk-text-muted">{{"user.account.position"}}</label> : 
+                                        {{ user.position }}
+                                    </p>
+                                </section>
+                            </div>
+                            {% if user.picture is not empty %}
+                                <div class="uk-width-large-3-10">
+                                    <img src="{{ user.picture }}" alt="" class="img_large"/>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
