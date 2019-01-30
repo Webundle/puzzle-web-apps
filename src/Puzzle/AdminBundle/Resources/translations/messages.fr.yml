@@ -4,6 +4,7 @@ layout:
     delete_list: ' Etes-vous sur de vouloir supprimer la sélection'
     multiple_actions: 'Actions groupées'
     actions: 'Actions'
+    login: 'Connectez-vous'
 
 locale:
     fr: 'Français'
@@ -509,6 +510,20 @@ user:
     icon: 'supervisor_account'
     my_account: 'Mon compte'
     logout: 'Déconnexion'
+    login:
+        title: 'Connectez-vous'
+        button: 'Se connecter'
+        help: 'Besoin d''aide ?'
+        remember_me: 'Maintenir ma connexion active'
+        impossible: 'Impossible de se connecter ?'
+        help_text: |
+            <p>Voici les informations qui vous permettront d'accéder à votre compte le plus rapidement possible.</p>
+            <p>Tout d'abord, essayez la chose la plus simple: si vous vous rappelez de votre mot de passe mais qu'il ne fonctionne pas, assurez-vous que Caps Lock est désactivé et que votre nom d'utilisateur est orthographié correctement, puis réessayez.</p>
+            <p>Si votre mot de passe ne fonctionne toujours pas, il est temps de <a href="#" id="password_reset_show">réinitialiser votre mot</a>.</p>
+        back: 'Retourner à l''espace public'
+    reset:
+        title: 'Réinitialiser votre mot de passe'
+        button: 'Réinitialiser'
     account:
         sidebar: 'Liste des comptes'
         firstName: 'Nom'
