@@ -45,7 +45,7 @@
 					   </a>
 						<div class="uk-dropdown uk-dropdown-small">
 							<ul class="uk-nav js-uk-prevent">
-								<li><a href="{{ url('admin_user_show', {'id': app.user.id}) }}">
+								<li><a href="{{ url('admin_user_update', {'id': app.user.id}) }}">
                                     <i class="fa fa-user"></i>
                                     {{ 'user.my_account'|trans }}
 								    </a>
@@ -93,11 +93,7 @@
 {% block alert %}
 	{% if app.session.flashBag.has('success') is not empty %}
 		{% for message in app.session.flashBag.get('success') %}
-            <input type="hidden" class="alert-flash" data-message="{{ message }}" data-pos="top-right">
-			{# <div class="uk-alert uk-alert-success" data-uk-alert="">
-                <a href="#" class="uk-alert-close uk-close"></a>
-                {{ message }}
-            </div> #}
+            <input type="hidden" class="alert-flash" data-message="<i class='fa fa-check-circle'></i> <b>{{ message }}</b>" data-status="success" data-pos="top-right" data-timeout="2000">
 		{% endfor %}
 	{% endif %}
 {% endblock %}
@@ -254,6 +250,16 @@
                 });
             }
         });
-        
+    </script>
+    <script type="text/javascript">
+        $(function(){
+             $('.alert-flash').each(function(){
+                showNotify($(this));
+                //     UIkit.notify({
+                //     message: $(this).data('message'),
+                //     pos: 'top-right'
+                // });
+             });
+        });
     </script>
 {% endblock %}
