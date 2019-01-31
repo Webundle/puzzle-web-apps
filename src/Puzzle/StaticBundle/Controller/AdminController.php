@@ -10,6 +10,9 @@ use Puzzle\StaticBundle\Form\Type\PageUpdateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Puzzle\StaticBundle\Form\Type\TemplateUpdateType;
+use Puzzle\StaticBundle\Form\Type\TemplateCreateType;
+use Puzzle\StaticBundle\Entity\Template;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -60,7 +63,7 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $page->getName()], 'messages'));
             return $this->redirectToRoute('admin_static_page_update', ['id' => $page->getId()]);
         }
         
@@ -100,7 +103,7 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $page->getName()], 'messages'));
             return $this->redirectToRoute('admin_static_page_update', ['id' => $page->getId()]);
         }
         
@@ -117,15 +120,114 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deletePageAction(Request $request, Page $page) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $page->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($page);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_static_page_list');
+    }
+    
+    
+    /***
+     * List templates
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listTemplatesAction(Request $request) {
+        return $this->render("AdminBundle:Static:list_templates.html.twig", array(
+            'templates' => $this->getDoctrine()->getRepository(Template::class)->findBy([], ['createdAt' => 'DESC'])
+        ));
+    }
+    
+    /***
+     * Create template
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createTemplateAction(Request $request) {
+        $template = new Template();
+        $form = $this->createForm(TemplateCreateType::class, $template, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_static_template_create')
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($template);
+            $em->flush();
+            
+            if ($request->isXmlHttpRequest() === true) {
+                return new JsonResponse(['status' => true]);
+            }
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $template->getName()], 'messages'));
+            return $this->redirectToRoute('admin_static_template_update', ['id' => $template->getId()]);
+        }
+        
+        return $this->render("AdminBundle:Static:create_template.html.twig", array(
+            'form' => $form->createView()
+        ));
+    }
+    
+    /***
+     * Update template
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateTemplateAction(Request $request, Template $template) {
+        $form = $this->createForm(TemplateUpdateType::class, $template, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_static_template_update', ['id' => $template->getId()])
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            
+            if ($request->isXmlHttpRequest() === true) {
+                return new JsonResponse(['status' => true]);
+            }
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $template->getName()], 'messages'));
+            return $this->redirectToRoute('admin_static_template_update', ['id' => $template->getId()]);
+        }
+        
+        return $this->render("AdminBundle:Static:update_template.html.twig", array(
+            'template' => $template,
+            'form' => $form->createView()
+        ));
+    }
+    
+    /***
+     * Delete template
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteTemplateAction(Request $request, Template $template) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $template->getName()], 'messages');
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($template);
+        $em->flush();
+        
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('admin_static_template_list');
     }
 }

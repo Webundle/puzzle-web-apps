@@ -21,12 +21,12 @@ class AbstractSubscriberType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.subscriber.name',
+                'label' => 'newsletter.subscriber.name',
                 'required' => false
             ])
             ->add('email', EmailType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.subscriber.email',
+                'label' => 'newsletter.subscriber.email',
                 'required' => true
             ))
         ;

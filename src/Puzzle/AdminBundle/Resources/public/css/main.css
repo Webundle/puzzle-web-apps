@@ -12804,3 +12804,7 @@ body {
 .k-input {
   border: solid 1px #d7d7d7;
 }
+
+.menu_icon .fa {
+  font-size: 1.3rem;
+}

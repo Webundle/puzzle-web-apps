@@ -20,11 +20,11 @@ class AbstractGroupType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.group.name'
+                'label' => 'newsletter.group.name'
             ])
             ->add('subscribers', EntityType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.group.subscribers',
+                'label' => 'newsletter.group.subscribers',
                 'class' => Subscriber::class,
                 'choice_label' => 'name',
                 'multiple' => true,

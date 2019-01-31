@@ -1,8 +1,8 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Static:layout_table.html.twig' %}
+{% extends 'AdminBundle:Static:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "static.content.page.list"|trans|capitalize }}{% endblock %}
+{% block title %}{{ parent() }} - {{ "static.page.list"|trans|capitalize }}{% endblock %}
 
 {% block headingactions %}
 <div class="heading_actions">
@@ -15,7 +15,7 @@
 
 {% block breadcrumbmodule %}
 	{{ parent() }}
-	<em>{{ "static.content.page.list"|trans|capitalize }}</em>
+	<em>{{ "static.page.list"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
@@ -23,18 +23,27 @@
         <div class="uk-width-1-1">
             <div class="md-card">
                 {% if pages is not empty %}
-                    <div class="md-card-toolbar">
+                    <div class="md-card-toolbar toggle-action uk-hidden">
                         <div class="md-card-toolbar-actions">
-                            <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
-                                <i class="fa fa-trash-o"></i> 
-                                {{ "button.remove_list"|trans }}
-                            </a>
-                            {# <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
-                                <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
-                                <span id="toggle-check-text">{{ "button.select_all"|trans }}</span>
-                            </a> #}
+                            <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                                <a class="uk-text-primary uk-text-bold">
+                                    {{ 'layout.multiple_actions'|trans }}
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li>
+                                            <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                                <i class="fa fa-trash-o uk-text-danger"></i> 
+                                                {{ "button.remove"|trans }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <input type="hidden" value="{{ pages|length|default('0') }}" id="toggle-items-count">
                             <input type="hidden" value="0" id="toggle-items-checked-count">
+                            <input type="hidden" value="" id="toggle-items-checked-id">
                         </div>
                     </div>
                 {% endif %}
@@ -43,9 +52,8 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>{{ "static.property.page.name"|trans }}</th>
-                                <th>{{ "static.property.page.created_at"|trans }}</th>
-                                <th>{{ "static.property.page.updated_at"|trans }}</th>
+                                <th>{{ "static.page.name"|trans }}</th>
+                                <th>{{ "static.page.slug"|trans }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -60,8 +68,7 @@
                                     <td>
                                         <a href="{{ url('admin_static_page_update', {'id': page.id}) }}">{{ page.name }}</a>
                                     </td>
-                                    <td>{{ page.createdAt|date('d-m-Y H:i') }}</td>
-                                    <td>{{ page.updatedAt|date('d-m-Y H:i') }}</td>
+                                    <td><code>{{ "{{ static_page("~page.slug~") }}" }}</code></td>
                                     <td class="uk-text-right">
                                         <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
                                             <a><i class="fa fa-ellipsis-h"></i></a>
@@ -74,7 +81,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_static_page_delete', {'id': page.id}) }}" data-label="{{ page.name }}" class="remove-item">
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_static_page_delete', {'id': page.id}) }}" data-text="{{ 'static.page.delete'|trans({'%pageName%': page.name}) }}" data-label="{{ page.name }}" class="remove-item">
                                                             <i class="fa fa-trash-o uk-text-danger"></i>
                                                             {{ "button.remove"|trans }}
                                                         </a>

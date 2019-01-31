@@ -2,7 +2,7 @@
 
 {{ form_start(form, {'method': 'POST'}) }}
     <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
-        <div class="uk-width-medium-7-10 uk-container-center">
+        <div class="uk-width-large-7-10">
             <div class="md-card">
                 <div class="md-card-content">
                     <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
@@ -20,8 +20,18 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData' : form.picture, 'suffix' : 'picture', 'data' : partner is defined ? partner.picture : null, 'context': 'static/pages' } %}
+        <div class="uk-width-large-3-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.template, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.template, {'attr' : {'data-md-selectize': true}}) }}
+                    </div>
+                </div>
+            </div>
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': page is defined ? page.picture : null, 'type': 'picture', 'context': 'cms/page', 'multiple': false })) }}
         </div>
     </div>
     <div class="uk-margin-top uk-text-center">

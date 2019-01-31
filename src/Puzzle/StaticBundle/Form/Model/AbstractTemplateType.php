@@ -2,14 +2,11 @@
 
 namespace Puzzle\StaticBundle\Form\Model;
 
+use Puzzle\StaticBundle\Entity\Template;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Puzzle\StaticBundle\Entity\Template;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -21,11 +18,11 @@ class AbstractTemplateType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'static.property.template.name',
+                'label' => 'static.template.name',
             ])
             ->add('content', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'static.property.template.content'
+                'label' => 'static.template.content'
             ))
         ;
     }

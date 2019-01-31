@@ -36,7 +36,6 @@ class AdminController extends Controller
         ));
     }
     
-    
     /***
      * Show group
      *
@@ -48,7 +47,6 @@ class AdminController extends Controller
             'group' => $group
         ));
     }
-    
     
     /***
      * Create group
@@ -79,8 +77,8 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
-            return $this->redirectToRoute('admin_newsletter_group_update', ['id' => $group->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_newsletter_group_list');
         }
         
         return $this->render("AdminBundle:Newsletter:create_group.html.twig", array(
@@ -88,7 +86,6 @@ class AdminController extends Controller
             'parent' => $request->query->get('parent')
         ));
     }
-    
     
     /***
      * Update group
@@ -111,8 +108,8 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_newsletter_group_update', ['id' => $group->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_newsletter_group_list');
         }
         
         return $this->render("AdminBundle:Newsletter:update_group.html.twig", array(
@@ -121,7 +118,6 @@ class AdminController extends Controller
         ));
     }
     
-    
     /***
      * Delete group
      *
@@ -129,15 +125,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteGroupAction(Request $request, Group $group) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $group->getName()], 'messages');
         
         $em = $this->getDoctrine()->getManager();
         $em->remove($group);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_newsletter_group_list');
     }
     
@@ -172,7 +170,7 @@ class AdminController extends Controller
             $em->persist($subscriber);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $subscriber->getEmail()], 'messages'));
             return $this->redirectToRoute('admin_newsletter_subscriber_list');
         }
         
@@ -198,7 +196,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $subscriber->getEmail()], 'messages'));
             return $this->redirectToRoute('admin_newsletter_subscriber_list');
         }
         
@@ -257,7 +255,7 @@ class AdminController extends Controller
             fclose($fp);
         }
         
-        $route = File::getBasePath().'/newsletter/subscribers/'.$basename;
+        $route = File::getBasePath().MediaUtil::extractContext(Subscriber::class).$basename;
         
         if ($request->isXmlHttpRequest() === true) {
             return new JsonResponse([
@@ -320,11 +318,13 @@ class AdminController extends Controller
                 }
             }
             
+            $message = $this->get('translator')->trans('success.post', ['%item%' => $subscriber->getEmail()], 'messages');
+            
             if ($request->isXmlHttpRequest() === true) {
-                return new JsonResponse(['status' => true]);
+                return new JsonResponse($message);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('admin_newsletter_subscriber_list');
         }
         
@@ -337,15 +337,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteSubscriberAction(Request $request, Subscriber $subscriber) {
+        $message = $this->get('translator')->trans('success.post', ['%item%' => $subscriber->getEmail()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($subscriber);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_newsletter_subscriber_list');
     }
     
@@ -384,7 +386,7 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $template->getName()], 'messages'));
             return $this->redirectToRoute('admin_newsletter_template_update', ['id' => $template->getId()]);
         }
         
@@ -414,7 +416,7 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $template->getName()], 'messages'));
             return $this->redirectToRoute('admin_newsletter_template_update', ['id' => $template->getId()]);
         }
         
@@ -431,15 +433,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteTemplateAction(Request $request, Template $template) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $template->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($template);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(['status' => true]);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_newsletter_template_list');
     }
 }

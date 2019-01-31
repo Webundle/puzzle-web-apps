@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Puzzle\StaticBundle\Entity\Template;
 
 /**
  * @author AGNES Gnagne Cédric <cecenho55@gmail.com>
@@ -20,15 +21,22 @@ class AbstractPageType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'static.property.page.name'
+                'label' => 'static.page.name'
             ])
+            ->add('template', EntityType::class, array(
+                'translation_domain' => 'messages',
+                'label' => 'static.page.template',
+                'class' => Template::class,
+                'choice_label' => 'name',
+                'required' => false
+            ))
             ->add('content', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'static.property.page.content'
+                'label' => 'static.page.content'
             ))
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'static.property.page.picture',
+                'label' => 'static.page.picture',
                 'required' => false
             ))
         ;

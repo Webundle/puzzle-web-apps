@@ -79,4 +79,13 @@ class Page
 	public function getPicture() :?string {
 	    return $this->picture;
 	}
+	
+	public function setTemplate(Template $template) :self  {
+	    $this->template = $template;
+	    return $this;
+	}
+	
+	public function getTemplate() :?Template {
+	    return $this->template;
+	}
 }

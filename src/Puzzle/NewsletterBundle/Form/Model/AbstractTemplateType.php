@@ -18,15 +18,15 @@ class AbstractTemplateType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.template.name',
+                'label' => 'newsletter.template.name',
             ])
             ->add('trigger', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.template.trigger'
+                'label' => 'newsletter.template.trigger'
             ))
             ->add('content', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'newsletter.property.template.content'
+                'label' => 'newsletter.template.content'
             ))
         ;
     }
