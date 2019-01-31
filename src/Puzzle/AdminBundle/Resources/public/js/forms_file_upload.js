@@ -4,8 +4,13 @@ $(function() {
 
 var altair_form_file_upload = {
     init: function(suffix) {
-        suffix != "" ? suffix = '_' + suffix : "";
         
+        if (suffix != "") {
+            suffix = '_' + suffix;
+        }else {
+             suffix = '_' + $("#file_type").val();
+        }
+
         var file_upload_context = $("#file_upload_context");
         var file_upload_select = $("#file_upload_select");
         var file_upload_drop = $("#file_upload_drop");

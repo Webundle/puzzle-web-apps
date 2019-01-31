@@ -162,6 +162,7 @@ media:
         filter_title: 'Filtrer'
         filter_all: 'Tous'
         filter_customize: 'Personnaliser'
+        selected: 'fichier (s) sélectionné(s)'
     picture:
         list: 'Photos'
         create: 'Importer des photos'
