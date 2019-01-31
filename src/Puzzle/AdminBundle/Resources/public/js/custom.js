@@ -204,6 +204,26 @@ $('body').on('click', '.remove-file', function(e) {
     $("#li-" + id).fadeOut();
 });
 
+$('body').on('click', '.file-to-remove', function(e) {
+    var id = $(this).attr('id'),
+        type = $(this).data('type');
+
+    // Get picture path to remove
+    var picture = $("#" + type + '-' + id).attr('src').split('?')[0];
+    // Get all pictures converted in array
+    var pictures = $("#files_to_add_" + type).val().split(',');
+    // Get picture index in pictures array
+    var index = pictures.indexOf(picture);
+    // Remove picture to pictures
+    if (index !== -1) pictures.splice(index, 1);
+    // Update filesToPictrue value
+    $("#files_to_add_" + type).val(pictures.join(','));
+    var nextLiId = parseInt(id) + 1;
+    $("#li-" + nextLiId).removeClass('uk-grid-margin');
+    // Remove DOM Element
+    $("#li-" + id).fadeOut();
+});
+
 // Datetime Picker
 $(".datepicker").kendoDateTimePicker({
     format: "dd-MM-yyyy HH:mm",

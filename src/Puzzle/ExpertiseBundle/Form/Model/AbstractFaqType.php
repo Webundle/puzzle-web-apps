@@ -18,11 +18,11 @@ class AbstractFaqType extends AbstractType
         $builder
             ->add('question', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.faq.question',
+                'label' => 'expertise.faq.question',
             ])
             ->add('answer', TextareaType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.faq.answer',
+                'label' => 'expertise.faq.answer',
             ])
         ;
     }

@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData' : form.picture, 'suffix' : 'picture', 'data' : partner is defined ? partner.picture : null, 'context': 'expertise/partners' } %}
+        {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': partner is defined ? partner.picture : null, 'type': 'picture', 'context': 'expertise/partner', 'multiple': false })) }}
 
         <div class="uk-margin-top uk-text-center">
             <a href="{{ url('admin_expertise_partner_list') }}" class="md-btn">

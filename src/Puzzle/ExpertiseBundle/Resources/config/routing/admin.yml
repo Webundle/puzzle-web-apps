@@ -45,6 +45,10 @@ admin_expertise_project_update:
     path:     /project/{id}/update
     defaults: { _controller: ExpertiseBundle:Admin:updateProject }
 
+admin_expertise_project_update_gallery:
+    path:     /project/{id}/update-gallery
+    defaults: { _controller: ExpertiseBundle:Admin:updateProjectGallery }
+
 admin_expertise_project_delete:
     path:     /project/{id}/delete
     defaults: { _controller: ExpertiseBundle:Admin:deleteProject }

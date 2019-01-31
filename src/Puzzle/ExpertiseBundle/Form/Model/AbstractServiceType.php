@@ -6,11 +6,9 @@ use Puzzle\ExpertiseBundle\Entity\Service;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author AGNES Gnagne Cédric <cecenho55@gmail.com>
@@ -21,20 +19,20 @@ class AbstractServiceType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.service.name',
+                'label' => 'expertise.service.name',
             ])
             ->add('description', TextareaType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.service.description',
+                'label' => 'expertise.service.description',
             ])
             ->add('classIcon', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.service.classIcon',
+                'label' => 'expertise.service.classIcon',
                 'required' => false
             ])
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.service.picture',
+                'label' => 'expertise.service.picture',
                 'required' => false,
                 'mapped' => false
             ))

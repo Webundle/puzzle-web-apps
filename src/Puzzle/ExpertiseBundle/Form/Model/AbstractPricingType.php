@@ -19,25 +19,25 @@ class AbstractPricingType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.pricing.name',
+                'label' => 'expertise.pricing.name',
             ])
             ->add('description', TextareaType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.pricing.description',
+                'label' => 'expertise.pricing.description',
             ])
             ->add('amount', IntegerType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.pricing.amount',
+                'label' => 'expertise.pricing.amount',
                 'required' => false
             ])
             ->add('currency', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.pricing.currency',
+                'label' => 'expertise.pricing.currency',
                 'required' => false
             ])
             ->add('period', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.pricing.period',
+                'label' => 'expertise.pricing.period',
                 'required' => false
             ])
         ;

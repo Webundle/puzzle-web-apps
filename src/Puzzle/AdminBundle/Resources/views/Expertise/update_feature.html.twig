@@ -1,19 +1,12 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Expertise:layout_editor.html.twig' %}
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header"><h3>{{ "expertise.feature.update"|trans }}</h3></div>
+    {% include 'AdminBundle:Expertise:form_feature.html.twig' with {'form': form, 'feature': feature} %}
+</div>
 
-{% block title %}{{ parent() }} - {{ "expertise.content.feature.update"|trans|capitalize }} {% endblock %}
-{% block breadcrumbmodule %}
-    {{ parent() }}
-    <a href=" {{ url('admin_expertise_feature_list') }} ">
-       {{ 'expertise.content.feature.list'|trans|capitalize }}
-    </a>
-    <i class="fa fa-chevron-right"></i>
-    <em>{{ "expertise.content.feature.update"|trans|capitalize }}</em>
-{% endblock %}
+<script type="text/javascript">
+    altair_forms.init();
+    altair_md.init();
+</script>
 
-{% block content %}
-    <div id="page_content_inner">
-        {% include 'AdminBundle:Expertise:form_feature.html.twig' with { 'form' : form, 'feature' : feature } %}
-    </div>
-{% endblock %}

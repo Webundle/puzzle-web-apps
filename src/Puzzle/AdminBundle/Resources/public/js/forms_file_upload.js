@@ -36,7 +36,7 @@ var altair_form_file_upload = {
                 },
                 complete: function(response,xhr) {
                     var obj = JSON.parse(response);
-                    if(data == ""){
+                    if (data == "") {
                         data = obj.id;
                     }else{
                         data = data + ',' + obj.id;
@@ -58,13 +58,16 @@ var altair_form_file_upload = {
                     // Show picture
                     target_container.removeClass("uk-hidden");
                     target_container.addClass("uk-display-block");
+                    console.log(target_element);
                     target_element.attr('src', obj.url);
+                    $('#item-count-container').removeClass('uk-hidden');
+                    $('#item-count').html(obj.url.split(',').length);
                     // Hide modal
                     UIkit.modal("#choose_files_modal").hide();
                     // Save picture value
                     files_to_add.val(data);
                     // Reload page automatically
-                    if($("#refresh-auto").val() == 1){
+                    if ($("#refresh-auto").val() == 1) {
                         window.location.assign($("#refresh-url").val());
                     }
                 }

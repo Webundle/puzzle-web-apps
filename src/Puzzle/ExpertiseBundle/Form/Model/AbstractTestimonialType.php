@@ -19,28 +19,28 @@ class AbstractTestimonialType extends AbstractType
         $builder
             ->add('author', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.testimonial.author',
+                'label' => 'expertise.testimonial.author',
                 'required' => true,
             ])
             ->add('company', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.testimonial.company',
+                'label' => 'expertise.testimonial.company',
                 'required' => false,
             ])
             ->add('position', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.testimonial.position',
+                'label' => 'expertise.testimonial.position',
                 'required' => false,
             ])
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.testimonial.picture',
+                'label' => 'expertise.testimonial.picture',
                 'required' => false,
                 'mapped' => false
             ))
             ->add('description', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.testimonial.description',
+                'label' => 'expertise.testimonial.description',
                 'required' => true,
             ))
         ;

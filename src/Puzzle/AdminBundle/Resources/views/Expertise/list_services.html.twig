@@ -1,8 +1,8 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Expertise:layout_table.html.twig' %}
+{% extends 'AdminBundle:Expertise:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "expertise.content.service.list"|trans|capitalize }}{% endblock %}
+{% block title %}{{ parent() }} - {{ "expertise.service.list"|trans|capitalize }}{% endblock %}
 
 {% block headingactions %}
 <div class="heading_actions">
@@ -15,7 +15,7 @@
 
 {% block breadcrumbmodule %}
     {{ parent() }}
-    <em>{{ "expertise.content.service.list"|trans|capitalize }}</em>
+    <em>{{ "expertise.service.list"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
@@ -23,16 +23,24 @@
         <div class="uk-width-1-1">
             <div class="md-card">
                 {% if services is not empty %}
-                    <div class="md-card-toolbar uk-hidden toggle-action">
+                    <div class="md-card-toolbar toggle-action uk-hidden">
                         <div class="md-card-toolbar-actions">
-                            <a href="#" class="md-btn md-btn-flat md-btn-flat-danger remove-list toggle-action uk-hidden" data-uk-modal="{target:'#remove_list_modal'}">
-                                <i class="fa fa-trash-o"></i> 
-                                {{ "button.remove_list"|trans|upper }}
-                            </a>
-                            <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="toggle-check">
-                                <i class="material-icons md-24 toggle-icon" id="toggle-check-icon">&#xE835;</i>
-                                <span id="toggle-check-text">{{ "button.select_all"|trans|upper }}</span>
-                            </a>
+                            <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                                <a class="uk-text-primary uk-text-bold">
+                                    {{ 'layout.multiple_actions'|trans }}
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li>
+                                            <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                                <i class="fa fa-trash-o uk-text-danger"></i> 
+                                                {{ "button.remove"|trans }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <input type="hidden" value="{{ services|length|default('0') }}" id="toggle-items-count">
                             <input type="hidden" value="0" id="toggle-items-checked-count">
                         </div>
@@ -43,9 +51,9 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>{{ "expertise.property.service.name"|trans }}</th>
-                                <th>{{ "expertise.property.service.createdAt"|trans }}</th>
-                                <th>{{ "expertise.property.service.updatedAt"|trans }}</th>
+                                <th>{{ "expertise.service.name"|trans }}</th>
+                                <th>{{ "expertise.service.createdAt"|trans }}</th>
+                                <th>{{ "expertise.service.updatedAt"|trans }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -68,12 +76,13 @@
                                             <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
                                                 <ul class="uk-nav uk-nav-dropdown">
                                                     <li>
-                                                        <a href="{{ url('admin_expertise_service_update', {'id': service.id}) }}" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.update"|trans }}" class="uk-hidden toggleable-btn" alt="{{ "button.update"|trans }}">
-                                                            <i class="material-icons md-icon uk-text-primary">&#xE3C9;</i>
+                                                        <a href="{{ url('admin_expertise_service_update', {'id': service.id}) }}">
+                                                            <i class="fa fa-pencil"></i>
+                                                            {{ "button.update"|trans }}
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_service_delete', {'id': service.id}) }}" data-label="{{ service.name }}" class="remove-item">
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_service_delete', {'id': service.id}) }}" data-text="{{ 'expertise.service.delete'|trans({'%serviceName%': service.name }) }}" data-label="{{ service.name }}" class="remove-item">
                                                             <i class="fa fa-trash-o uk-text-danger"></i>
                                                             {{ "button.remove"|trans }}
                                                         </a>

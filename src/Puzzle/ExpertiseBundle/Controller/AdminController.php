@@ -31,6 +31,7 @@ use Puzzle\ExpertiseBundle\Form\Type\FeatureUpdateType;
 use Puzzle\ExpertiseBundle\Entity\Pricing;
 use Puzzle\ExpertiseBundle\Form\Type\PricingCreateType;
 use Puzzle\ExpertiseBundle\Form\Type\PricingUpdateType;
+use Puzzle\ExpertiseBundle\Form\Type\ProjectUpdateGalleryType;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -94,7 +95,6 @@ class AdminController extends Controller
         ));
     }
     
-    
     /***
      * Update service
      *
@@ -154,7 +154,6 @@ class AdminController extends Controller
         return $this->redirectToRoute('admin_expertise_service_list');
     }
     
-    
     /***
      * Show Projects
      *
@@ -166,7 +165,6 @@ class AdminController extends Controller
             'projects' => $this->getDoctrine()->getRepository(Project::class)->findAll()
         ));
     }
-    
     
     /**
      *
@@ -201,9 +199,9 @@ class AdminController extends Controller
                         'context' => MediaUtil::extractContext(Project::class),
                         'user' => $this->getUser(),
                         'closure' => function($filename) use ($project) {
-                        $project->addPicture($filename);
+                            $project->addPicture($filename);
                         }
-                        ]));
+                    ]));
                 }
             }
             
@@ -211,7 +209,7 @@ class AdminController extends Controller
             $em->persist($project);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $project->getName()], 'messages'));
             return $this->redirectToRoute('admin_expertise_project_update', ['id' => $project->getId()]);
         }
         
@@ -240,10 +238,39 @@ class AdminController extends Controller
             $project->setStartedAt($data['startedAt']);
             $project->setEndedAt($data['endedAt']);
             
-            $pictures = $request->request->get('pictures') !== null ? $request->request->get('pictures') : $data['pictures'];
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
             
-            if ($project->getPictures() === null || $pictures !== implode(',', $project->getPictures())) {
-                $project->setPictures([]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $project->getName()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_project_update', ['id' => $project->getId()]);
+        }
+        
+        return $this->render("AdminBundle:Expertise:update_project.html.twig", array(
+            'project'  => $project,
+            'form'     => $form->createView()
+        ));
+    }
+    
+    /**
+     *
+     * Update project
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function updateProjectGalleryAction(Request $request, Project $project) {
+        $form = $this->createForm(ProjectUpdateGalleryType::class, $project, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_expertise_project_update_gallery', ['id' => $project->getId()])
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $data = $request->request->all()['admin_expertise_project_update_gallery'];
+            $pictures = $request->request->get('pictures') !== null ? $request->request->get('pictures') : $data['pictures']; 
+            
+            if ($pictures !== null) {
+//                 $project->setPictures([]);
                 $pictures = explode(',', $pictures);
                 
                 foreach ($pictures as $picture) {
@@ -252,22 +279,29 @@ class AdminController extends Controller
                         'context' => MediaUtil::extractContext(Project::class),
                         'user' => $this->getUser(),
                         'closure' => function($filename) use ($project) {
-                        $project->addPicture($filename);
+                            $project->addPicture($filename);
                         }
-                        ]));
+                    ]));
+                }
+            }
+            
+            if ($picturesToRemove = $request->request->get('pictures_to_remove')) {
+                $picturesToRemove = explode(',', $picturesToRemove);
+                foreach ($picturesToRemove as $pictureToRemove) {
+                    $project->removePicture($pictureToRemove);
                 }
             }
             
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_project_update', ['id' => $project->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $project->getName()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_project_update_gallery', ['id' => $project->getId()]);
         }
         
-        return $this->render("AdminBundle:Expertise:update_projects.html.twig", array(
-            'project'  => $project,
-            'form'     => $form->createView()
+        return $this->render("AdminBundle:Expertise:update_project_gallery.html.twig", array(
+            'project' => $project,
+            'form' => $form->createView()
         ));
     }
     
@@ -278,14 +312,19 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteProjectAction(Request $request, Project $project) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $project->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($project);
         $em->flush();
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_project_list');
     }
-    
     
     /***
      * Show Staffs
@@ -307,7 +346,6 @@ class AdminController extends Controller
      */
     public function createStaffAction(Request $request) {
         $staff = new Staff();
-        $em = $this->getDoctrine()->getManager();
         
         $form = $this->createForm(StaffCreateType::class, $staff, [
             'method' => 'POST',
@@ -328,10 +366,11 @@ class AdminController extends Controller
                 ]));
             }
             
+            $em = $this->getDoctrine()->getManager();
             $em->persist($staff);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post',  ['%item%' => (string)$staff], 'messages'));
             return $this->redirectToRoute('admin_expertise_staff_update', ['id' => $staff->getId()]);
         }
         
@@ -340,7 +379,6 @@ class AdminController extends Controller
             'parent' => $request->query->get('parent')
         ));
     }
-    
     
     /***
      * Update staff
@@ -371,7 +409,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => (string)$staff], 'messages'));
             return $this->redirectToRoute('admin_expertise_staff_update', ['id' => $staff->getId()]);
         }
         
@@ -388,11 +426,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteStaffAction(Request $request, Staff $staff) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => (string)$staff], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($staff);
         $em->flush();
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_staff_list');
     }
     
@@ -416,7 +460,6 @@ class AdminController extends Controller
      */
     public function createPartnerAction(Request $request){
         $partner = new Partner();
-        $em = $this->getDoctrine()->getManager();
         
         $form = $this->createForm(PartnerCreateType::class, $partner, [
             'method' => 'POST',
@@ -439,10 +482,11 @@ class AdminController extends Controller
                 ]));
             }
             
+            $em = $this->getDoctrine()->getManager();
             $em->persist($partner);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $partner->getName()], 'messages'));
             return $this->redirectToRoute('admin_expertise_partner_list');
         }
         
@@ -483,7 +527,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $partner->getName()], 'messages'));
             return $this->redirectToRoute('admin_expertise_partner_list');
         }
         
@@ -493,7 +537,6 @@ class AdminController extends Controller
         ));
     }
     
-    
     /***
      * Delete partner
      *
@@ -501,14 +544,19 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deletePartnerAction(Request $request, Partner $partner) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $partner->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($partner);
         $em->flush();
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_partner_list');
     }
-    
     
     /***
      * Show testimonials
@@ -554,15 +602,14 @@ class AdminController extends Controller
             $em->persist($testimonial);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_testimonial_update', ['id' => $testimonial->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $testimonial->getAuthor()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_testimonial_list');
         }
         
         return $this->render("AdminBundle:Expertise:create_testimonial.html.twig", array(
             'form' => $form->createView()
         ));
     }
-    
     
     /***
      * Update testimonial
@@ -588,16 +635,16 @@ class AdminController extends Controller
                     'context' => MediaUtil::extractContext(Testimonial::class),
                     'user' => $this->getUser(),
                     'closure' => function($filename) use ($testimonial) {
-                    $testimonial->setPicture($filename);
+                        $testimonial->setPicture($filename);
                     }
-                    ]));
+                 ]));
             }
             
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_testimonial_update', ['id' => $testimonial->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $testimonial->getAuthor()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_testimonial_list');
         }
         
         return $this->render("AdminBundle:Expertise:update_testimonial.html.twig", array(
@@ -612,13 +659,18 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteTestimonialAction(Request $request, Testimonial $testimonial)
-    {
+    public function deleteTestimonialAction(Request $request, Testimonial $testimonial) {
+        $message = $this->get('translator')->trans('success.put', ['%item%' => $testimonial->getAuthor()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($testimonial);
         $em->flush();
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        if  ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_testimonial_list');
     }
     
@@ -654,9 +706,8 @@ class AdminController extends Controller
             $em->persist($faq);
             $em->flush();
             
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_faq_update', ['id' => $faq->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $faq->getQuestion()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_faq_list', ['id' => $faq->getId()]);
         }
         
         return $this->render("AdminBundle:Expertise:create_faq.html.twig", [
@@ -682,8 +733,8 @@ class AdminController extends Controller
             $em->flush();
             
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_faq_update', ['id' => $faq->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $faq->getQuestion()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_faq_list', ['id' => $faq->getId()]);
         }
         
         return $this->render("AdminBundle:Expertise:update_faq.html.twig", [
@@ -699,11 +750,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteFaqAction(Request $request, Faq $faq) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $faq->getQuestion()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($faq);
         $em->flush();
         
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_faq_list');
     }
     
@@ -738,8 +795,8 @@ class AdminController extends Controller
             $em->persist($feature);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_feature_update', ['id' => $feature->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $feature->getName()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_feature_list');
         }
         
         return $this->render("AdminBundle:Expertise:create_feature.html.twig", [
@@ -764,9 +821,8 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
-            return $this->redirectToRoute('admin_expertise_feature_update', ['id' => $feature->getId()]);
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $feature->getName()], 'messages'));
+            return $this->redirectToRoute('admin_expertise_feature_list');
         }
         
         return $this->render("AdminBundle:Expertise:update_feature.html.twig", [
@@ -782,16 +838,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteFeatureAction(Request $request, Feature $feature) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $feature->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($feature);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(null, 204);
+            return new JsonResponse($message);
         }
         
-        
-        $this->addFlash('success', $this->get('translator')->trans('success.delete', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_feature_list');
     }
     
@@ -826,7 +883,7 @@ class AdminController extends Controller
             $em->persist($pricing);
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $pricing->getName()], 'messages'));
             return $this->redirectToRoute('admin_expertise_pricing_update', ['id' => $pricing->getId()]);
         }
         
@@ -852,7 +909,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $pricing->getName()], 'messages'));
             return $this->redirectToRoute('admin_expertise_pricing_update', ['id' => $pricing->getId()]);
         }
         
@@ -869,15 +926,17 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deletePricingAction(Request $request, Pricing $pricing) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $pricing->getName()], 'messages');
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($pricing);
         $em->flush();
         
         if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse(null, 204);
+            return new JsonResponse($message);
         }
         
-        $this->addFlash('success', $this->get('translator')->trans('success.put', [], 'messages'));
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_pricing_list');
     }
 }

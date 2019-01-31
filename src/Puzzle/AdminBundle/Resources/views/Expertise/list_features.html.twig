@@ -1,12 +1,12 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Expertise:layout_table.html.twig' %}
+{% extends 'AdminBundle:Expertise:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "expertise.content.feature.list"|trans|capitalize }}{% endblock %}
+{% block title %}{{ parent() }} - {{ "expertise.feature.list"|trans|capitalize }}{% endblock %}
 
 {% block headingactions %}
 <div class="heading_actions">
-    <a href="{{ url('admin_expertise_feature_create') }}">
+    <a href="{{ url('admin_expertise_feature_create') }}" class="show-modal">
         <span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
         <i class="fa fa-plus-circle"></i>
     </a>
@@ -15,7 +15,7 @@
 
 {% block breadcrumbmodule %}
     {{ parent() }}
-	<em>{{ "expertise.content.feature.list"|trans|capitalize }}</em>
+	<em>{{ "expertise.feature.list"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
@@ -51,8 +51,8 @@
                         <thead>
                         <tr>
                             <th></th>
-                            <th>{{ "expertise.property.feature.name"|trans }}</th>
-                            <th>{{ "expertise.property.feature.icon"|trans }}</th>
+                            <th>{{ "expertise.feature.name"|trans }}</th>
+                            <th>{{ "expertise.feature.icon"|trans }}</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -65,7 +65,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ url('admin_expertise_feature_update', {'id': feature.id}) }}">{{ feature.name }}</a>
+                                        <a href="{{ url('admin_expertise_feature_update', {'id': feature.id}) }}" class="show-modal">{{ feature.name }}</a>
                                     </td>
                                     <td>{{ feature.icon }}</td>
                                     <td class="uk-text-right">
@@ -74,13 +74,13 @@
                                             <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
                                                 <ul class="uk-nav uk-nav-dropdown">
                                                     <li>
-                                                        <a href="{{ url('admin_expertise_feature_update', { 'id': feature.id }) }}">
+                                                        <a href="{{ url('admin_expertise_feature_update', { 'id': feature.id }) }}" class="show-modal">
                                                             <i class="fa fa-pencil"></i>
                                                             {{ "button.update"|trans }}
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_feature_delete', {'id' : feature.id}) }}" data-label="{{ feature.name }}" class="remove-item">
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_feature_delete', {'id' : feature.id}) }}" data-text="{{ 'expertise.feature.delete'|trans({'%featureName%': feature.name }) }}" data-label="{{ feature.name }}" class="remove-item">
                                                             <i class="fa fa-trash-o uk-text-danger"></i>
                                                             {{ "button.remove"|trans }}
                                                         </a>

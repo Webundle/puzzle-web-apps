@@ -1,27 +1,20 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Expertise:layout_editor.html.twig' %}
+{% extends 'AdminBundle:Expertise:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "expertise.content.testimonial.create"|trans|capitalize }} {% endblock %}
+{% block title %}{{ parent() }} - {{ "expertise.testimonial.create"|trans|capitalize }} {% endblock %}
 
 {% block breadcrumbmodule %}
     {{ parent() }}
     <a href=" {{ url('admin_expertise_testimonial_list') }} ">
-       {{ 'expertise.content.testimonial.list'|trans|capitalize }}
+       {{ 'expertise.testimonial.list'|trans|capitalize }}
     </a>
     <i class="fa fa-chevron-right"></i>
-    <em>{{ "expertise.content.testimonial.create"|trans|capitalize }}</em>
+    <em>{{ "expertise.testimonial.create"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
     <div id="page_content_inner">
-        {% include 'AdminBundle:Expertise:form_testimonial.html.twig' with { 'form' : form } %}
-    </div>
-{% endblock %}
-
-{% block modal %}
-    <div class="uk-modal" id="choose_files_modal">
-        <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
-        </div>
+        {% include 'AdminBundle:Expertise:form_testimonial.html.twig' with {'form': form} %}
     </div>
 {% endblock %}

@@ -23,65 +23,65 @@ class AbstractStaffType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.firstName'
+                'label' => 'expertise.staff.firstName'
             ])
             ->add('lastName', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.lastName'
+                'label' => 'expertise.staff.lastName'
             ])
             ->add('service', EntityType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.service',
+                'label' => 'expertise.staff.service',
                 'class' => Service::class,
                 'choice_label' => 'name',
             ))
             ->add('position', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.position',
+                'label' => 'expertise.staff.position',
             ])
             ->add('ranking', IntegerType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.ranking',
+                'label' => 'expertise.staff.ranking',
             ])
             ->add('email', EmailType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.email',
+                'label' => 'expertise.staff.email',
                 'required' => false
             ])
             ->add('phoneNumber', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.phoneNumber',
+                'label' => 'expertise.staff.phoneNumber',
                 'required' => false
             ])
             ->add('facebook', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.facebook',
+                'label' => 'expertise.staff.facebook',
                 'required' => false
             ])
             ->add('twitter', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.twitter',
+                'label' => 'expertise.staff.twitter',
                 'required' => false
             ])
             ->add('googlePlus', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.googlePlus',
+                'label' => 'expertise.staff.googlePlus',
                 'required' => false
             ])
             ->add('linkedIn', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.linkedIn',
+                'label' => 'expertise.staff.linkedIn',
                 'required' => false
             ])
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.picture',
+                'label' => 'expertise.staff.picture',
                 'required' => false,
                 'mapped' => false
             ))
             ->add('description', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.staff.description',
+                'label' => 'expertise.staff.description',
                 'required' => false,
             ))
         ;

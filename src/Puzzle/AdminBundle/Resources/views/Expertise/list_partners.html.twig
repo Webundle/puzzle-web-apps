@@ -1,8 +1,8 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Expertise:layout_table.html.twig' %}
+{% extends 'AdminBundle:Expertise:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "expertise.content.partner.list"|trans|capitalize }}{% endblock %}
+{% block title %}{{ parent() }} - {{ "expertise.partner.list"|trans|capitalize }}{% endblock %}
 
 {% block headingactions %}
 <div class="heading_actions">
@@ -15,7 +15,7 @@
 
 {% block breadcrumbmodule %}
     {{ parent() }}
-	<em>{{ "expertise.content.partner.list"|trans|capitalize }}</em>
+	<em>{{ "expertise.partner.list"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
@@ -43,6 +43,7 @@
                             </div>
                             <input type="hidden" value="{{ partners|length|default('0') }}" id="toggle-items-count">
                             <input type="hidden" value="0" id="toggle-items-checked-count">
+                            <input type="hidden" value="" id="toggle-items-checked-id">
                         </div>
                     </div>
                 {% endif %}
@@ -51,8 +52,8 @@
                         <thead>
                         <tr>
                             <th></th>
-                            <th>{{ "expertise.property.partner.name"|trans }}</th>
-                            <th>{{ "expertise.property.partner.location"|trans }}</th>
+                            <th>{{ "expertise.partner.name"|trans }}</th>
+                            <th>{{ "expertise.partner.location"|trans }}</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -80,7 +81,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_partner_delete', {'id' : partner.id}) }}" data-label="{{ partner.name }}" class="remove-item">
+                                                        <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_partner_delete', {'id' : partner.id}) }}" data-text="{{ 'expertise.partner.delete'|trans({'%partnerName%': partner.name }) }}" data-label="{{ partner.name }}" class="remove-item">
                                                             <i class="fa fa-trash-o uk-text-danger"></i>
                                                             {{ "button.remove"|trans }}
                                                         </a>

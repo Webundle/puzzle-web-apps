@@ -20,21 +20,21 @@ class AbstractPartnerType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.partner.name'
+                'label' => 'expertise.partner.name'
             ])
             ->add('location', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.partner.location',
+                'label' => 'expertise.partner.location',
                 'required' => false
             ])
             ->add('tags', TextType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.partner.tags',
+                'label' => 'expertise.partner.tags',
                 'required' => false
             ))
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.partner.picture',
+                'label' => 'expertise.partner.picture',
                 'required' => false,
                 'mapped' => false
             ))

@@ -24,38 +24,38 @@ class AbstractProjectType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.name',
+                'label' => 'expertise.project.name',
             ])
             ->add('description', TextareaType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.description',
+                'label' => 'expertise.project.description',
             ])
             ->add('service', EntityType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.service',
+                'label' => 'expertise.project.service',
                 'class' => Service::class,
                 'choice_label' => 'name'
             ))
             ->add('startedAt', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.startedAt'
+                'label' => 'expertise.project.startedAt'
             ])
             ->add('endedAt', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.endedAt'
+                'label' => 'expertise.project.endedAt'
             ])
             ->add('client', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.client'
+                'label' => 'expertise.project.client'
             ])
             ->add('location', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.location',
+                'label' => 'expertise.project.location',
                 'required' => false
             ])
             ->add('pictures', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.project.pictures',
+                'label' => 'expertise.project.pictures',
                 'required' => false,
                 'mapped' => false
             ))

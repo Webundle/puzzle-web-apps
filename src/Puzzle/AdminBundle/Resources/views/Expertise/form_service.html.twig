@@ -28,7 +28,8 @@
                     </div>
                 </div>
             </div>
-            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData' : form.picture, 'suffix' : 'picture', 'data' : service is defined ? service.picture : null, 'context' : 'expertise/services' } %}
+            
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': service is defined ? service.picture : null, 'type': 'picture', 'context': 'expertise/service', 'multiple': false })) }}
         </div>
     </div>
     <div class="uk-text-center uk-margin-top">

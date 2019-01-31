@@ -18,15 +18,16 @@ class AbstractFeatureType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.feature.name',
+                'label' => 'expertise.feature.name',
             ])
             ->add('description', TextareaType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.feature.description',
+                'label' => 'expertise.feature.description',
+                'required' => false
             ])
             ->add('icon', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'expertise.property.feature.icon',
+                'label' => 'expertise.feature.icon',
                 'required' => false
             ])
         ;

@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
-            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData' : form.picture, 'suffix' : 'picture', 'data' : staff is defined ? staff.picture : null, 'context' : 'expertise/testimonial' } %}
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': testimonial is defined ? testimonial.picture : null, 'type': 'picture', 'context': 'expertise/testimonial', 'multiple': false })) }}
         </div>
     </div>
 

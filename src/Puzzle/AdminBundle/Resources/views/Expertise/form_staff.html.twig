@@ -112,7 +112,7 @@
                 </div>
             </div>
             
-            {% include 'AdminBundle:Media:embed_file.html.twig' with { 'formData' : form.picture, 'suffix' : 'picture', 'data' : staff is defined ? staff.picture : null, 'context' : 'expertise/staff' } %}
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': staff is defined ? staff.picture : null, 'type': 'picture', 'context': 'expertise/staff', 'multiple': false })) }}
         </div>
     </div>
 

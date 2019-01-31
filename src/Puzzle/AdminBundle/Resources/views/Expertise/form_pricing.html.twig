@@ -1,48 +1,60 @@
 {% trans_default_domain 'messages' %}
-<div class="uk-width-medium-6-10 uk-container-center">
-   {{ form_start(form) }}
-		<div class="md-card">
-            <div class="md-card-content">
-                <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
-                    <div class="uk-width-large-1-1">
-                        <div class="uk-form-row">
-                            {{ form_label(form.name, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-                            {{ form_widget(form.name, {'attr': {'class': 'md-input'}}) }}
-                        </div>
-                        <div class="uk-form-row">
-                            {{ form_label(form.amount, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-                            {{ form_widget(form.amount, {'attr': {'class': 'md-input'}}) }}
-                        </div>
-                        <div class="uk-form-row">
-                            {{ form_label(form.currency, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-                            {{ form_widget(form.currency, {'attr': {'class': 'md-input'}}) }}
-                        </div>
-                        <div class="uk-form-row">
-                            {{ form_label(form.period, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-                            {{ form_widget(form.period, {'attr': {'class': 'md-input'}}) }}
-                        </div>
-                        <div class="uk-form-row">
-                            {# {{ form_label(form.description, null, {'label_attr': {'class': 'uk-form-label'}}) }} #}
-                            {{ form_widget(form.description, {'id': 'wysiwyg_ckeditor'}) }}
+
+{{ form_start(form) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-xLarge-7-10 uk-width-large-7-10">
+    		<div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                        <div class="uk-width-large-1-1">
+                            <div class="uk-form-row">
+                                {{ form_label(form.name, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.name, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {# {{ form_label(form.description, null, {'label_attr': {'class': 'uk-form-label'}}) }} #}
+                                {{ form_widget(form.description, {'id': 'wysiwyg_ckeditor'}) }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="uk-margin-top uk-text-center">
-            <a href="{{ url('admin_expertise_pricing_list') }}" class="md-btn">
-                <i class="fa fa-arrow-left"></i>
-                {{ "button.cancel"|trans }}
-            </a>
-            <button class="md-btn md-btn-success" type="submit">
-                {% if pricing is defined %}
-                    {{ 'button.update'|trans }}
-                {% else %}
-                    {{ 'button.add'|trans }}
-                {% endif %}
-                <i class="fa fa-check"></i>
-            </button>
+        <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                        <div class="uk-width-large-1-1">
+                            <div class="uk-form-row">
+                                {{ form_label(form.amount, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.amount, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.currency, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.currency, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.period, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.period, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    {{ form_end(form) }}
-</div>
+    </div>
+    <div class="uk-margin-top uk-text-center">
+        <a href="{{ url('admin_expertise_pricing_list') }}" class="md-btn">
+            <i class="fa fa-arrow-left"></i>
+            {{ "button.cancel"|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if pricing is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}
