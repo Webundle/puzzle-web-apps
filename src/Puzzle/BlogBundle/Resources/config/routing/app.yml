@@ -1,42 +1,42 @@
 # Post
-app_blog_posts:
-    path:     /posts
+app_blog_post_list:
+    path:     /post/list
     defaults: { _controller: BlogBundle:App:listPosts }
 
 app_blog_post_show:
-    path:     /posts/{slug}
+    path:     /post/{slug}
     defaults: { _controller: BlogBundle:App:showPost }
 
 # Category
-app_blog_categories:
-    path:     /categories
+app_blog_category_list:
+    path:     /category/list
     defaults: { _controller: BlogBundle:App:listCategories }
 
-app_blog_category:
-    path:     /categories/{id}
+app_blog_category_show:
+    path:     /category/{id}/show
     defaults: { _controller: BlogBundle:App:showCategory }
 
 # Comment
 app_blog_comment_list:
-    path:     /posts/{id}/comments
+    path:     /post/{id}/comment/list
     defaults: { _controller: BlogBundle:App:listComments }
     
 app_blog_comment_create:
-    path:     /posts/{id}/comments/create
+    path:     /post/{id}/comment/create
     defaults: { _controller: BlogBundle:App:createComment }
 
 app_blog_comment_update:
-    path:     /comments/{id}/update
+    path:     /comment/{id}/update
     defaults: { _controller: BlogBundle:App:updateComment }
 
 app_blog_comment_delete:
-    path:     /comments/{id}/delete
+    path:     /comment/{id}/delete
     defaults: { _controller: BlogBundle:App:deleteComment } 
 
 app_blog_comment_vote_create:
-    path:     /comments/{id}/votes/create
+    path:     /comment/{id}/vote/create
     defaults: { _controller: BlogBundle:App:createCommentVote } 
 
 app_blog_comment_vote_delete:
-    path:     /comments/votes/{id}/delete
+    path:     /comment/vote/{id}/delete
     defaults: { _controller: BlogBundle:App:deleteCommentVote } 
