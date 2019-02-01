@@ -21,7 +21,7 @@ use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
  * Project
  *
  * @ORM\Table(name="expertise_project")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Puzzle\ExpertiseBundle\Repository\ProjectRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Project

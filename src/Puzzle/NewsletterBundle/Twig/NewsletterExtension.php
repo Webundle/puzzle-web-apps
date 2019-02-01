@@ -2,92 +2,76 @@
 namespace Puzzle\NewsletterBundle\Twig;
 
 use Doctrine\ORM\EntityManager;
+use Knp\Component\Pager\Paginator;
+use Puzzle\NewsletterBundle\Entity\Group;
+use Puzzle\NewsletterBundle\Entity\Subscriber;
+use Puzzle\NewsletterBundle\Entity\Template;
 
 /**
  *
- * @author Baidai Cedrick Oka <cedric.baidai@veone.net>
+ * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
  *
  */
 class NewsletterExtension extends \Twig_Extension
 {
-	/**
-	 * @var EntityManager $em
-	 */
+    /**
+     * @var EntityManager $em
+     */
     protected $em;
-		
-	public function __construct(EntityManager $em) {
-		$this->em = $em;
-	}
-	
-	public function getFunctions() {
-		return [
-		    new \Twig_SimpleFunction('count_groups', [$this, 'countGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
-			new \Twig_SimpleFunction('count_subscribers_group', [$this, 'countSubscribersByGroupName'], ['needs_environment' => false, 'is_safe' => ['html']]),
-		    new \Twig_SimpleFunction('count_subscribers_group_reverse', [$this, 'countSubscribersByNotGroupName'], ['needs_environment' => false, 'is_safe' => ['html']])
-		];
-	}
-	
-	public function countGroups(array $criteria) {
-	    return $this->em->getRepository("NewsletterBundle:Group")->countBy(
-	        null, null, $criteria
-	    );
-	}
-	
-	/**
-	 * Count subscribers by group name
-	 * 
-	 * @param string $groupName
-	 * @return int
-	 */
-	public function countSubscribersByGroupName(string $groupName) {
-	    $group = $this->em->getRepository("NewsletterBundle:Group")->findOneBy(['name' => $groupName]);
-	    
-	    if ($group === null) {
-	        return null;
-	    }
-	    
-	    $subscribers = $group->getSubscribers();
-	    $list = null;
-	    
-	    if ($subscribers !== null) {
-	        foreach ($subscribers as $key => $subscriber){
-	            $list = $key <= 0 ? "'".$subscriber."'": $list.','."'".$subscriber."'";
-	        }
-	    }
-	    
-	    return $this->em->getRepository("NewsletterBundle:Subscriber")->countBy(
-	        null, [['id', null, 'IN ('.$list.')']]
-	    );
-	}
-	
-	/**
-	 * Count subscribers by not group name
-	 * @param string $groupName
-	 * @return int
-	 */
-	public function countSubscribersByNotGroupName(string $groupName) {
-	    $groups = $this->em->getRepository("NewsletterBundle:Group")->customFindBy(
-	        null, null, [['name', $groupName, '!=']]
-	    );
-	    
-	    $subscribers = [];
-	    foreach ($groups as $promotion) {
-	        if ($promotion->getSubscribers() !== null) {
-	            $subscribers = array_merge($subscribers, $promotion->getSubscribers());
-	        }
-	    }
-	    
-	    $subscribers = array_unique($subscribers);
-	    $list = null;
-	    
-	    if ($subscribers !== null) {
-	        foreach ($subscribers as $key => $subscriber){
-	            $list = $key <= 0 ? "'".$subscriber."'": $list.','."'".$subscriber."'";
-	        }
-	    }
-	    
-	    return $this->em->getRepository("NewsletterBundle:Subscriber")->countBy(
-	        null, [['id', null, 'IN ('.$list.')']]
-	    );
-	}
+    
+    /**
+     * @var Paginator $paginator
+     */
+    protected $paginator;
+    
+    public function __construct(EntityManager $em, Paginator $paginator) {
+        $this->em = $em;
+        $this->paginator = $paginator;
+    }
+    
+    public function getFunctions() {
+        return [
+            new \Twig_SimpleFunction('newsletter_groups', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_group', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_subscribers', [$this, 'getSubscribers'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_subscriber', [$this, 'getSubscriber'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_templates', [$this, 'getTemplates'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_template', [$this, 'getTemplate'], ['needs_environment' => false, 'is_safe' => ['html']])
+        ];
+    }
+    
+    public function getGroups(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Group::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getGroup($id) {
+        if (!$group = $this->em->find(Group::class, $id)) {
+            $group =  $this->em->getRepository(Group::class)->findOneBy(['slug' => $id]);
+        }
+        
+        return $group;
+    }
+    
+    public function getSubscribers(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Subscriber::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getSubscriber($id) {
+        if (!$subscriber = $this->em->find(Subscriber::class, $id)) {
+            $subscriber =  $this->em->getRepository(Subscriber::class)->findOneBy(['slug' => $id]);
+        }
+        
+        return $subscriber;
+    }
+    
+    public function getTemplates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Template::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getTemplate($id) {
+        return $this->em->find(Template::class, $id);
+    }
 }

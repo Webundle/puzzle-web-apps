@@ -2,7 +2,7 @@ services:
     # Twig extension
     static.twig.extension:
         class: Puzzle\StaticBundle\Twig\StaticExtension
-        arguments: [ '@doctrine.orm.entity_manager' ]
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
         public: false
         tags:
             - { name: twig.extension }

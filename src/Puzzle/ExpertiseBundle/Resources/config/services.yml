@@ -5,7 +5,7 @@ services:
 # Twig extension
     expertise.twig.extension:
         class: Puzzle\ExpertiseBundle\Twig\ExpertiseExtension
-        arguments: [ '@doctrine.orm.entity_manager' ]
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
         public: false
         tags:
             - { name: twig.extension }

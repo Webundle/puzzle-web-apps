@@ -19,7 +19,7 @@ use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
  * Service
  *
  * @ORM\Table(name="expertise_pricing")
- * @ORM\Entity(repositoryClass="Puzzle\ExpertiseBundle\Repository\ServiceRepository")
+ * @ORM\Entity(repositoryClass="Puzzle\ExpertiseBundle\Repository\PricingRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Pricing

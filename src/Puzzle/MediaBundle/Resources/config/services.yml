@@ -33,7 +33,7 @@ services:
     # Twig extension
     media.twig.extension:
         class: Puzzle\MediaBundle\Twig\MediaExtension
-        arguments: [ '@doctrine.orm.entity_manager' ]
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
         public: false
         tags:
             - { name: twig.extension }

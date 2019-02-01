@@ -4,7 +4,7 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
     newsletter.twig.extension:
         class: Puzzle\NewsletterBundle\Twig\NewsletterExtension
-        arguments: [ '@doctrine.orm.entity_manager']
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
         tags:
           - { name: twig.extension }
           

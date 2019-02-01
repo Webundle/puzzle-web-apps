@@ -13,7 +13,7 @@ services:
     # Twig extension
     calendar.twig.extension:
         class: Puzzle\CalendarBundle\Twig\CalendarExtension
-        arguments: [ '@doctrine.orm.entity_manager' ]
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
         public: false
         tags:
             - { name: twig.extension }

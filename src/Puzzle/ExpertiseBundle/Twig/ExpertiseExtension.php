@@ -10,6 +10,7 @@ use Puzzle\ExpertiseBundle\Entity\Project;
 use Puzzle\ExpertiseBundle\Entity\Service;
 use Puzzle\ExpertiseBundle\Entity\Staff;
 use Puzzle\ExpertiseBundle\Entity\Testimonial;
+use Knp\Component\Pager\Paginator;
 
 /**
  *
@@ -23,52 +24,114 @@ class ExpertiseExtension extends \Twig_Extension
      */
     protected $em;
     
-    public function __construct(EntityManager $em) {
+    /**
+     * @var Paginator $paginator
+     */
+    protected $paginator;
+    
+    public function __construct(EntityManager $em, Paginator $paginator) {
         $this->em = $em;
+        $this->paginator = $paginator;
     }
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('expertise_faqs', [$this, 'getFeatures'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_faqs', [$this, 'getFaqs'], ['needs_environment' => false, 'is_safe' => ['html']]),            new \Twig_SimpleFunction('expertise_faqs', [$this, 'getFaqs'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_faq', [$this, 'getFaq'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('expertise_features', [$this, 'getFeatures'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_feature', [$this, 'getFeature'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('expertise_partners', [$this, 'getPartners'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('expertise_pricings', [$this, 'getPartners'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_partner', [$this, 'getPartner'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_pricings', [$this, 'getPricings'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_pricing', [$this, 'getPricing'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('expertise_projects', [$this, 'getProjects'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_project', [$this, 'getProject'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('expertise_services', [$this, 'getServices'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_service', [$this, 'getService'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('expertise_staffs', [$this, 'getStaffs'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_staff', [$this, 'getStaff'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('expertise_testimonials', [$this, 'getTestimonials'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('expertise_testimonial', [$this, 'getTestimonial'], ['needs_environment' => false, 'is_safe' => ['html']]),
         ];
     }
     
-    public function getFaqs(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Faq::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getFaqs(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Faq::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
     }
     
-    public function getFeatures(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Feature::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getFaq($id) {
+        return $this->em->find(Faq::class, $id);
     }
     
-    public function getPartners(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Partner::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getFeatures(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Feature::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
     }
     
-    public function getPricings(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Pricing::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getFeature($id) {
+        return $this->em->find(Feature::class, $id);
     }
     
-    public function getProjects(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Project::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getPartners(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Partner::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
     }
     
-    public function getServices(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Service::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getPartner($id) {
+        return $this->em->find(Partner::class, $id);
     }
     
-    public function getStaffs(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Staff::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getPricings(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Pricing::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
     }
     
-    public function getTestimonials(array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $offset = null) {
-        return $this->em->getRepository(Testimonial::class)->findBy($criteria, $orderBy, $limit, $offset);
+    public function getPricing($id) {
+        return $this->em->find(Pricing::class, $id);
+    }
+    
+    public function getProjects(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Project::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getProject($id) {
+        if (!$project = $this->em->find(Project::class, $id)) {
+            $project =  $this->em->getRepository(Project::class)->findOneBy(['slug' => $id]);
+        }
+        
+        return $project;
+    }
+    
+    public function getServices(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Service::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getService($id) {
+        if (!$service = $this->em->find(Service::class, $id)) {
+            $service =  $this->em->getRepository(Service::class)->findOneBy(['slug' => $id]);
+        }
+        
+        return $service;
+    }
+    
+    public function getStaffs(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Staff::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getStaff($id) {
+        return $this->em->find(Staff::class, $id);
+    }
+    
+    public function getTestimonials(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Testimonial::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getTestimonial($id) {
+        return $this->em->find(Testimonial::class, $id);
     }
 }

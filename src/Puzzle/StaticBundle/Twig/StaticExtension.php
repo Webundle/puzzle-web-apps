@@ -2,6 +2,8 @@
 namespace Puzzle\StaticBundle\Twig;
 
 use Doctrine\ORM\EntityManager;
+use Puzzle\StaticBundle\Entity\Template;
+use Puzzle\StaticBundle\Entity\Page;
 
 /**
  *
@@ -21,16 +23,32 @@ class StaticExtension extends \Twig_Extension
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('static_page_by_slug', [$this, 'getPageBySlug'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('static_pages_by_parent', [$this, 'getPagesByParent'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('static_pages', [$this, 'getPages'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('static_page', [$this, 'getPage'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_templates', [$this, 'getTemplates'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('newsletter_template', [$this, 'getTemplate'], ['needs_environment' => false, 'is_safe' => ['html']])
         ];
     }
     
-    public function getPageBySlug($slug) {
-        return $this->em->getRepository("StaticBundle:Page")->findOneBy(['slug' => $slug]);
+    public function getPages(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Page::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
     }
     
-    public function getPagesByParent($parentId) {
-        return $this->em->getRepository("StaticBundle:Page")->findBy(['parent' => $parentId]);
+    public function getPage($id) {
+        if (!$page = $this->em->find(Page::class, $id)) {
+            $page =  $this->em->getRepository(Page::class)->findOneBy(['slug' => $id]);
+        }
+        
+        return $page;
+    }
+    
+    public function getTemplates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
+        $query = $this->em->getRepository(Template::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+    
+    public function getTemplate($id) {
+        return $this->em->find(Template::class, $id);
     }
 }

@@ -130,8 +130,7 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         array $criteria = null,
         array $orderBy = null,
         int $limit = null,
-        int $offset = null,
-        bool $useCache = false
+        int $offset = null
         ) {
             if (is_array($fields) && count($fields) > 0) {
             foreach ($fields as $key => $field) {
@@ -191,12 +190,6 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
             $queryBuilder = $queryBuilder->setFirstResult($offset);
         }
         
-        $query = $queryBuilder->getQuery();
-        
-        if ($useCache === true){
-            $query->useResultCache(true)->useQueryCache(true);
-        }
-        
-        return $query;
+        return $queryBuilder->getQuery();
     }
 }
