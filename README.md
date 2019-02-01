@@ -202,6 +202,208 @@ admin_prefix: '/' # or /admin/ if with you don't use subdomain
 ### **Step 5: Default configurations**
 Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
 ```yaml
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    # - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: fr
+
+framework:
+    #esi:             ~
+    # default_locale: fr
+    translator:
+        fallbacks: ["%locale%"]
+
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+    assets:
+        version: 2
+        version_format: '%%s?version=%%s'
+        base_path: ~
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    paths:
+        '%kernel.root_dir%/../web': template
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    # bundles:        [AppBundle]
+    java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        # yui_js:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
+        # yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+            # metadata_cache_driver: apc
+        # result_cache_driver: 
+        #     type: memcached
+        #     host: localhost
+        #     port: 11211
+        #     instance_class: Doctrine\Common\Cache\MemcachedCache
+        # query_cache_driver:
+        #     type:                 array # Required
+        #     host:                 ~
+        #     port:                 ~
+        #     instance_class:       ~
+        #     class:                ~
+        #     namespace:            ~
+#        mappings:
+#            translatable:
+#                type: annotation
+#                is_bundle: false
+#                prefix: Gedmo\Translatable\Entity
+#                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+#                alias: GedmoTranslatable
+#            gedmo_translator:
+#                type: annotation
+#                prefix: Gedmo\Translator\Entity
+#                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+#                alias: GedmoTranslator # (optional) it will default to the name set for the mapping
+#                is_bundle: false
+#
+#stof_doctrine_extensions:
+#    default_locale: "%locale%"
+#    translation_fallback: true
+#    orm:
+#        default:
+##            tree: true
+#            translatable: true
+#            sluggable: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# Knp Paginator
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+        # filter_field_name: filterField  # filter field query parameter name
+        # filter_value_name: filterValue  # filter value query parameter name
+    template:
+        pagination: AppBundle:Pagination:sliding.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+        filtration: KnpPaginatorBundle:Pagination:filtration.html.twig  # filters template
+
+# Knp Doctrine Behaviors
+knp_doctrine_behaviors:
+    blameable:      true
+    geocodable:     ~     # Here null is converted to false
+    loggable:       ~
+    timestampable:  true
+    sluggable:      true
+    soft_deletable: true
+    # All others behaviors are disabled
+    
+# Liip
+liip_imagine :
+    # configure resolvers
+    resolvers :
+        # setup the default resolver
+        default :
+            # use the default web path
+            web_path : ~
+    # your filter sets are defined here
+    filter_sets :
+        # use the default cache configuration
+        cache : ~
+        # the name of the "filter set"
+        logo_thumb :
+            # adjust the image quality to 75%
+            quality : 100
+            # list of transformations to apply (the "filters")
+            filters :
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail  : { size : [50, 50], mode : outbound }
+        
+        # the name of the "filter set"
+        product_small :
+            # adjust the image quality to 75%
+            quality : 100
+            # list of transformations to apply (the "filters")
+            filters :
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail  : { size : [400, 400], mode : outbound }
+        
+        # the name of the "filter set"
+        product_thumb :
+            # adjust the image quality to 75%
+            quality : 100
+            # list of transformations to apply (the "filters")
+            filters :
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail  : { size : [95, 60], mode : outbound }
+
+        # the name of the "filter set"
+        thumb :
+            # adjust the image quality to 75%
+            quality : 100
+            # list of transformations to apply (the "filters")
+            filters :
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail  : { size : [95, 60], mode : outbound }
+
 # Admin Configuration
 admin:
     website:
@@ -239,6 +441,7 @@ app:
                 label: 'app.home.title'
                 translation_domain: 'app'
                 path: app_homepage
+                parent: ~
 ```
 
 
@@ -277,7 +480,7 @@ class AppKernel extends Kernel
 Register default routes by adding it in the `app/config/routing.yml` file of your project:
 ```yaml
 ....
-blog:
+user:
     resource: "@UserBundle/Resources/config/routing.yml"
     prefix:   /
 
@@ -353,7 +556,7 @@ class AppKernel extends Kernel
 Register default routes by adding it in the `app/config/routing.yml` file of your project:
 ```yaml
 ....
-blog:
+media:
     resource: "@MediaBundle/Resources/config/routing.yml"
     prefix:   /
 
@@ -471,7 +674,19 @@ admin:
                 sub_paths: ['admin_blog_category_create', 'admin_blog_category_update', 'admin_blog_category_show']
                 parent: blog
                 user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
-
+                
+# App Configuration
+app:
+    ...
+    navigation:
+        nodes:
+            ...
+            service:
+                label: 'app.service.title'
+                translation_domain: 'app'
+                path: app_expertise_service_list
+                sub_paths: [app_expertise_service_show]
+                parent: ~
 ```
 
 
@@ -511,12 +726,12 @@ class AppKernel extends Kernel
 Register default routes by adding it in the `app/config/routing.yml` file of your project:
 ```yaml
 ....
-blog:
+calendar:
     resource: "@CalendarBundle/Resources/config/routing.yml"
     prefix:   /
 
 ```
-See all caendar routes by typing: `php bin/console debug:router | grep calendar`
+See all calendar routes by typing: `php bin/console debug:router | grep calendar`
 
 ### **Step 3: Configure**
 Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
@@ -592,7 +807,7 @@ class AppKernel extends Kernel
 Register default routes by adding it in the `app/config/routing.yml` file of your project:
 ```yaml
 ....
-blog:
+contact:
     resource: "@ContactBundle/Resources/config/routing.yml"
     prefix:   /
 
@@ -639,3 +854,283 @@ admin:
                 user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
 ```
 
+
+
+---
+
+## **Expertise Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\ExpertiseBundle\ExpertiseBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+expertise:
+    resource: "@ExpertiseBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all contact expertise by typing: `php bin/console debug:router | grep expertise`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Expertise
+            expertise:
+                label: 'expertise.title'
+                description: 'expertise.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-suitcase'
+                parent: ~
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_service:
+                label: 'expertise.service.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_service_list'
+                sub_paths: ['admin_expertise_service_create', 'admin_expertise_service_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_feature:
+                label: 'expertise.feature.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_feature_list'
+                sub_paths: ['admin_expertise_feature_create', 'admin_expertise_feature_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_project:
+                label: 'expertise.project.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_project_list'
+                sub_paths: ['admin_expertise_project_create', 'admin_expertise_project_update', 'admin_expertise_project_update_gallery']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_staff:
+                label: 'expertise.staff.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_staff_list'
+                sub_paths: ['admin_expertise_staff_create', 'admin_expertise_staff_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_pricing:
+                label: 'expertise.pricing.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_pricing_list'
+                sub_paths: ['admin_expertise_pricing_create', 'admin_expertise_pricing_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_partner:
+                label: 'expertise.partner.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_partner_list'
+                sub_paths: ['admin_expertise_partner_create', 'admin_expertise_partner_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_testimonial:
+                label: 'expertise.testimonial.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_testimonial_list'
+                sub_paths: ['admin_expertise_testimonial_create', 'admin_expertise_testimonial_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+            expertise_faq:
+                label: 'expertise.faq.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_faq_list'
+                sub_paths: ['admin_expertise_faq_create', 'admin_expertise_faq_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+```
+
+
+---
+
+## **Newsletter Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\NewsletterBundle\NewsletterBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+newsletter:
+    resource: "@NewsletterBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all contact newsletter by typing: `php bin/console debug:router | grep newsletter`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Newsletter
+            newsletter:
+                label: 'newsletter.title'
+                description: 'newsletter.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-envelope-o'
+                parent: ~
+                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+            newsletter_subscriber:
+                label: 'newsletter.subscriber.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_newsletter_subscriber_list'
+                sub_paths: ['admin_newsletter_subscriber_create', 'admin_newsletter_subscriber_update']
+                parent: newsletter
+                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+            newsletter_group:
+                label: 'newsletter.group.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_newsletter_group_list'
+                sub_paths: ['admin_newsletter_group_create', 'admin_newsletter_group_update']
+                parent: newsletter
+                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+            newsletter_template:
+                label: 'newsletter.template.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_newsletter_template_list'
+                sub_paths: ['admin_newsletter_template_create', 'admin_newsletter_template_update']
+                parent: newsletter
+                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+```
+
+
+---
+
+## **Static Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\StaticBundle\StaticBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+static:
+    resource: "@StaticBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all contact static by typing: `php bin/console debug:router | grep static`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Static
+            static:
+                label: 'static.title'
+                description: 'static.description'
+                translation_domain: 'messages'
+                sub_paths: ['admin_static_page_create', 'admin_static_page_update']
+                attr:
+                    class: 'fa fa-file-text'
+                parent: ~
+                user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+            static_page:
+                label: 'static.page.sidebar'
+                description: 'static.page.description'
+                translation_domain: 'messages'
+                path: 'admin_static_page_list'
+                sub_paths: ['admin_static_page_create', 'admin_static_page_update']
+                parent: static
+                user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+            static_template:
+                label: 'static.template.sidebar'
+                description: 'static.template.description'
+                translation_domain: 'messages'
+                path: 'admin_static_template_list'
+                sub_paths: ['admin_static_template_create', 'admin_static_template_update']
+                parent: static
+                user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+```
