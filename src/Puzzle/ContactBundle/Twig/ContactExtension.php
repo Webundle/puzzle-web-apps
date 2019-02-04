@@ -7,7 +7,6 @@ use Puzzle\ContactBundle\Entity\Group;
 use Puzzle\ContactBundle\Entity\Contact;
 use Puzzle\ContactBundle\Entity\Request;
 
-
 /**
  *
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
