@@ -31,18 +31,22 @@ class MediaExtension extends \Twig_Extension
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('media_supported_extensions', [$this, 'getMediaSupportedExtensions'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('media_folders', [$this, 'getFolders'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('media_folder', [$this, 'getFolder'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('media_folder_files', [$this, 'getFolderFiles'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('media_files', [$this, 'getFiles'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('media_file', [$this, 'getFile'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_media_supported_extensions', [$this, 'getMediaSupportedExtensions'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_media_folders', [$this, 'getFolders'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_media_folder', [$this, 'getFolder'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_media_folder_files', [$this, 'getFolderFiles'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_media_files', [$this, 'getFiles'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_media_file', [$this, 'getFile'], ['needs_environment' => false, 'is_safe' => ['html']]),
         ];
     }
     
-    public function getFolders(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Folder::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getFolders(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Folder::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Folder::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getFolder($id) {
@@ -53,7 +57,7 @@ class MediaExtension extends \Twig_Extension
         return $folder;
     }
     
-    public function getFolderFiles($folderId, $limit = 10) {
+    public function getFolderFiles($folderId, $limit = 5) {
         $folder = $this->getFolder($folderId);
         $files = $list = null;
         $criteria = [];
@@ -74,9 +78,13 @@ class MediaExtension extends \Twig_Extension
         return $files;
     }
     
-    public function getFiles(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(File::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getFiles(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(File::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(File::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getFile($id) {

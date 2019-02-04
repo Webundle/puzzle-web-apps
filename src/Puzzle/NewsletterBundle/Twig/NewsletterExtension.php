@@ -31,18 +31,22 @@ class NewsletterExtension extends \Twig_Extension
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('newsletter_groups', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_group', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_subscribers', [$this, 'getSubscribers'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_subscriber', [$this, 'getSubscriber'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_templates', [$this, 'getTemplates'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_template', [$this, 'getTemplate'], ['needs_environment' => false, 'is_safe' => ['html']])
+            new \Twig_SimpleFunction('puzzle_newsletter_groups', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_newsletter_group', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_newsletter_subscribers', [$this, 'getSubscribers'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_newsletter_subscriber', [$this, 'getSubscriber'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_newsletter_templates', [$this, 'getTemplates'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_newsletter_template', [$this, 'getTemplate'], ['needs_environment' => false, 'is_safe' => ['html']])
         ];
     }
     
-    public function getGroups(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Group::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getGroups(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Group::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Group::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getGroup($id) {
@@ -53,9 +57,13 @@ class NewsletterExtension extends \Twig_Extension
         return $group;
     }
     
-    public function getSubscribers(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Subscriber::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getSubscribers(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Subscriber::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Subscriber::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getSubscriber($id) {
@@ -66,9 +74,13 @@ class NewsletterExtension extends \Twig_Extension
         return $subscriber;
     }
     
-    public function getTemplates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Template::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getTemplates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Template::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Template::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getTemplate($id) {

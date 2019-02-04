@@ -30,9 +30,13 @@ class StaticExtension extends \Twig_Extension
         ];
     }
     
-    public function getPages(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Page::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getPages(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Page::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Page::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getPage($id) {
@@ -43,9 +47,13 @@ class StaticExtension extends \Twig_Extension
         return $page;
     }
     
-    public function getTemplates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Template::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getTemplates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Template::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Template::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getTemplate($id) {

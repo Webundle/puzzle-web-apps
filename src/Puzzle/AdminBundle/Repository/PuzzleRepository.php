@@ -32,10 +32,9 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         array $criteria = null, 
         array $orderBy = null, 
         int $limit = null, 
-        int $offset = null,
-        bool $useCache = false
+        int $offset = null
      ){
-         $query= self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
+         $query= self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset);
         return $query->getResult();
     }
     
@@ -57,10 +56,9 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         array $criteria = null,
         array $orderBy = null,
         int $limit = null,
-        int $offset = null,
-        bool $useCache = false
+        int $offset = null
      ){
-        $query = self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset, $useCache);
+        $query = self::customGetQuery($fields, $joins, $criteria, $orderBy, $limit, $offset);
         return count($query->getResult()) > 0 ? $query->getResult()[0] : null;
     }
     

@@ -32,18 +32,22 @@ class ContactExtension extends \Twig_Extension
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('contact_groups', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('contact_group', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('contact_contacts', [$this, 'getContacts'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('contact_contact', [$this, 'getContact'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('contact_requests', [$this, 'getRequests'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('contact_request', [$this, 'getRequest'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_contact_groups', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_contact_group', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_contacts', [$this, 'getContacts'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_contact', [$this, 'getContact'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_contact_requests', [$this, 'getRequests'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_contact_request', [$this, 'getRequest'], ['needs_environment' => false, 'is_safe' => ['html']]),
         ];
     }
     
-    public function getGroups(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Group::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getGroups(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Group::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Group::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getGroup($id) {
@@ -54,18 +58,26 @@ class ContactExtension extends \Twig_Extension
         return $group;
     }
     
-    public function getContacts(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Contact::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getContacts(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Contact::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Contact::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getContact($id) {
         return $this->em->find(Contact::class, $id);
     }
     
-    public function getRequests(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Request::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getRequests(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Request::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Request::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getRequest($id) {

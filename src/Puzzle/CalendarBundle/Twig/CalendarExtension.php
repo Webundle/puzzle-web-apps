@@ -31,16 +31,20 @@ class CalendarExtension extends \Twig_Extension
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('calendar_agendas', [$this, 'getAgendas'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('calendar_agenda', [$this, 'getAgenda'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('calendar_moments', [$this, 'getMoments'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('calendar_moment', [$this, 'getMoment'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_calendar_agendas', [$this, 'getAgendas'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_calendar_agenda', [$this, 'getAgenda'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_calendar_moments', [$this, 'getMoments'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_calendar_moment', [$this, 'getMoment'], ['needs_environment' => false, 'is_safe' => ['html']]),
         ];
     }
     
-    public function getAgendas(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Agenda::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getAgendas(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Agenda::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Agenda::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getAgenda($id) {
@@ -51,9 +55,13 @@ class CalendarExtension extends \Twig_Extension
         return $category;
     }
     
-    public function getMoments(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], int $limit = null, int $page = 1) {
-        $query = $this->em->getRepository(Moment::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
-        return $this->paginator->paginate($query, $page, $limit);
+    public function getMoments(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Moment::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Moment::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
     }
     
     public function getMoment($id) {

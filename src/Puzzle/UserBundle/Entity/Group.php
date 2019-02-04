@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 use Puzzle\AdminBundle\Traits\Describable;
 use Doctrine\Common\Collections\Collection;
+use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
 
 /**
  * Group
@@ -16,15 +17,19 @@ use Doctrine\Common\Collections\Collection;
  */
 class Group
 {
-	use PrimaryKeyTrait,
-	    Describable;
+	use PrimaryKeyTrait, Sluggable;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var string
+     */
+    private $description;
 
     /**
      * 
@@ -40,16 +45,29 @@ class Group
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    public function setName($name) {
+    public function getSluggableFields() {
+        return ['name'];
+    }
+    
+    public function setName($name) :self {
         $this->name = $name;
         return $this;
     }
 
-    public function getName() {
+    public function getName() :?string {
         return $this->name;
     }
+    
+    public function setDescription($description) :self {
+        $this->description = $description;
+        return $this;
+    }
+    
+    public function getDescription() :?string {
+        return $this->description;
+    }
 
-    public function setUsers (Collection $users) : self {
+    public function setUsers (Collection $users) :self {
         foreach ($users as $user) {
             $this->addUser($user);
         }
