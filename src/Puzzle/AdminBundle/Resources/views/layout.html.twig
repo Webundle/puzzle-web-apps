@@ -218,10 +218,9 @@
             %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-
+    {% endif %}
         <script src="{{ asset('bundles/admin/libs/ckeditor/ckeditor.js') }}"></script>
         <script src="{{ asset('bundles/admin/libs/ckeditor/adapters/jquery.js') }}"></script>
-    {% endif %}
     <script>
         altair_forms.parsley_validation_config();
         altair_forms.parsley_extra_validators();
