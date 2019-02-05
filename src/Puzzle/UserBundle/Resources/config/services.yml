@@ -23,7 +23,7 @@ services:
 
     # Twig extension
     user.twig.extension:
-        class: Puzzle\UserBundle\Twig\UserBundle
+        class: Puzzle\UserBundle\Twig\UserExtension
         arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
         public: false
         tags:
