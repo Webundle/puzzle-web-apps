@@ -21,3 +21,11 @@ services:
             - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling }
             - { name: kernel.event_listener, event: "user.create", method: onCreate }
 
+    # Twig extension
+    user.twig.extension:
+        class: Puzzle\UserBundle\Twig\UserBundle
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
+        public: false
+        tags:
+            - { name: twig.extension }
+
