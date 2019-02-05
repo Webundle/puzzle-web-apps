@@ -243,7 +243,7 @@ class AdminController extends Controller
                 return new JsonResponse(['status' => true]);
             }
             
-            $this->addFlash('success', $this->get('translator')->trans('success.post', [], 'messages'));
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => (string)$contact], 'messages'));
             return $this->redirectToRoute('admin_contact_list');
         }
         

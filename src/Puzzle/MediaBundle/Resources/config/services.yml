@@ -12,18 +12,20 @@ services:
 
     media.file_listener:
         class: Puzzle\MediaBundle\Listener\FileListener
-        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager"]
+        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager", "%media_base_dir%"]
         tags:
             - { name: kernel.event_listener, event: "media.create_file", method: onCreate }
+            - { name: doctrine.event_listener, event: "postLoad", method: onPostLoad }
             - { name: kernel.event_listener, event: "media.rename_file", method: onRename }
             - { name: kernel.event_listener, event: "media.copy_file", method: onCopy }
             - { name: kernel.event_listener, event: "media.remove_file", method: onRemove }
 
     media.folder_listener:
         class: Puzzle\MediaBundle\Listener\FolderListener
-        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager"]
+        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager", "%media_base_dir%"]
         tags:
             - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling }
+            - { name: doctrine.event_listener, event: "postLoad", method: onPostLoad }
             - { name: kernel.event_listener, event: "media.create_folder", method: onCreate }
             - { name: kernel.event_listener, event: "media.rename_folder", method: onUpdate }
             - { name: kernel.event_listener, event: "media.remove_folder", method: onRemove }

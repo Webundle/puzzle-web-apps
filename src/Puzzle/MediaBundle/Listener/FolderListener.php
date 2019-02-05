@@ -7,6 +7,8 @@ use Puzzle\MediaBundle\Event\FolderEvent;
 use Puzzle\MediaBundle\Service\FileManager;
 use Puzzle\MediaBundle\Entity\Folder;
 use Puzzle\AdminBundle\Event\AdminInstallationEvent;
+use Puzzle\MediaBundle\Entity\File;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * 
@@ -25,13 +27,16 @@ class FolderListener
 	 */
 	private $fm;
 	
-	public function __construct(EntityManager $em, FileManager $fm){
+	protected $baseDir;
+	
+	public function __construct(EntityManager $em, FileManager $fm, $baseDir){
 		$this->em = $em;
 		$this->fm = $fm;
+		$this->baseDir = $baseDir;
 	}
 	
 	public function onAdminInstalling(AdminInstallationEvent $event) {
-	    $folder = $this->em->getRepository("MediaBundle:Folder")->findOneBy([
+	    $folder = $this->em->getRepository(Folder::class)->findOneBy([
 	        'appName' => Folder::ROOT_APP_NAME,
 	        'name' => Folder::ROOT_NAME
 	    ]);
@@ -48,6 +53,21 @@ class FolderListener
 	}
 	
 	/**
+	 * Folder class load
+	 * 
+	 * @param LifecycleEventArgs $args
+	 */
+	public function postLoad(LifecycleEventArgs $args) {
+	    $folder = $args->getEntity();
+	    
+	    if (!$folder instanceof Folder) {
+	        return;
+	    }
+	    
+	    $folder->setBaseDir($this->baseDir);
+	}
+	
+	/**
 	 * Folder created on disk
 	 * 
 	 * @param FolderEvent $event
@@ -55,7 +75,8 @@ class FolderListener
 	public function onCreate(FolderEvent $event)
 	{
 	    $folder = $event->getFolder();
-		
+	    $folder->setBaseDir($this->baseDir);
+	    
 		if (file_exists($folder->getAbsolutePath()) === false) {
 		    return mkdir($folder->getAbsolutePath(), 0777, true);
 		}
@@ -70,6 +91,8 @@ class FolderListener
 	 */
 	public function onUpdate(FolderEvent $event) {
 	    $folder = $event->getFolder();
+	    $folder->setBaseDir($this->baseDir);
+	    
 	    $data = $event->getData();
 	    if (file_exists($folder->getAbsolutePath()) === false) {
 	        return rename($data['oldAbsolutePath'], $folder->getAbsolutePath());
@@ -86,6 +109,8 @@ class FolderListener
 	public function onRemove(FolderEvent $event)
 	{
 	    $folder = $event->getFolder();
+	    $folder->setBaseDir($this->baseDir);
+	    
 	    $folderPath = $folder->getAbsolutePath();
 	    if (file_exists($folderPath) === true) {
 	        $this->fm->removeDirectory($folderPath);
@@ -102,9 +127,11 @@ class FolderListener
 	public function onAddFiles(FolderEvent $event)
 	{
 	    $folder = $event->getFolder();
+	    $folder->setBaseDir($this->baseDir);
+	    
 	    $data = $event->getData();
 	    if ($folder->getFiles() !== null) {
-	        $er = $this->em->getRepository("MediaBundle:File");
+	        $er = $this->em->getRepository(File::class);
 	        foreach ($folder->getFiles() as $fileId){
 	            /** @var File $file*/
 	            $file = $er->find($fileId);
@@ -129,9 +156,10 @@ class FolderListener
 	public function onRemoveFiles(FolderEvent $event)
 	{
 	    $folder = $event->getFolder();
+	    $folder->setBaseDir($this->baseDir);
 	    
 	    if ($folder->getFiles() === null) {
-	        $er = $this->em->getRepository("MediaBundle:File");
+	        $er = $this->em->getRepository(File::class);
 	        foreach ($folder->getFiles() as $fileId){
 	            /** @var File $file*/
 	            $file = $er->find($fileId);

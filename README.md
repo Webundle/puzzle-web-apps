@@ -597,6 +597,13 @@ admin:
                 parent: media
                 user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
 ```
+### 
+### **Step 4: Define base directory**
+Defined media base directory by adding it in the `app/config/parameters.yml` file of your project:
+```yaml
+...
+media_base_dir: '%kernel.root_dir%/../web'
+```
 
 
 ---

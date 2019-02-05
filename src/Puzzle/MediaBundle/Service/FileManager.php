@@ -96,7 +96,7 @@ class FileManager {
     public function removeDirectory($folderPath) {
         $files = scandir($folderPath, SCANDIR_SORT_DESCENDING);
         foreach ($files as $file) {
-            if ($file == "." && $file == ".."){
+            if ($file != "." && $file != ".."){
                 $file = $folderPath.'/'.$file;
                 is_dir($file) ? self::removeDirectory($file) : unlink($file);
             }

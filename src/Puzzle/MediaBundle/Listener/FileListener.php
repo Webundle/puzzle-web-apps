@@ -5,6 +5,8 @@ namespace Puzzle\MediaBundle\Listener;
 use Doctrine\ORM\EntityManager;
 use Puzzle\MediaBundle\Event\FileEvent;
 use Puzzle\MediaBundle\Service\FileManager;
+use Puzzle\MediaBundle\Entity\File;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * 
@@ -23,9 +25,12 @@ class FileListener
 	 */
 	private $fm;
 	
-	public function __construct(EntityManager $em, FileManager $fm){
+	protected $baseDir;
+	
+	public function __construct(EntityManager $em, FileManager $fm, $baseDir){
 		$this->em = $em;
 		$this->fm = $fm;
+		$this->baseDir = $baseDir;
 	}
 	
 	/**
@@ -41,6 +46,21 @@ class FileListener
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Folder class load
+	 *
+	 * @param LifecycleEventArgs $args
+	 */
+	public function postLoad(LifecycleEventArgs $args) {
+	    $file = $args->getEntity();
+	    
+	    if (!$file instanceof File) {
+	        return;
+	    }
+	    
+	    $file->setBaseDir($this->baseDir);
 	}
 	
 	/**
@@ -87,11 +107,11 @@ class FileListener
 	    }
 	    
 	    if ($folder !== null && isset($data['path']) && $data['path'] !== null) {
-	        $file = $this->em->getRepository("MediaBundle:File")->findOneBy(['path' => $data['path']]);
+	        $file = $this->em->getRepository(File::class)->findOneBy(['path' => $data['path']]);
 	        // Copy existing file
 	        $data['preserve_files'] = true;
 	        if ($file === null) {
-	            $file = $this->em->getRepository("MediaBundle:File")->find($data['path']);
+	            $file = $this->em->getRepository(File::class)->find($data['path']);
 	            // Move file after upload
 	            $data['preserve_files'] = false;
 	        }

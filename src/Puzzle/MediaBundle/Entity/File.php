@@ -4,12 +4,9 @@ namespace Puzzle\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Puzzle\MediaBundle\Util\MediaUtil;
-use Puzzle\AdminBundle\Traits\DatetimeTrait;
-use Puzzle\UserBundle\Entity\User;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
-use Puzzle\AdminBundle\Traits\Nameable;
-use Puzzle\UserBundle\Traits\UserTrait;
 use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
+use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 
 /**
  * File
@@ -23,9 +20,15 @@ use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
 class File
 {
     use PrimaryKeyTrait,
-        Nameable,
-        DatetimeTrait,
-        Blameable;
+        Timestampable,
+        Blameable
+    ;
+    
+    /**
+     * @ORM\Column(name="name", type="string", length=255)
+     * @var string
+     */
+    private $name;
     
     /**
      * @var string
@@ -71,6 +74,7 @@ class File
      */
     private $document;
     
+    protected $baseDir;
     
     public function __construct(array $properties = null) {
         if (isset($properties['name']) === true) {
@@ -135,8 +139,13 @@ class File
     	return $this->path;
     }
     
-    public static function getBaseDir(){
-        return __DIR__ . '/../../../../web';
+    public function setBaseDir($baseDir) {
+        $this->baseDir = $baseDir;
+        return $this;
+    }
+    
+    public function getBaseDir(){
+        return $this->baseDir;
     }
     
     public static function getBasePath(){
@@ -144,7 +153,7 @@ class File
     }
     
     public function getAbsolutePath(){
-    	return self::getBaseDir().$this->path;
+    	return $this->getBaseDir().$this->path;
     }
 
     public function setPicture(Picture $picture = null) : self {

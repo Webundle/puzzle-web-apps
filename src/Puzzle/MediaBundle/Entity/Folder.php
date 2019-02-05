@@ -75,6 +75,8 @@ class Folder
      */
     private $parent;
     
+    protected $baseDir;
+    
     public function __construct() {
         $this->childs = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -160,7 +162,7 @@ class Folder
     * @ORM\PrePersist
     * @ORM\PreUpdate
     */
-    public function setPath(){
+    public function setPath() {
         $this->path = $this->parent === null ? File::getBasePath().'/'.$this->name : $this->parent->getPath().'/'.$this->name;
     }
 
@@ -168,8 +170,17 @@ class Folder
         return $this->path;
     }
     
+    public function setBaseDir($baseDir) {
+        $this->baseDir = $baseDir;
+        return $this;
+    }
+    
+    public function getBaseDir(){
+        return $this->baseDir;
+    }
+    
     public function getAbsolutePath() {
-        return File::getBaseDir().$this->path;
+        return $this->getBaseDir().$this->path;
     }
     
     public function createDefault() {
