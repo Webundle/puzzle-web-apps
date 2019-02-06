@@ -5,10 +5,10 @@ namespace Puzzle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
-use Puzzle\MediaBundle\Traits\Pictureable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\Collection;
-                                
+use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+                                        
   /**
   * User
   *
@@ -18,8 +18,8 @@ use Doctrine\Common\Collections\Collection;
   */
   class User implements AdvancedUserInterface, \Serializable
   {
-     use PrimaryKeyTrait,
-         Pictureable;
+     use PrimaryKeyTrait, 
+         Timestampable;
      
      const ROLE_DEFAULT = 'ROLE_USER';
      const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -64,6 +64,11 @@ use Doctrine\Common\Collections\Collection;
       * @ORM\Column(type="string", length=255, nullable=true)
       */
       private $password;
+      
+      /**
+       * @ORM\Column(type="string", length=255, nullable=true)
+       */
+      private $picture;
       
       /**
        * @Assert\Length(min=8, max=4096, minMessage="user.password.short", maxMessage="user.password.long", groups={"Create", "Update", "ChangePassword", "ResetPassword"})
@@ -276,6 +281,15 @@ use Doctrine\Common\Collections\Collection;
     public function setPlainPassword(string $plainPassword) :self {
         $this->plainPassword = $plainPassword;
         return $this;
+    }
+    
+    public function setPicture($picture) :self {
+        $this->picture = $picture;
+        return $this;
+    }
+    
+    public function getPicture() :?string {
+        return $this->picture;
     }
     
     /**

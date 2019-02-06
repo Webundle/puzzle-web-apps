@@ -17,8 +17,8 @@ class UserRegisterType extends AbstractUserType
         parent::buildForm($builder, $options);
         $builder
             ->remove('phoneNumber')
-            ->remove('credentialsExpiredAt')
-            ->remove('accountExpiredAt')
+            ->remove('credentialsExpiresAt')
+            ->remove('accountExpiresAt')
             ->remove('enabled')
             ->remove('picture')
             ->remove('locked');
