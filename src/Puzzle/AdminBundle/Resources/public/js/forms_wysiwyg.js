@@ -14,7 +14,7 @@ altair_wysiwyg = {
                 .ckeditor(function() {
                     /* Callback function code. */
                 }, {
-                    customConfig: '/bundles/admin/js/custom/ckeditor_config.js'
+                    customConfig: '/bundles/admin/js/ckeditor_config.js'
                 });
         }
     },

@@ -67,6 +67,46 @@ class SecurityController extends Controller
         ));
     }
     
+    
+    /**
+     * Login form
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function adminLoginAction(Request $request)
+    {
+        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        $session = $request->getSession();
+        
+        // get the error if any (works with forward and redirect -- see below)
+        if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
+        } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
+            $error = $session->get(Security::AUTHENTICATION_ERROR);
+            $session->remove(Security::AUTHENTICATION_ERROR);
+        } else {
+            $error = null;
+        }
+        
+        if (!$error instanceof AuthenticationException) {
+            $error = null; // The value does not come from the security component.
+        }
+        
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
+        
+        $csrfToken = $this->has('form.csrf_provider')
+        ? $this->get('form.csrf_provider')->generateCsrfToken('authenticate')
+        : null;
+        
+        return $this->render('AdminBundle:User:login.html.twig', array(
+            'last_username'  => $lastUsername,
+            'error'          => $error,
+            'csrf_token'     => $csrfToken
+        ));
+    }
+    
     /***
      * Create User
      *

@@ -8,7 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
     // For complete reference see:
     // http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
-    config.skin = 'material_design,../../skins/ckeditor/material_design/';
+    config.skin = 'material_design,/bundles/admin/skins/ckeditor/material_design/';
 
     // The toolbar groups arrangement, optimized for two toolbar rows.
     config.toolbarGroups = [

@@ -7,7 +7,7 @@ login:
 # Admin
 admin_login:
     path:   '%admin_prefix%login'
-    defaults: { _controller: UserBundle:Security:login }
+    defaults: { _controller: UserBundle:Security:adminLogin }
     host: '%admin_host%' 
 
 register:

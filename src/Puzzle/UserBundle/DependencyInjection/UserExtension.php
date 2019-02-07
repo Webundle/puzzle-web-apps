@@ -30,6 +30,7 @@ class UserExtension extends Extension
         $loader->load('services.xml');
         
         $container->setParameter('user.registration.confirmation_link', $config['registration']['confirmation_link']);
+        $container->setParameter('user.registration.redirect_uri', $config['registration']['redirect_uri']);
         $container->setParameter('user.registration.address', $config['registration']['address']);
     }
 }

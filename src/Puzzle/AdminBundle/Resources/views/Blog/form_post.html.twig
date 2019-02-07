@@ -32,7 +32,11 @@
 
                     <div class="uk-form-row">
                         {{ form_label(form.tags, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
-                        {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}}) }}
+                        {% if post is defined and post.tags is not empty %}
+                            {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}, 'value': post.tags|join(',')}) }}
+                        {% else %}
+                            {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}}) }}
+                        {% endif %}
                     </div>
                     <div class="uk-form-row">
                         <div class="uk-float-right">

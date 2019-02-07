@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('confirmation_link')->defaultTrue()->end()
+                        ->scalarNode('redirect_uri')->defaultNull()->end()
                         ->scalarNode('address')->defaultNull()->end()
                     ->end()
                 ->end()
