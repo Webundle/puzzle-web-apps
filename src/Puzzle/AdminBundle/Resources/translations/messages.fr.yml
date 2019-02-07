@@ -477,13 +477,51 @@ user:
             <p>Tout d'abord, essayez la chose la plus simple: si vous vous rappelez de votre mot de passe mais qu'il ne fonctionne pas, assurez-vous que Caps Lock est désactivé et que votre nom d'utilisateur est orthographié correctement, puis réessayez.</p>
             <p>Si votre mot de passe ne fonctionne toujours pas, il est temps de <a href="#" id="password_reset_show">réinitialiser votre mot</a>.</p>
         back: 'Retourner à l''espace public'
-    reset:
+        registration: 'Vous n''avez pas encore de compte ?'
+    resetting:
         title: 'Réinitialiser votre mot de passe'
         button: 'Réinitialiser'
+        request:
+            username: 'Nom d''utilisateur ou adresse e-mail'
+            submit: 'Réinitialiser le mot de passe'
+        check_email: |
+            Un e-mail a été envoyé. Il contient un lien sur lequel il vous faudra cliquer pour réinitialiser votre mot de passe.
+            Remarque: Vous ne pouvez demander un nouveau mot de passe que toutes les %tokenLifetime% heures.
+            
+            Si vous ne recevez pas un e-mail, vérifiez votre dossier spam ou essayer à nouveau.
+        email:
+            subject: 'Réinitialisation de votre mot de passe'
+            message: |
+                Bonjour %username% !
+                
+                Pour réinitialiser votre mot de passe, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>
+                
+                Cordialement,
+                L'équipe
+    registration:
+        title: 'Inscrivez-vous'
+        button: 'S''inscrire'
+        login: 'Vous avez déjà un compte ?'
+        email:
+            notification: 'Un e-mail a été envoyé à l''adresse <em>%email%</em>'
+            subject: 'Activation de votre compte'
+            message: |
+                Bonjour %username% !
+                
+                Pour activer votre compte, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>.<br∕>
+
+                Pour vous connecter, utilisez vos paramètres de ci-dessous:<br/>
+
+                nom d'utilisateur: <b>%username%</b><br/>
+
+                mot de passe: <b>%password%</b><br/>
+                
+                Cordialement,
+                L'équipe
     account:
         sidebar: 'Liste des comptes'
-        firstName: 'Nom'
-        lastName: 'Prénoms'
+        firstName: 'Prénoms'
+        lastName: 'Nom'
         fullName: 'Nom & Prénoms'
         email: 'E-mail'
         phoneNumber: 'Téléphone'
@@ -501,6 +539,7 @@ user:
         show: 'Détails d''un utilisateur'
         create: 'Nouvel utilisateur'
         update: 'Modifier un utilisateur'
+        enable: 'Activer'
         delete: 'Etes-vous sûr de vouloir supprimer l''utilisateur <em>%user%</em>'
         delete_list: 'Etes-vous sûr de vouloir supprimer la sélection d''utilisateurs'
     group:

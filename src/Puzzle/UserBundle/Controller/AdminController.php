@@ -18,6 +18,7 @@ use Puzzle\UserBundle\UserEvents;
 use Puzzle\UserBundle\Event\UserEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdminController extends Controller
 {
@@ -100,11 +101,16 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            // Update password
-            if (isset($data['plainPassword']['first']) === true && $data['plainPassword']['first'] !== "") {
+            /** User $user */
+            $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATING, new UserEvent($user, [
+                'plainPassword' => $data['plainPassword']['first']
+            ]));
+            
+            if ($this->getParameter('user.register.confirmation_link') === true) {
                 /** User $user */
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($user, [
-                    'plainPassword' => $data['plainPassword']['first']
+                $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user, [
+                    'plainPassword' => $data['plainPassword']['first'],
+                    'confirmationUrl' => $this->generate('admin_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
                 ]));
             }
             
@@ -140,7 +146,12 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function updateUserAction(Request $request, User $user){
+    public function updateUserAction(Request $request, $id) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $em->find(User::class, $id);
+        
         $form = $this->createForm(UserUpdateType::class, $user, [
             'method' => 'POST',
             'action' => $this->generateUrl('admin_user_update', ['id' => $user->getId()])
@@ -169,7 +180,7 @@ class AdminController extends Controller
             // Update password
             if (isset($data['plainPassword']['first']) === true && $data['plainPassword']['first'] !== "") {
                 /** User $user */
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($user, [
+                $this->get('event_dispatcher')->dispatch(UserEvents::USER_UPDATING, new UserEvent($user, [
                     'plainPassword' => $data['plainPassword']['first']
                 ]));
             }
@@ -177,7 +188,7 @@ class AdminController extends Controller
             $em->flush();
             
             $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $user->getFullName()], 'messages'));
-            return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
+            return $this->redirectToRoute('admin_user_update', ['id' => $id]);
         }
         
         return $this->render("AdminBundle:User:update_user.html.twig", [
@@ -186,14 +197,44 @@ class AdminController extends Controller
         ]);
     }
     
+    public function enableUserAction(Request $request, $id) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $em->find(User::class, $id);
+        $user->setEnabled(true);
+        
+        $em->flush();
+        
+        /** User $user */
+        $this->get('event_dispatcher')->dispatch(UserEvents::USER_ENABLED, new UserEvent($user, [
+            'confirmationUrl' => $this->generateUrl('app_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+        ]));
+        
+        $message = $this->get('translator')->trans('user.registration.email.notification', [
+            '%email%' => $user->getEmail()
+        ], 'messages');
+        
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('admin_user_update', ['id' => $id]);
+    }
     
     /**
      * Delete a user
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteUserAction(Request $request, User $user) {
-        $message = $this->get('translator')->trans('success.delete', ['%item%' => $user->getFullName()], 'messages');
+    public function deleteUserAction(Request $request, User $id) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $em->find(User::class, $id);
+        
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => (string) $user], 'messages');
         
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
@@ -254,7 +295,12 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function updateGroupAction(Request $request, Group $group){
+    public function updateGroupAction(Request $request, $id){
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $group = $em->find(Group::class, $id);
+        
         $form = $this->createForm(GroupUpdateType::class, $group, [
             'method' => 'POST',
             'action' => $this->generateUrl('admin_user_group_update', ['id' => $group->getId()])
@@ -280,7 +326,12 @@ class AdminController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteGroupAction(Request $request, Group $group) {
+    public function deleteGroupAction(Request $request, $id) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $group = $em->find(Group::class, $id);
+        
         $message = $this->get('translator')->trans('success.delete', ['%item%' => $group->getName()], 'messages');
         
         $em = $this->getDoctrine()->getManager();

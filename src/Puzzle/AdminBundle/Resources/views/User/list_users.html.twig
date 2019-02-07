@@ -93,11 +93,19 @@
                                     <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
                                         <ul class="uk-nav uk-nav-dropdown">
                                             <li>
-                                                <a href="{{ url('admin_user_update', { 'id': user.id }) }}">
+                                                <a href="{{ url('admin_user_update', {'id': user.id}) }}">
                                                     <i class="fa fa-pencil"></i>
                                                     {{ "button.update"|trans }}
                                                 </a>
                                             </li>
+                                            {% if user.isEnabled == false %}
+                                                <li>
+                                                    <a href="{{ url('admin_user_enable', {'id': user.id}) }}" class="enable-user">
+                                                        <i class="fa fa-unlock"></i>
+                                                        {{ "user.account.enable"|trans }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
                                             <li>
                                                 <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_user_delete', {'id': user.id}) }}" data-label="{{ user }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
@@ -115,4 +123,22 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('.enable-user').click(function(e) {
+            e.preventDefault();
+
+            $.get($(this).attr('href'), function(response){
+                UIkit.notify({
+                    message: "<b>" + response + "</b>",
+                    pos: 'top-right',
+                    timeout: 2000,
+                    status: 'success'
+                });
+            });
+        });
+    </script>
 {% endblock %}

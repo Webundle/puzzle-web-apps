@@ -28,5 +28,8 @@ class UserExtension extends Extension
         
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        
+        $container->setParameter('user.registration.confirmation_link', $config['registration']['confirmation_link']);
+        $container->setParameter('user.registration.address', $config['registration']['address']);
     }
 }

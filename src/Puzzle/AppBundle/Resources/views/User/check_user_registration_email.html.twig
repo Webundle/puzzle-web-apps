@@ -1,0 +1,23 @@
+{% trans_default_domain 'app' %}
+
+{% extends 'AppBundle::layout_security.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ 'user.registration.check_email.title'|trans }} {% endblock %}
+
+{% block stylesheets %}{{ parent() }}{% endblock %}
+
+{% block content %}
+	<section class="section pt--70 pb--40 bg-lighter">
+        <div class="container">
+            <div class="section--title pb--30 text-center">
+                <a href="{{ url('app_homepage') }}"><img src="{{ asset('logo.png') }}" alt="" width="150"></a>
+            </div>
+            <div class="row">
+            	<div class="col-md-12">
+					<p class="mt5 mb20">{{ 'user.registration.check_email.message'|trans({'%email%': email}) }}</p>
+					<a href="{{ path('login') }}"><small>{{ 'user.login.title'|trans }}</small></a>
+            	</div>
+            </div>
+       	</div>
+     </section>
+{% endblock %}

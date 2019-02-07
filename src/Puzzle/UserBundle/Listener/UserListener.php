@@ -8,6 +8,8 @@ use Puzzle\UserBundle\Entity\User;
 use Puzzle\UserBundle\Event\UserEvent;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
+use Puzzle\UserBundle\Util\TokenGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author qwincy <qwincypercy@fermentuse.com>
@@ -40,9 +42,9 @@ class UserListener
 	private $translator;
 	
 	/**
-	 * @var string $fromEmail
+	 * @var string $registrationEmailAddress
 	 */
-	private $fromEmail;
+	private $registrationEmailAddress;
 	
 	/**
 	 * @param EntityManager $em
@@ -50,13 +52,13 @@ class UserListener
 	 * @param \Swift_Mailer $mailer
 	 * @param string $fromEmail
 	 */
-	public function __construct(EntityManager $em, Router $router, \Swift_Mailer $mailer, \Twig_Environment $twig, TranslatorInterface $translator, string $fromEmail){
+	public function __construct(EntityManager $em, Router $router, \Swift_Mailer $mailer, \Twig_Environment $twig, TranslatorInterface $translator, string $registrationEmailAddress){
 		$this->em = $em;
 		$this->mailer = $mailer;
 		$this->router = $router;
 		$this->twig = $twig;
 		$this->translator = $translator;
-		$this->fromEmail = $fromEmail;
+		$this->registrationEmailAddress = $registrationEmailAddress;
 	}
 	
 	public function onAdminInstalling(AdminInstallationEvent $event) {
@@ -89,34 +91,101 @@ class UserListener
 	   ));
 	}
 	
-	/**
-	 * Create user
-	 * @param UserEvent $event
-	 */
-	public function onCreate(UserEvent $event) {
-		$user = $event->getUser();
-		
-		return $this->mailer->send(array(
-	        'subject' => $this->translator->trans('user.create.confirm_subject', [], 'messages'),
-	        'to' => $user->getEmail(),
-	        'from' => $this->fromEmail,
-	        'body' => $this->twig->render('AdminBundle:User:confirm_create_user.html.twig', [
-	            'user' => $user,
-	            'confirmationUrl' => $this->router->generate('app_user_confirm', ['token' => $user->getConfirmationToken()])
-	        ])
-	    ));
-	}
-	
-	/**
-	 * Update password
-	 * @param UserEvent $event
-	 */
-	public function onUpdatePassword(UserEvent $event) {
+	public function onCreating(UserEvent $event) {
 	    $user = $event->getUser();
+	    
+	    if (null === $user->getPlainPassword()) {
+	        $user->setPlainPassword(TokenGenerator::generate(8));
+	    }
+	    
 	    $user->setPassword(hash('sha512', $user->getPlainPassword()));
 	    
+	    if (true === $user->isEnabled()) {
+	        return;
+	    }
+	    
+	    $user->setConfirmationToken(TokenGenerator::generate(12));
 	    $this->em->flush($user);
-	    return;
+	}
+	
+	public function onCreated(UserEvent $event) {
+	    $user = $event->getUser();
+	    $data = $event->getData();
+	    
+	    if (true === $user->isEnabled()) {
+	        return;
+	    }
+	    
+	    $subject = $this->translator->trans('user.create.title', ['%fullName%' => (string) $user], 'messages');
+	    $body = $this->translator->trans('user.create.message', [
+	        '%fullName%' => (string) $user,
+	        '%username%' => $user->getUsername(),
+	        '%plainPassword%' => $data['plainPassword'] ?? $user->getPlainPassword(),
+	        '%confirmationUrl%' => $data['confirmationUrl']
+	    ], 'messages');
+	    
+	    $this->sendEmail($this->registrationEmailAddress, $user->getEmail(), $subject, $body);
+	}
+	
+	public function onUpdating(UserEvent $event) {
+	    $user = $event->getUser();
+	    
+	    if (null !== $user->getPlainPassword()) {
+	        $user->setPlainPassword(TokenGenerator::generate(8));
+	        $user->setPassword(hash('sha512', $user->getPlainPassword()));
+	        $user->setConfirmationToken(TokenGenerator::generate(12));
+	        
+	        $this->em->flush($user);
+	    }
+	    
+	    if (true === $user->isEnabled()) {
+	        return;
+	    }
+	}
+	
+	public function onUpdated(UserEvent $event) {
+	    $user = $event->getUser();
+	    $data = $event->getData();
+	    
+	    if (true === $user->isEnabled()) {
+	        return;
+	    }
+	    
+	    $subject = $this->translator->trans('user.update.title', ['%fullName%' => (string) $user], 'messages');
+	    $body = $this->translator->trans('user.update.message', [
+	        '%fullName%' => (string) $user,
+	        '%username%' => $user->getUsername(),
+	        '%plainPassword%' => $data['plainPassword'] ?? $user->getPlainPassword(),
+	        '%confirmationUrl%' => $data['confirmationUrl']
+	    ], 'messages');
+	    
+	    $this->sendEmail($this->registrationEmailAddress, $user->getEmail(), $subject, $body);
+	}
+	
+	public function onEnabled(UserEvent $event) {
+	    $user = $event->getUser();
+	    $data = $event->getData();
+	    
+	    if (true === $user->isEnabled()) {
+	        return;
+	    }
+	    
+	    $subject = $this->translator->trans('user.enable.title', ['%fullName%' => (string) $user], 'messages');
+	    $body = $this->translator->trans('user.enable.message', [
+	        '%fullName%' => (string) $user,
+	        '%confirmationUrl%' => $data['confirmationUrl']
+	    ], 'messages');
+	    
+	    $this->sendEmail($this->registrationEmailAddress, $user->getEmail(), $subject, $body);
+	}
+	
+	private function sendEmail($from, $to, string $subject, string $body) {
+	    $message = \Swift_Message::newInstance()
+                	    ->setFrom($from)
+                	    ->setTo($to)
+                	    ->setSubject($subject)
+                	    ->setBody($body, 'text/html');
+	    $this->mailer->send($message);
 	}
 }
 

@@ -3,10 +3,11 @@ namespace Puzzle\UserBundle;
 
 final class UserEvents
 {
-    const USER_CREATE = 'user.create';
-    const USER_PASSWORD = 'user.update_password';
-	
-	const ADMIN_USER_CREATE = 'admin.user.create';
-	const ADMIN_USER_UPDATE = 'admin.user.update';
-	const ADMIN_USER_REMOVE = 'admin.user.remove';
+    const USER_CREATING = 'user.creating';
+    const USER_CREATED = 'user.created';
+    
+    const USER_UPDATING = 'user.updating';
+    const USER_UPDATED = 'user.updated';
+    
+    const USER_ENABLED = 'user.enabled';
 }

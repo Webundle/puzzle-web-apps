@@ -20,6 +20,18 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('user');
         
+        $rootNode
+            ->children()
+                ->arrayNode('registration')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('confirmation_link')->defaultTrue()->end()
+                        ->scalarNode('address')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+        
         return $treeBuilder;
     }
 }

@@ -14,6 +14,10 @@ admin_user_update:
     path:   /{id}/update
     defaults: { _controller: UserBundle:Admin:updateUser }
 
+admin_user_enable:
+    path:   /{id}/enable
+    defaults: { _controller: UserBundle:Admin:enableUser }
+
 admin_user_update_credentials:
     path:   /{id}/update-credentials
     defaults: { _controller: UserBundle:Admin:updateUserCredentials }
