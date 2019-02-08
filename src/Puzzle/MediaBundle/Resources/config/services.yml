@@ -4,7 +4,7 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
     media.upload_manager:
         class: Puzzle\MediaBundle\Service\UploadManager  
-        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager" ]
+        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager", "%media_base_dir%" ]
 
     media.file_manager:
         class: Puzzle\MediaBundle\Service\FileManager

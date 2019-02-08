@@ -55,10 +55,17 @@ class UploadManager
 	 */
 	protected $user;
 	
+	protected $baseDir;
 	
-	public function __construct(EntityManager $em, FileManager $fm){
+	/**
+	 * @param EntityManager $em
+	 * @param FileManager $fm
+	 * @param mixed $baseDir
+	 */
+	public function __construct(EntityManager $em, FileManager $fm, $baseDir){
 		$this->em = $em;
 		$this->fm = $fm;
+		$this->baseDir = $baseDir;
 	}
 	
 	/**
@@ -69,6 +76,8 @@ class UploadManager
 	 */
 	public function prepareUpload($globalFiles, Folder $folder, User $user)
 	{
+	    $folder->setBaseDir($this->baseDir);
+	    
 		$results = [];
 		if(count($globalFiles) > 0 ){
 			foreach ($globalFiles as $globalFile){
@@ -108,6 +117,8 @@ class UploadManager
 	 */
 	public function upload(UploadedFile $file, Folder $folder, User $user)
 	{
+	    $folder->setBaseDir($this->baseDir);
+	    
 	    $this->user = $user;
 	    $this->folder = $folder;
 	    $this->name = utf8_encode($file->getClientOriginalName());
