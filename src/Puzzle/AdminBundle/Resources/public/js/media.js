@@ -52,15 +52,7 @@ $('body').on('click', '#toggle-source', function(e){
 
 // Shared agenda
 $('body').on('change', '#filter', function(e){
-    if ($(this).val() == "customize"){
-        $("#allowed-extensions-container").removeClass('uk-hidden');
-        $("#filter_viewer").html('');
-        $("#filter_viewer").addClass('uk-hidden');
-    }else {
-        $("#allowed-extensions-container").addClass('uk-hidden');
-        $("#filter_viewer").html($(this).val().replace('|', ','));
-        $("#filter_viewer").removeClass('uk-hidden');
-    }
+    $("#allowed-extensions-container").html($(this).val());
 });
 
 

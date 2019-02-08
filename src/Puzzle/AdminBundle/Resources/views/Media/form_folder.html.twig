@@ -10,15 +10,9 @@
         {{ form_widget(form.tag, {'attr': {'class': 'md-input'}}) }}
     </div>
     <div class="uk-margin-medium-bottom">
-        {{ form_label(form.filter, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-        {{ form_widget(form.filter, {'id': 'filter', 'attr': {'class': 'md-input'}}) }}
-    </div>
-    <div id="filter_viewer" class="uk-margin-medium-bottom uk-hidden"></div>
-    <div class="uk-margin-medium-bottom uk-hidden" id="allowed-extensions-container">
         {{ form_label(form.allowedExtensions, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-        {{ form_widget(form.allowedExtensions, {'id': 'allowed_extensions', 'attr': {'data-role': 'materialtags'}}) }}
+        {{ form_widget(form.allowedExtensions, {'id': 'filter', 'attr': {'class': 'md-input'}}) }}
     </div>
-   
     <div class="uk-modal-footer uk-text-right">
         <button type="button" class="md-btn md-btn-flat uk-modal-close">{{ "button.close"|trans }}</button>
         <button type="submit" class="md-btn md-btn-success">{{ "button.save"|trans }}</button>

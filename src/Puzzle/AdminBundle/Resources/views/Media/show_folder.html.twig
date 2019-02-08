@@ -155,7 +155,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_media_file_delete', {'id': file.id}) }}" data-text="{{ 'media.file.delete'|trans({'%fileName%': file.name}) }}" data-label="{{ file.name }}" class="remove-item">
+                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_media_folder_update_file_remove', {'id': folder.id, 'fileId': file.id}) }}" data-text="{{ 'media.file.delete'|trans({'%fileName%': file.name}) }}" data-label="{{ file.name }}" class="remove-item">
                                                         <i class="fa fa-trash-o uk-text-danger"></i>
                                                         {{ "button.remove"|trans }}
                                                     </a>

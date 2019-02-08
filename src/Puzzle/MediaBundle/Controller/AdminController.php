@@ -435,7 +435,7 @@ class AdminController extends Controller
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
             $folder->setAppName(Folder::ROOT_APP_NAME);
-            $folder->setAllowedExtensions($folder->getAllowedExtensions() !== null ? explode(',', $folder->getAllowedExtensions()) : null);
+            $folder->setAllowedExtensions($folder->getAllowedExtensions() !== null ? explode('|', $folder->getAllowedExtensions()) : null);
             
             if ($folder->getParent() === null) {
                 $parent = new Folder();
@@ -481,6 +481,8 @@ class AdminController extends Controller
         if (!$folder = $em->find(Folder::class, $id)) {
             $folder = $em->getRepository(Folder::class)->findOneBy(['slug' => $id]);
         }
+        $folder->setAllowedExtensions(implode('|', $folder->getAllowedExtensions()));
+        
         $oldAbsolutePath = $folder->getAbsolutePath();
         $form = $this->createForm(FolderUpdateType::class, $folder, [
             'method' => 'POST',
@@ -558,7 +560,7 @@ class AdminController extends Controller
     
     /**
      *
-     * Update Folder by adding file
+     * Update Folder by adding files
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -589,6 +591,43 @@ class AdminController extends Controller
         $em->flush();
         
         $message = $this->get('translator')->trans('success.put', ['%item%' => $folder->getName()], 'messages');
+        
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('admin_media_folder_show', array('id' => $folder->getId()));
+    }
+    
+    /**
+     *
+     * Update Folder by adding file
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function updateFolderByRemovingFileAction(Request $request, $id, $fileId) {
+        $em = $this->get('doctrine.orm.entity_manager');
+        
+        if (!$folder = $em->find(Folder::class, $id)) {
+            $folder = $em->getRepository(Folder::class)->findOneBy(['slug' => $id]);
+        }
+        
+        if (!$file = $em->find(File::class, $fileId)) {
+            $file = $em->getRepository(File::class)->findOneBy(['path' => $id]);
+        }
+        
+        $folder->removeFile($file->getId());
+        
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $file->getId()], 'messages');
+        
+        $this->get('event_dispatcher')->dispatch(MediaEvents::REMOVE_FILE, new FileEvent([
+            'absolutePath' => $file->getAbsolutePath()
+        ]));
+        
+        $em->remove($file);
+        $em->flush();
         
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);

@@ -154,7 +154,7 @@ class Folder
         return $this;
     }
 
-    public function getAllowedExtensions() :? array {
+    public function getAllowedExtensions() {
         return $this->allowedExtensions;
     }
 

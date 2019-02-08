@@ -26,23 +26,16 @@ class AbstractFolderType extends AbstractType
                 'label' => 'media.folder.tag',
                 'required' => false
             ])
-            ->add('filter', ChoiceType::class, array(
+            ->add('allowedExtensions', ChoiceType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'media.folder.filter',
+                'label' => 'media.folder.allowedExtensions',
                 'choices' => array(
                     "media.file.filter_all" => "*",
                     "media.picture.filter" => MediaUtil::supportedPictureExtensions(),
                     "media.audio.filter" => MediaUtil::supportedAudioExtensions(),
                     "media.video.filter" => MediaUtil::supportedVideoExtensions(),
-                    "media.document.filter" => MediaUtil::supportedDocumentExtensions(),
-                    "media.file.filter_customize" => "customize",
-                ),
-                'mapped' => false
-            ))
-            ->add('allowedExtensions', TextType::class, array(
-                'translation_domain' => 'messages',
-                'label' => 'media.folder.allowed_extensions',
-                'required' => false
+                    "media.document.filter" => MediaUtil::supportedDocumentExtensions()
+                )
             ))
         ;
     }

@@ -55,6 +55,10 @@ admin_media_folder_update_files_remove:
     path:     /folder/{id}/update/files/remove
     defaults: { _controller: MediaBundle:Admin:updateFolderByRemovingFiles }
 
+admin_media_folder_update_file_remove:
+    path:     /folder/{id}/update/file/{fileId}/remove
+    defaults: { _controller: MediaBundle:Admin:updateFolderByRemovingFile }
+
 admin_media_folder_delete:
     path:     /folder/{id}/delete
     defaults: { _controller: MediaBundle:Admin:deleteFolder }

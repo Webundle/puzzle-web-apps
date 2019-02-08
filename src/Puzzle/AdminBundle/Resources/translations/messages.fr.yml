@@ -200,7 +200,7 @@ media:
         name: 'Nom'
         parent: 'Parent'
         tag: 'Etiquette'
-        allowed_extensions: 'Extensions autorisées'
+        allowedExtensions: 'Extensions autorisées'
         date: 'Date'
         createdAt: 'Date de création'
         updatedAt: 'Date d''édition'
