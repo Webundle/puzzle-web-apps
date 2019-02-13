@@ -124,6 +124,7 @@ class SecurityController extends Controller
         if ($form->isSubmitted() === true && $form->isValid() === true) {
             $data = $request->request->all()['app_user_register'];
             $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
             $em->flush();
             
             /** User $user */
