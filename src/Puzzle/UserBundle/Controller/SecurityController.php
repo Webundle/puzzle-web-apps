@@ -123,6 +123,10 @@ class SecurityController extends Controller
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
             $data = $request->request->all()['app_user_register'];
+            
+            $user->addRole(User::ROLE_DEFAULT);
+            $user->setEnabled(false);
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
