@@ -16,10 +16,6 @@ use Puzzle\UserBundle\Form\Type\UserChangePasswordType;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security as AnnotationSecurity;
 use Symfony\Component\Security\Core\Security;
-use Puzzle\UserBundle\Form\Type\UserRegisterType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Puzzle\UserBundle\Form\Type\UserResetPasswordType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Puzzle\UserBundle\Util\TokenGenerator;
 
 class AppController extends Controller
@@ -80,7 +76,7 @@ class AppController extends Controller
             // Update password
             if (isset($data['plainPassword']['first']) === true && $data['plainPassword']['first'] !== "") {
                 /** User $user */
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($user, [
+                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($currentUser, [
                     'plainPassword' => $data['plainPassword']['first']
                 ]));
             }

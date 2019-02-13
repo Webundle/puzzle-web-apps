@@ -67,7 +67,7 @@ class AdminController extends Controller
                 'plainPassword' => $data['plainPassword']['first']
             ]));
             
-            if ($this->getParameter('user.register.confirmation_link') === true) {
+            if ($this->getParameter('user.registration.confirmation_link') === true) {
                 /** User $user */
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user, [
                     'plainPassword' => $data['plainPassword']['first'],
