@@ -136,7 +136,7 @@ class SecurityController extends Controller
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user));
             }
             
-            if ($redirectUri = $this->getParameter('user.registration.redirect_uri')) {
+            if (!$redirectUri = $this->getParameter('user.registration.redirect_uri')) {
                 $redirectUri = $this->generateUrl('security_check_user_registration', ['email' => $user->getEmail()]);
             }
             

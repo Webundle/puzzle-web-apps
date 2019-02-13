@@ -519,6 +519,13 @@ admin:
                 sub_paths: ['admin_user_group_create', 'admin_user_group_update', 'admin_user_group_show']
                 parent: user
                 user_roles: ['ROLE_ADMIN']
+
+# Puzzle User configuration
+user:
+    registration:
+        confirmation_link: true # Send confirmation url to enable account manually
+        # redirect_uri: '' # redirect uri after registration
+        address: 'johndoe@exemple.ci' # registration address
 ```
 
 ---
