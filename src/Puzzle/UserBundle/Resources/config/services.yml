@@ -19,7 +19,10 @@ services:
         arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%admin.email%' ]
         tags:
             - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling }
-            - { name: kernel.event_listener, event: "user.create", method: onCreate }
+            - { name: kernel.event_listener, event: "user.creating", method: onCreating }
+            - { name: kernel.event_listener, event: "user.created", method: onCreated }
+            - { name: kernel.event_listener, event: "user.updating", method: onUpdating }
+            - { name: kernel.event_listener, event: "user.updated", method: onUpdated }
 
     # Twig extension
     user.twig.extension:
