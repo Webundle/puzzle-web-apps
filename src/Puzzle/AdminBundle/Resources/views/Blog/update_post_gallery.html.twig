@@ -1,30 +1,30 @@
 {% trans_default_domain 'messages' %}
 
-{% extends 'AdminBundle:Expertise:layout.html.twig' %}
+{% extends 'AdminBundle:Blog:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "expertise.project.update"|trans|capitalize }} {% endblock %}
+{% block title %}{{ parent() }} - {{ "blog.post.update"|trans|capitalize }} {% endblock %}
 
 {% block breadcrumbmodule %}
     {{ parent() }}
-    <a href=" {{ url('admin_expertise_project_list') }} ">
-       {{ 'expertise.project.list'|trans|capitalize }}
+    <a href=" {{ url('admin_blog_post_list') }} ">
+       {{ 'blog.post.list'|trans|capitalize }}
     </a>
     <i class="fa fa-chevron-right"></i>
-    <em>{{ "expertise.project.update"|trans|capitalize }}</em>
+    <em>{{ "blog.post.update"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
     <div id="page_content_inner">
     	{{ form_start(form, {'attr': {'id': 'form_validation', 'class': 'uk-form-stacked'}}) }}
 		    <div class="uk-width-1-1">
-	            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.pictures, 'data': project.pictures, 'type': 'picture', 'context': 'expertise/project', 'multiple': true })) }}
+	            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.pictures, 'data': post.pictures, 'type': 'picture', 'context': 'blog/post', 'multiple': true })) }}
 	        </div>
 		    <div class="uk-width-large-1-1 uk-margin-large-top">
 	            <div class="gallery_grid uk-grid-width-medium-1-4 uk-grid-width-large-1-5" data-uk-grid="{gutter: 16}" id="list-pictures">
-                        <input type="hidden" value="{{ project.pictures|length|default('0') }}" id="toggle-items-count">
+                        <input type="hidden" value="{{ post.pictures|length|default('0') }}" id="toggle-items-count">
                         <input type="hidden" value="0" id="toggle-items-checked-count">
                         <input type="hidden" value="" id="toggle-items-checked-id" name="pictures_to_remove">
-	                {% for key, picture in project.pictures %}
+	                {% for key, picture in post.pictures %}
 	                    <div>
 	                        <div class="md-card md-card-hover">
 	                            <div class="gallery_grid_picture md-card-content" id="grid_picture_{{ key }}">
@@ -46,7 +46,7 @@
 	            </div>
 	        </div>
 		    <div class="uk-text-center uk-margin-large-top">
-		        <a class="md-btn md-btn-default" href="{{ url('admin_expertise_project_list') }}">
+		        <a class="md-btn md-btn-default" href="{{ url('admin_blog_post_list') }}">
 		            <i class="fa fa-arrow-left"></i>
 		            {{ 'button.cancel'|trans }}
 		        </a>

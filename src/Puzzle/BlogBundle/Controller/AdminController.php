@@ -15,6 +15,7 @@ use Puzzle\MediaBundle\Util\MediaUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Puzzle\BlogBundle\Form\Type\PostUpdateGalleryType;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -319,6 +320,59 @@ class AdminController extends Controller
         }
         
         return $this->render("AdminBundle:Blog:update_post.html.twig", array(
+            'post' => $post,
+            'form' => $form->createView()
+        ));
+    }
+    
+    /**
+     *
+     * Update project
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function updatePostGalleryAction(Request $request, Post $post) {
+        $form = $this->createForm(PostUpdateGalleryType::class, $post, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_blog_post_update_gallery', ['id' => $post->getId()])
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $data = $request->request->all()['admin_blog_post_update_gallery'];
+            $pictures = $request->request->get('pictures') !== null ? $request->request->get('pictures') : $data['pictures'];
+            
+            if ($pictures !== null) {
+                $pictures = explode(',', $pictures);
+                
+                foreach ($pictures as $picture) {
+                    $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
+                        'path' => $picture,
+                        'context' => MediaUtil::extractContext(Post::class),
+                        'user' => $this->getUser(),
+                        'closure' => function($filename) use ($post) {
+                            $post->addPicture($filename);
+                        }
+                        ]));
+                }
+            }
+            
+            if ($picturesToRemove = $request->request->get('pictures_to_remove')) {
+                $picturesToRemove = explode(',', $picturesToRemove);
+                foreach ($picturesToRemove as $pictureToRemove) {
+                    $post->removePicture($pictureToRemove);
+                }
+            }
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $post->getName()], 'messages'));
+            return $this->redirectToRoute('admin_blog_post_update_gallery', ['id' => $post->getId()]);
+        }
+        
+        return $this->render("AdminBundle:Blog:update_post_gallery.html.twig", array(
             'post' => $post,
             'form' => $form->createView()
         ));

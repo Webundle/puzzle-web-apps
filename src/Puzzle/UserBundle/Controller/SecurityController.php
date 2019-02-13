@@ -131,12 +131,12 @@ class SecurityController extends Controller
                 'plainPassword' => $data['plainPassword']['first']
             ]));
             
-            if ($this->getParameter('user.register.confirmation_link') === true) {
+            if ($this->getParameter('user.registration.confirmation_link') === true) {
                 /** User $user */
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user));
             }
             
-            if ($redirectUri = $this->getParameter('user.register.redirect_uri')) {
+            if ($redirectUri = $this->getParameter('user.registration.redirect_uri')) {
                 $redirectUri = $this->generateUrl('security_check_user_registration', ['email' => $user->getEmail()]);
             }
             

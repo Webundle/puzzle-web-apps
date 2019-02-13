@@ -75,11 +75,6 @@ class AbstractPostType extends AbstractType
                 'label' => 'blog.post.tags',
                 'required' => false
             ))
-            ->add('gallery', TextType::class, [
-                'translation_domain' => 'messages',
-                'label' => 'blog.post.gallery',
-                'required' => false
-            ])
         ;
     }
     

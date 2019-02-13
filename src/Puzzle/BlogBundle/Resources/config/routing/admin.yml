@@ -32,6 +32,10 @@ admin_blog_post_update:
     path:     /post/{id}/update
     defaults: { _controller: 'BlogBundle:Admin:updatePost' }
 
+admin_blog_post_update_gallery:
+    path:     /post/{id}/update-gallery
+    defaults: { _controller: 'BlogBundle:Admin:updatePostGallery' }
+
 admin_blog_post_delete:
     path:     /post/{id}/delete
     defaults: { _controller: 'BlogBundle:Admin:deletePost' }

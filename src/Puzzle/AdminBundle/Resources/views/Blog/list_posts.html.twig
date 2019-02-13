@@ -85,17 +85,10 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                {% if post.gallery is not empty %}
-                                                    <a href="{{ url('admin_media_folder_show', {'id': post.gallery}) }}" target="blank">
-                                                        <i class="fa fa-list"></i>
-                                                        {{ "blog.post.manage_gallery"|trans }}
-                                                    </a>
-                                                {% else %}
-                                                    <a href="{{ url('admin_media_folder_list') }}" target="blank">
-                                                        <i class="fa fa-list"></i>
-                                                        {{ "blog.post.manage_gallery"|trans }}
-                                                    </a>
-                                                {% endif %}
+                                                <a href="{{ url('admin_blog_post_update_gallery', {'id': post.id}) }}">
+                                                    <i class="fa fa-list"></i>
+                                                    {{ "blog.post.manage_gallery"|trans }}
+                                                </a>
                                             </li>
                                             <li>
                                                 <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_blog_post_delete', {'id': post.id}) }}" data-text="{{ 'blog.post.delete'|trans({'%postName%': post.name}) }}" data-label="{{ post.name }}" class="remove-item">

@@ -69,10 +69,10 @@ class Post
     private $flashExpiresAt;
     
     /**
-     * @ORM\Column(name="gallery", type="string", length=255, nullable=true)
-     * @var string
+     * @ORM\Column(name="pictures", type="simple_array", nullable=true)
+     * @var array
      */
-    private $gallery;
+    private $pictures;
    
     /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="posts")
@@ -173,13 +173,23 @@ class Post
         return $this->flashExpiresAt;
     }
     
-    public function setGallery(string $gallery) : self {
-        $this->gallery = $gallery;
+    public function setPictures($pictures) :self {
+        $this->pictures = $pictures;
         return $this;
     }
     
-    public function getGallery() :?string {
-        return $this->gallery;
+    public function addPicture($picture) :self {
+        $this->pictures = array_unique(array_merge($this->pictures, [$picture]));
+        return $this;
+    }
+    
+    public function removePicture($picture) :self {
+        $this->pictures = array_diff($this->pictures, [$picture]);
+        return $this;
+    }
+    
+    public function getPictures() {
+        return $this->pictures;
     }
     
     public function setCategory(Category $category) : self {
