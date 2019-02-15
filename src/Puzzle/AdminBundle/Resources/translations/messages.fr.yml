@@ -506,17 +506,17 @@ user:
             notification: 'Un e-mail a été envoyé à l''adresse <em>%email%</em>'
             subject: 'Activation de votre compte'
             message: |
-                Bonjour %username% !
+                Bonjour %username% ! <br/>
                 
                 Pour activer votre compte, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>.<br∕>
 
-                Pour vous connecter, utilisez vos paramètres de ci-dessous:<br/>
+                Pour vous connecter, utilisez vos paramètres de ci-dessous:<br/><br/>
 
                 nom d'utilisateur: <b>%username%</b><br/>
 
-                mot de passe: <b>%password%</b><br/>
+                mot de passe: <b>%plainPassword%</b><br/>
                 
-                Cordialement,
+                Cordialement, <br/>
                 L'équipe
     account:
         sidebar: 'Liste des comptes'

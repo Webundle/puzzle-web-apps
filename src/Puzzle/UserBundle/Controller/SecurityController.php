@@ -138,7 +138,10 @@ class SecurityController extends Controller
             
             if ($this->getParameter('user.registration.confirmation_link') === true) {
                 /** User $user */
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user));
+                $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user, [
+                    'plainPassword' => $user->getPlainPassword(),
+                    'confirmationUrl' => $this->generateUrl('security_user_confirm_registration', ['token' => $user->getConfirmationToken()])
+                ]));
             }
             
             if (!$redirectUri = $this->getParameter('user.registration.redirect_uri')) {
