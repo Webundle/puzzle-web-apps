@@ -65,7 +65,7 @@ class AppController extends Controller
         /** @var Doctrine\ORM\EntityManager **/
         $em = $this->get('doctrine.orm.entity_manager');
         
-        if (! $moment = $em->find(Agenda::class, $id)) {
+        if (! $moment = $em->find(Moment::class, $id)) {
             $moment = $em->getRepository(Moment::class)->findOneBy(['slug' => $id]);
         }
         
