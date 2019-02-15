@@ -116,8 +116,8 @@ class UserListener
 	        return;
 	    }
 	    
-	    $subject = $this->translator->trans('user.create.title', ['%fullName%' => (string) $user], 'messages');
-	    $body = $this->translator->trans('user.create.message', [
+	    $subject = $this->translator->trans('user.registration.email.subject', ['%fullName%' => (string) $user], 'messages');
+	    $body = $this->translator->trans('user.registration.email.message', [
 	        '%fullName%' => (string) $user,
 	        '%username%' => $user->getUsername(),
 	        '%plainPassword%' => $data['plainPassword'] ?? $user->getPlainPassword(),

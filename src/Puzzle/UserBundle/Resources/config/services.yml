@@ -16,7 +16,7 @@ services:
         arguments: [ '@router' ]
     user.listener:
         class: Puzzle\UserBundle\Listener\UserListener
-        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%admin.email%' ]
+        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%user.registration.address%' ]
         tags:
             - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling }
             - { name: kernel.event_listener, event: "user.creating", method: onCreating }
