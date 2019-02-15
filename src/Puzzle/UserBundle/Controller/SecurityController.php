@@ -140,7 +140,7 @@ class SecurityController extends Controller
                 /** User $user */
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user, [
                     'plainPassword' => $user->getPlainPassword(),
-                    'confirmationUrl' => $this->generateUrl('security_user_confirm_registration', ['token' => $user->getConfirmationToken()])
+                    'confirmationUrl' => $this->generateUrl('security_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
                 ]));
             }
             
