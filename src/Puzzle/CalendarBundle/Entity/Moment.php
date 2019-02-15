@@ -114,7 +114,7 @@ class Moment
     private $members;
     
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="moment")
      */
     private $comments;
     
