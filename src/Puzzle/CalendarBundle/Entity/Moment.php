@@ -114,11 +114,17 @@ class Moment
     private $members;
     
     /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     */
+    private $comments;
+    
+    /**
      * Constructor
      */
     public function __construct() {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->members = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->enableComments = false;
+//         $this->enableComments = false;
     }
     
     public function getSluggableFields() {
