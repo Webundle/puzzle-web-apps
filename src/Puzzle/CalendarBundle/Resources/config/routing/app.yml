@@ -15,3 +15,29 @@ app_calendar_agenda_list:
 app_calendar_agenda_show:
     path:     /agenda/{id}/show
     defaults: { _controller: CalendarBundle:App:showAgenda }
+
+
+# Comment
+app_calendar_comment_list:
+    path:     /moment/{id}/comment/list
+    defaults: { _controller: CalendarBundle:App:listComments }
+    
+app_calendar_comment_create:
+    path:     /moment/{id}/comment/create
+    defaults: { _controller: CalendarBundle:App:createComment }
+
+app_calendar_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: CalendarBundle:App:updateComment }
+
+app_calendar_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: CalendarBundle:App:deleteComment } 
+
+app_calendar_comment_vote_create:
+    path:     /comment/{id}/vote/create
+    defaults: { _controller: CalendarBundle:App:createCommentVote } 
+
+app_calendar_comment_vote_delete:
+    path:     /comment/vote/{id}/delete
+    defaults: { _controller: CalendarBundle:App:deleteCommentVote } 
