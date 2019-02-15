@@ -264,4 +264,21 @@ class Moment
     public function getVisibility() :?string {
         return $this->visibility;
     }
+    
+    
+    public function addComment(Comment $comment) : self {
+        if ($this->comments === null || $this->comments->contains($comment) === false) {
+            $this->comments->add($comment);
+        }
+        
+        return $this;
+    }
+    
+    public function removeComment(Comment $comment) : self {
+        $this->comments->removeElement($comment);
+    }
+    
+    public function getComments() :? Collection {
+        return $this->comments;
+    }
 }
