@@ -174,11 +174,11 @@ use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
       public function addRole(string $role) :self {
           $role = strtoupper($role);
           
-          if ($role !== static::ROLE_DEFAULT) {
+//           if ($role !== static::ROLE_DEFAULT) {
               if (false === in_array($role, $this->roles, true)) {
                   $this->roles[] = $role;
               }
-          }
+//           }
           
           return $this;
       }
