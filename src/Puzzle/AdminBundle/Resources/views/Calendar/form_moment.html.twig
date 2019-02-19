@@ -67,7 +67,7 @@
                     <div class="uk-form-row">
                         {{ form_label(form.endedAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
                         {% if moment is defined %}
-                            {{ form_widget(form.endedAt, {'id': 'ended_at', 'value': moment.startedAt|date('d-m-Y H:i')}) }}
+                            {{ form_widget(form.endedAt, {'id': 'ended_at', 'value': moment.endedAt|date('d-m-Y H:i')}) }}
                         {% else %}
                             {{ form_widget(form.endedAt, {'id': 'ended_at'}) }}
                         {% endif %}
@@ -76,10 +76,12 @@
             </div>
             <div class="md-card">
                 <div class="md-card-toolbar">
-                    <div class="uk-float-right">
+                    <div class="md-card-toolbar-actions">
                         {{ form_widget(form.isRecurrent, {'attr': {'data-switchery': true}}) }}
                     </div>
-                    {{ form_label(form.isRecurrent, null, {'label_attr': {'class' : 'uk-display-block uk-margin-small-top uk-form-label'}}) }}
+                    <h3 class="md-card-toolbar-heading-text">
+                        {{ form_label(form.isRecurrent) }}
+                    </h3>
                 </div>
                 <div class="md-card-content">
                     <section>

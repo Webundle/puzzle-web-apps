@@ -85,7 +85,7 @@ class AbstractMomentType extends AbstractSchedulingType
             ))
             ->add('isRecurrent', CheckboxType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'calendar.moment.is_recurrent',
+                'label' => 'calendar.moment.is_recurrent.title',
                 'required' => false
             ))
         ;
