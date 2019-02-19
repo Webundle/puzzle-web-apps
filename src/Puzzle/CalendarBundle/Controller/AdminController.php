@@ -256,7 +256,7 @@ class AdminController extends Controller
             $moment->setEndedAt(new \DateTime($data['endedAt']));
             $moment->setTags($moment->getTags() !== null ? explode(',', $moment->getTags()) : null);
             $moment->setEnableComments($moment->getEnableComments() == "on" ? true : false);
-            $moment->setIsRecurrent($moment->getIsRecurrent() == "on" ? true : false);
+            $moment->setIsRecurrent($moment->isRecurrent() == "on" ? true : false);
             
             if ($moment->getVisibility() === "share") {
                 if ($request->request->get('members') !== null) {
