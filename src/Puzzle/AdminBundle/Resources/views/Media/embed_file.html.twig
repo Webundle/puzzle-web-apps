@@ -12,12 +12,12 @@
         </h3>
     </div>
     <div class="md-card-content uk-text-center {% if data is empty or multiple == true %}uk-hidden{% endif %}" id="target_container_{{ type }}">
-        <embed src="{{ multiple == false ? data : "" }}" class="img_large" id="target_{{ type }}"></embed>
-        {# {% if multiple == false %}
-            <embed src="{{ data }}" class="img_large" id="target_{{ type }}"></embed>
+        {% if multiple == false %}
+        	{% set file = puzzle_media_file(data) %}
+        	<embed src="{{ file != null ? file.path : "" }}" class="img_large" id="target_{{ type }}"></embed>
         {% else %}
-            <embed src="" class="img_large" id="target_{{ type }}"></embed>
-        {% endif %} #}
+        	<embed src="" class="img_large" id="target_{{ type }}"></embed>
+        {% endif %}
         {{ form_widget(formData, {'id': 'files_to_add_'~type}) }}
         <div class="uk-hidden" id="item-count-container">
             <span id="item-count"></span> {{ 'media.file.selected'|trans }}
