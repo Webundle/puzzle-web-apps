@@ -39,7 +39,7 @@ class MediaUtil
      * @return string
      */
     public static function supportedPictureExtensions() {
-        return 'jpg|jpeg|png|ico|bmp';
+        return 'jpg|jpeg|png|ico|bmp|gif';
     }
     
     /**
