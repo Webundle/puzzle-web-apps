@@ -1,0 +1,9 @@
+advert_admin:
+    resource: '@AdvertBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%advert'
+    host: '%admin_host%'
+    options:
+        expose: true
+
+advert_app:
+    resource: '@AdvertBundle/Resources/config/routing/app.yml'

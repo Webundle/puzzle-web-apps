@@ -1,0 +1,20 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Advert:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "advert.post.update"|trans|capitalize }} {{ post.name|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_advert_post_list') }} ">
+       {{ 'advert.post.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "advert.post.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Advert:form_post.html.twig' with {'form': form, 'post': post} %}
+    </div>
+{% endblock %}

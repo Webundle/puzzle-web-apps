@@ -1,0 +1,17 @@
+# Post
+app_advert_post_list:
+    path:     /post/list
+    defaults: { _controller: AdvertBundle:App:listPosts }
+
+app_advert_post_show:
+    path:     /post/{slug}
+    defaults: { _controller: AdvertBundle:App:showPost }
+
+# Category
+app_advert_category_list:
+    path:     /category/list
+    defaults: { _controller: AdvertBundle:App:listCategories }
+
+app_advert_category_show:
+    path:     /category/{id}/show
+    defaults: { _controller: AdvertBundle:App:showCategory }

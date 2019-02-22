@@ -1,0 +1,37 @@
+# Category
+admin_advert_category_list:
+    path:     /category/list
+    defaults: { _controller: 'AdvertBundle:Admin:listCategories' }
+
+admin_advert_category_create:
+    path:     /category/create
+    defaults: { _controller: 'AdvertBundle:Admin:createCategory' }
+
+admin_advert_category_show:
+    path:     /category/{id}
+    defaults: { _controller: 'AdvertBundle:Admin:showCategory' }
+
+admin_advert_category_update:
+    path:     /category/{id}/update
+    defaults: { _controller: 'AdvertBundle:Admin:updateCategory' }
+    
+admin_advert_category_delete:
+    path:     /category/{id}/delete
+    defaults: { _controller: 'AdvertBundle:Admin:deleteCategory' }
+
+# Post
+admin_advert_post_list:
+    path:     /post/list
+    defaults: { _controller: 'AdvertBundle:Admin:listPosts' }
+
+admin_advert_post_create:
+    path:     /post/create
+    defaults: { _controller: 'AdvertBundle:Admin:createPost' }
+    
+admin_advert_post_update:
+    path:     /post/{id}/update
+    defaults: { _controller: 'AdvertBundle:Admin:updatePost' }
+
+admin_advert_post_delete:
+    path:     /post/{id}/delete
+    defaults: { _controller: 'AdvertBundle:Admin:deletePost' }

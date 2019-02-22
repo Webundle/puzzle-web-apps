@@ -12,7 +12,7 @@
         </h3>
     </div>
     <div class="md-card-content uk-text-center {% if data is empty or multiple == true %}uk-hidden{% endif %}" id="target_container_{{ type }}">
-        {% if multiple == false %}
+        {% if data is not empty and multiple == false %}
         	{% set file = puzzle_media_file(data) %}
         	<embed src="{{ file != null ? file.path : "" }}" class="img_large" id="target_{{ type }}"></embed>
         {% else %}

@@ -1,0 +1,8 @@
+services:
+    # Twig extension
+    advert.twig.extension:
+        class: Puzzle\AdvertBundle\Twig\AdvertExtension
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
+        public: false
+        tags:
+            - { name: twig.extension }

@@ -127,6 +127,42 @@ blog:
         created_at: 'Date de création'
         updated_at: 'Date d''édition'
 
+
+# Job
+advert:
+    title: 'Annonces'
+    description: 'Gérer les Annonces'
+    icon: 'fa fa-newspaper-o'
+    post:
+        sidebar: 'Annonces'
+        list: 'Liste des annonces'
+        show: 'Détails de l''annonce'
+        create: 'Nouvel annonce'
+        update: 'Modifier l''annonce'
+        delete: 'Etes-vous sûr de vouloir supprimer l''annonce <em>%postName%</em>'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection d''annonces'
+        name: 'Nom'
+        category: 'Catégorie'
+        author: 'Auteur'
+        shortDescription: 'Courte description (20 caractères min, 100 max)'
+        description: 'Description'
+        date: 'Date'
+        createdAt: 'Créée le'
+        updatedAt: 'Modifiée le'
+        isPinned: 'Epinglée'
+        expiresAt: 'Expires le'
+    category:
+        sidebar: 'Catégories'
+        list: 'Liste des catégories'
+        show: 'Détails de la catégorie'
+        create: 'Nouvelle catégorie'
+        update: 'Modifier la catégorie'
+        delete: 'Etes-vous sûr de vouloir supprimer la catégorie'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de catégories'
+        name: 'Nom'
+        created_at: 'Date de création'
+        updated_at: 'Date d''édition'
+
 # Media
 media:
     title: 'Médiathèque'
