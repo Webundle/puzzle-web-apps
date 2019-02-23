@@ -221,32 +221,46 @@
     <script src="{{ asset('bundles/admin/libs/ckeditor/adapters/jquery.js') }}"></script>
     <script src="{{ asset('bundles/admin/js/forms_wysiwyg.js') }}"></script>
     <script>
-        altair_forms.parsley_validation_config();
-        altair_forms.parsley_extra_validators();
-        $(function() {
-            altair_helpers.retina_images();
-            if(Modernizr.touch) {
-                FastClick.attach(document.body);
-            }
-        });
-
-        $(function(){
-            // Action buttons
-            $("body").on('mouseenter', '.toggleable', togglize);
-            $("body").on('mouseleave', '.toggleable', untogglize);
-
-            // Table
-            var t = document.getElementById('dt_individual_search');
+        $(document).ready(function(){
+            'use strict';
             
-            if (t != undefined && t != null) {
-                $('#dt_individual_search').DataTable({
-                    "destroy": true,
-                    "sPaginationType" : "full_numbers",
-                    "language" : {
-                        "url": "{{ asset('bundles/admin/libs/datatables/media/lang/dataTables.'~app.request.locale ~'.json') }}"
+            // Reload window if Ajax response code is equals to `401`
+            $.ajaxSetup({
+                statusCode: {
+                    401: function() {
+                        document.location.reload(true);
                     }
-                });
-            }
+                },
+                cache: false
+            });
+
+            altair_forms.parsley_validation_config();
+            altair_forms.parsley_extra_validators();
+            $(function() {
+                altair_helpers.retina_images();
+                if(Modernizr.touch) {
+                    FastClick.attach(document.body);
+                }
+            });
+
+            $(function(){
+                // Action buttons
+                $("body").on('mouseenter', '.toggleable', togglize);
+                $("body").on('mouseleave', '.toggleable', untogglize);
+
+                // Table
+                var t = document.getElementById('dt_individual_search');
+                
+                if (t != undefined && t != null) {
+                    $('#dt_individual_search').DataTable({
+                        "destroy": true,
+                        "sPaginationType" : "full_numbers",
+                        "language" : {
+                            "url": "{{ asset('bundles/admin/libs/datatables/media/lang/dataTables.'~app.request.locale ~'.json') }}"
+                        }
+                    });
+                }
+            });
         });
     </script>
     <script type="text/javascript">
