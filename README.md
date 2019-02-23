@@ -59,14 +59,17 @@ class AppKernel extends Kernel
 Configure security by adding it in the `app/config/security.yml` file of your project:
 ```yaml
 security:
-    encoders:   
+    encoders:
+    #     # Symfony\Component\Security\Core\User\User: plaintext    
          Puzzle\UserBundle\Entity\User:
              algorithm:        sha512
              encode_as_base64: false
              iterations:       1
+
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     providers:
         chain_provider:
             chain:
@@ -88,17 +91,17 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+#        login:
+#            pattern:  ^/demo/secured/login$
+#            security: false
             
         login:
             pattern: ^/login$
             anonymous: ~
-            
+
         registration:
             pattern: ^/registration$
-            anonymous: ~
-            
-        connect:
-            pattern: ^/connect
             anonymous: ~
             
         admin:
@@ -115,16 +118,16 @@ security:
                 csrf_token_generator: security.csrf.token_manager
             logout:
                 path: /logout
-                target: login
+                target: admin_homepage
                 delete_cookies:
                     REMEMBERME: { path: null, domain: null}
             remember_me:
                 secret: "%secret%"
                 lifetime: 84400
-                # path: admin_homepage
+                path: admin_homepage
                 domain: ~
                 always_remember_me: true
-                
+
         main:
             entry_point: security.authentication_entry_point
             pattern: '^/'
@@ -143,7 +146,7 @@ security:
                 target: app_homepage
             remember_me:
                 secret: "%secret%"
-                lifetime: 84400
+                lifetime: 172 800 # 2 days
                 path: app_homepage
                 domain: ~
                 always_remember_me: true
@@ -159,12 +162,14 @@ security:
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
-            
+
     access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - {path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - {path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^%admin_prefix%, host: "%admin_host%", roles: ROLE_ADMIN }
+        # - {path: ^/, roles: ROLE_USER }
+
 ```
 
 ### **Step 3: Register default routes**
@@ -524,7 +529,7 @@ admin:
 user:
     registration:
         confirmation_link: true # Send confirmation url to enable account manually
-        # redirect_uri: '' # redirect uri after registration
+        redirect_uri: '' # redirect uri after registration
         address: 'johndoe@exemple.ci' # registration address
 ```
 
@@ -695,11 +700,11 @@ app:
     navigation:
         nodes:
             ...
-            service:
-                label: 'app.service.title'
+            blog_post:
+                label: 'app.blog.title'
                 translation_domain: 'app'
-                path: app_expertise_service_list
-                sub_paths: [app_expertise_service_show]
+                path: app_blog_post_list
+                sub_paths: [app_blog_post_show]
                 parent: ~
 ```
 
@@ -1147,4 +1152,95 @@ admin:
                 sub_paths: ['admin_static_template_create', 'admin_static_template_update']
                 parent: static
                 user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+```
+
+
+---
+
+## **Advert Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\AdvertBundle\AdvertBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+advert:
+    resource: "@AdvertBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all advert routes by typing: `php bin/console debug:router | grep advert`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Advert
+            advert:
+                label: 'advert.title'
+                description: 'advert.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-newspaper-o'
+                parent: ~
+                user_roles: ['ROLE_ADVERT', 'ROLE_ADMIN']
+            advert_post:
+                label: 'advert.navigation.post'
+                description: 'advert.post.description'
+                translation_domain: 'messages'
+                path: 'admin_advert_post_list'
+                sub_paths: ['admin_advert_post_create', 'admin_advert_post_update', 'admin_advert_post_show']
+                parent: advert
+                user_roles: ['ROLE_ADVERT', 'ROLE_ADMIN']
+            advert_category:
+                label: 'advert.navigation.category'
+                description: 'advert.category.description'
+                translation_domain: 'messages'
+                path: 'admin_advert_category_list'
+                sub_paths: ['admin_advert_category_create', 'admin_advert_category_update', 'admin_advert_category_show']
+                parent: advert
+                user_roles: ['ROLE_ADVERT', 'ROLE_ADMIN']
+                
+# App Configuration
+app:
+    ...
+    navigation:
+        nodes:
+            ...
+            advert_post:
+                label: 'app.advert.title'
+                translation_domain: 'app'
+                path: app_advert_post_list
+                sub_paths: [app_advert_post_show]
+                parent: ~
 ```
