@@ -7,3 +7,7 @@ advert_admin:
 
 advert_app:
     resource: '@AdvertBundle/Resources/config/routing/app.yml'
+    prefix:   '/advert'
+    host: '%host%'
+    options:
+        expose: true

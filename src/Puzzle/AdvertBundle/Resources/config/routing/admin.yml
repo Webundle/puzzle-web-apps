@@ -19,6 +19,27 @@ admin_advert_category_delete:
     path:     /category/{id}/delete
     defaults: { _controller: 'AdvertBundle:Admin:deleteCategory' }
 
+# Advertiser
+admin_advert_advertiser_list:
+    path:     /advertiser/list
+    defaults: { _controller: 'AdvertBundle:Admin:listAdvertisers' }
+
+admin_advert_advertiser_create:
+    path:     /advertiser/create
+    defaults: { _controller: 'AdvertBundle:Admin:createAdvertiser' }
+
+admin_advert_advertiser_show:
+    path:     /advertiser/{id}
+    defaults: { _controller: 'AdvertBundle:Admin:showAdvertiser' }
+
+admin_advert_advertiser_update:
+    path:     /advertiser/{id}/update
+    defaults: { _controller: 'AdvertBundle:Admin:updateAdvertiser' }
+    
+admin_advert_advertiser_delete:
+    path:     /advertiser/{id}/delete
+    defaults: { _controller: 'AdvertBundle:Admin:deleteAdvertiser' }
+
 # Post
 admin_advert_post_list:
     path:     /post/list
@@ -35,3 +56,16 @@ admin_advert_post_update:
 admin_advert_post_delete:
     path:     /post/{id}/delete
     defaults: { _controller: 'AdvertBundle:Admin:deletePost' }
+
+# Postulate
+admin_advert_postulate_list:
+    path:     /post/{id}/postulate/list
+    defaults: { _controller: 'AdvertBundle:Admin:listPostulates' }
+
+admin_advert_post_update:
+    path:     /postulate/{id}/confirm
+    defaults: { _controller: 'AdvertBundle:Admin:confirmPostulate' }
+
+admin_advert_post_delete:
+    path:     /postulate/{id}/delete
+    defaults: { _controller: 'AdvertBundle:Admin:deletePostulate' }

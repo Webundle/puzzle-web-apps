@@ -6,6 +6,7 @@ use Knp\Component\Pager\Paginator;
 use Puzzle\AdvertBundle\Entity\Post;
 use Puzzle\AdvertBundle\Entity\Category;
 use Puzzle\AdvertBundle\Entity\Archive;
+use Puzzle\AdvertBundle\Entity\Advertiser;
 
 /**
  *
@@ -32,7 +33,9 @@ class AdvertExtension extends \Twig_Extension
     public function getFunctions() {
         return [
             new \Twig_SimpleFunction('puzzle_advert_categories', [$this, 'getCategories'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('puzzle_advert_category', [$this, 'getCategories'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_advert_category', [$this, 'getCategory'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_advert_advertisers', [$this, 'getAdvertisers'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_advert_advertiser', [$this, 'getAdvertiser'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_posts', [$this, 'getPosts'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_post', [$this, 'getPost'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_archives', [$this, 'getArchives'], ['needs_environment' => false, 'is_safe' => ['html']]),
@@ -55,6 +58,19 @@ class AdvertExtension extends \Twig_Extension
         }
         
         return $category;
+    }
+    
+    public function getAdvertisers(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Advertiser::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Advertiser::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
+    }
+    
+    public function getAdvertiser($id) {
+        return $this->em->find(Advertiser::class, $id);
     }
     
     public function getArchives(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {

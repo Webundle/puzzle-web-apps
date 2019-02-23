@@ -38,13 +38,19 @@ class Post
     private $description;
     
     /**
-     * @ORM\Column(name="short_description", type="string", length=255, nullable=true)
+     * @ORM\Column(name="tag", type="string", length=255, nullable=true)
      * @var string
      */
-    private $shortDescription;
+    private $tag;
+    
+    /**
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $email;
 
     /**
-     * @ORM\Column(name="visible", type="boolean")
+     * @ORM\Column(name="pinned", type="boolean")
      * @var boolean
      */
     private $pinned;
@@ -56,15 +62,27 @@ class Post
     private $expiresAt;
     
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="enable_postulate", type="boolean")
+     * @var boolean
      */
-    private $picture;
+    private $enablePostulate;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Postulate", mappedBy="post")
+     */
+    private $postulates;
     
     /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="posts")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Advertiser", inversedBy="posts")
+     * @ORM\JoinColumn(name="advertiser_id", referencedColumnName="id")
+     */
+    private $advertiser;
     
     /**
      * @ORM\ManyToOne(targetEntity="Archive", inversedBy="posts")
@@ -77,6 +95,8 @@ class Post
      */
     public function __construct() {
     	$this->pinned = false;
+    	$this->enablePostulate = true;
+    	$this->postulates = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     public function getSluggableFields() {
@@ -101,18 +121,22 @@ class Post
         return $this->description;
     }
     
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function setShortDescription(){
-        $this->shortDescription = strlen($this->description) > 100 ? 
-                                  mb_strimwidth($this->description, 0, 100, '...') : $this->description;
+    public function setTag(string $tag) :self {
+        $this->tag = $tag;
         return $this;
     }
-
-    public function getShortDescription() :? string {
-        return $this->shortDescription;
+    
+    public function getTag() :?string {
+        return $this->tag;
+    }
+    
+    public function setEmail(string $email) :self {
+        $this->email = $email;
+        return $this;
+    }
+    
+    public function getEmail() :?string {
+        return $this->email;
     }
     
     public function setPinned(bool $pinned) : self {
@@ -133,6 +157,15 @@ class Post
         return $this->category;
     }
     
+    public function setAdvertiser(Advertiser $advertiser) :self {
+        $this->advertiser = $advertiser;
+        return $this;
+    }
+    
+    public function getAdvertiser() :?Advertiser {
+       return $this->advertiser;
+    }
+    
     public function setArchive(Archive $archive) : self {
         $this->archive = $archive;
         return $this;
@@ -151,13 +184,35 @@ class Post
         return $this->expiresAt;
     }
     
-    public function setPicture($picture) {
-        $this->picture = $picture;
+    public function setEnablePostulate(bool $enablePostulate) :self {
+        $this->enablePostulate = $enablePostulate;
         return $this;
     }
     
-    public function getPicture() {
-        return $this->picture;
+    public function getEnablePostulate() :?bool {
+        return $this->enablePostulate;
+    }
+    
+    public function setPostulates(Collection $postulates) : self {
+        $this->postulates = $postulates;
+        return $this;
+    }
+    
+    public function addPostulate(Postulate $postulate) : self {
+        if ($this->postulates === null || $this->postulates->contains($postulate) === false){
+            $this->postulates->add($postulate);
+        }
+        
+        return $this;
+    }
+    
+    public function removePostulate(Postulate $postulate) : self {
+        $this->postulates->removeElement($postulate);
+        return $this;
+    }
+    
+    public function getPostulates() :? Collection {
+        return $this->postulates;
     }
     
     public function __toString(){

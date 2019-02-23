@@ -63,7 +63,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ url('admin_advert_category_update', {'id': category.id}) }}">{{ category.name }}</a>
+                                    <a href="{{ url('admin_advert_category_update', {'id': category.id}) }}" class="show-modal">{{ category.name }}</a>
                                 </td>
                                 <td class="uk-text-right">
                                     <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
@@ -71,13 +71,13 @@
                                         <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
                                             <ul class="uk-nav uk-nav-dropdown">
                                                 <li>
-                                                    <a href="{{ url('admin_advert_category_update', { 'id': category.id }) }}">
+                                                    <a href="{{ url('admin_advert_category_update', { 'id': category.id }) }}" class="show-modal">
                                                         <i class="fa fa-pencil"></i>
                                                         {{ "button.update"|trans }}
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_category_delete', {'id' : category.id}) }}" data-label="{{ category.name }}" class="remove-item">
+                                                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_category_delete', {'id' : category.id}) }}" data-label="{{ category.name }}" class="remove-item" data-text="{{ 'advert.category.delete'|trans({'%categoryName%': category.name}) }}">
                                                         <i class="fa fa-trash-o uk-text-danger"></i>
                                                         {{ "button.remove"|trans }}
                                                     </a>

@@ -15,3 +15,8 @@ app_advert_category_list:
 app_advert_category_show:
     path:     /category/{id}/show
     defaults: { _controller: AdvertBundle:App:showCategory }
+
+# Postulate
+app_advert_postulate_create:
+    path:     /post/{id}/postulate/create
+    defaults: { _controller: AdvertBundle:App:createPostulate }

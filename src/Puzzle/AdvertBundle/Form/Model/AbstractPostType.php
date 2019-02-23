@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Puzzle\AdvertBundle\Entity\Category;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Puzzle\AdvertBundle\Entity\Advertiser;
 
 /**
  * 
@@ -32,15 +33,36 @@ class AbstractPostType extends AbstractType
                 'label' => 'advert.post.description',
                 'required' => false
             ))
+            ->add('email', TextType::class, [
+                'translation_domain' => 'messages',
+                'label' => 'advert.post.email',
+                'required' => false
+            ])
+            ->add('tag', TextType::class, [
+                'translation_domain' => 'messages',
+                'label' => 'advert.post.tag',
+                'required' => false
+            ])
             ->add('category', EntityType::class, array(
                 'translation_domain' => 'messages',
                 'label' => 'advert.post.category',
                 'class' => Category::class,
                 'choice_label' => 'name',
             ))
+            ->add('advertiser', EntityType::class, array(
+                'translation_domain' => 'messages',
+                'label' => 'advert.post.advertiser',
+                'class' => Advertiser::class,
+                'choice_label' => 'name',
+            ))
             ->add('pinned', CheckboxType::class, array(
                 'translation_domain' => 'messages',
                 'label' => 'advert.post.pinned',
+                'required' => false
+            ))
+            ->add('enablePostulate', CheckboxType::class, array(
+                'translation_domain' => 'messages',
+                'label' => 'advert.post.enablePostulate',
                 'required' => false
             ))
             ->add('expiresAt', TextType::class, [
@@ -49,12 +71,6 @@ class AbstractPostType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('picture', HiddenType::class, array(
-                'translation_domain' => 'messages',
-                'label' => 'blog.post.picture',
-                'required' => false,
-                'mapped' => false
-            ))
         ;
     }
     

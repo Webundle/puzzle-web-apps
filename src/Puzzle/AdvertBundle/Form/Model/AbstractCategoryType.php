@@ -22,7 +22,7 @@ class AbstractCategoryType extends AbstractType
             ])
             ->add('description', TextType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'advert.post.description',
+                'label' => 'advert.category.description',
                 'required' => false
             ))
         ;

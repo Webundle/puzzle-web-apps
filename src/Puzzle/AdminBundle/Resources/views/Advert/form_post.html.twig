@@ -27,24 +27,40 @@
                         {{ form_widget(form.category, {'attr': {'data-md-selectize' : true}}) }}
                     </div>
                     <div class="uk-form-row">
+                        {{ form_label(form.advertiser, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {{ form_widget(form.advertiser, {'attr': {'data-md-selectize' : true}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.tag, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {{ form_widget(form.tag, {'attr': {'class' : 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.email, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {{ form_widget(form.email, {'attr': {'class' : 'md-input'}}) }}
+                    </div>
+
+                    <div class="uk-form-row">
                         <div class="uk-float-right">
                             {{ form_widget(form.pinned, {'attr': {'data-switchery' : true}}) }}
                         </div>
                         {{ form_label(form.pinned, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
                     </div>
                     <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.enablePostulate, {'attr': {'data-switchery' : true}}) }}
+                        </div>
+                        {{ form_label(form.enablePostulate, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                    </div>
+                    <div class="uk-form-row">
                         {{ form_label(form.expiresAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
                         {% if post is not defined or post.expiresAt is empty %}
                             {{ form_widget(form.expiresAt, {'attr': {'class': 'datepicker'}}) }}
                         {% else %}
-                            {{ form_widget(form.expiresAt, {'attr': {'class': 'datepicker'}, 'value' : post.expiresAt|date('Y-m-d H:i') }) }}
+                            {{ form_widget(form.expiresAt, {'attr': {'class': 'datepicker'}, 'value': post.expiresAt|date('d-m-Y H:i') }) }}
                         {% endif %}
                     </div>
                 </div>
             </div>
-
-            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': post is defined ? post.picture : null, 'type': 'picture', 'context': 'blog/post', 'multiple': false })) }}
-
         </div>
         <div class="uk-width-1-1 uk-text-center uk-margin-top">
             <a class="md-btn md-btn-default" href="{{ url('admin_blog_post_list') }}">

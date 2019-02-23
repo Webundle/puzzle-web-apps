@@ -7,6 +7,7 @@ use Puzzle\AdvertBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Puzzle\AdvertBundle\Entity\Postulate;
 
 /**
  * 
@@ -76,5 +77,22 @@ class AppController extends Controller
     	    'category' => $category,
     	    'posts' => $posts,
     	));
+    }
+    
+    /**
+     * Create postulate
+     */
+    public function createPostulate(Request $request, $id) {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $post = $em->find(Post::class, $id);
+        
+        $postulate = new Postulate();
+        $postulate->setUser($this->getUser());
+        $postulate->setPost($post);
+        
+        $em->persist($postulate);
+        $em->flush();
+        
+        return new JsonResponse(null, 200);
     }
 }

@@ -2,26 +2,21 @@
 
 {% extends 'AdminBundle:Advert:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "advert.post.list"|trans|capitalize }}{% endblock %}
-
-{% block headingactions %}
-<div class="heading_actions">
-    <a href="{{ url('admin_advert_post_create') }}">
-       	<span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
-        <i class="fa fa-plus-circle"></i>
-    </a>
-</div>
-{% endblock %}
+{% block title %}{{ parent() }} - {{ "advert.advertiser.show"|trans|capitalize }} - {{ "advert.postulate.list"|trans|capitalize }}{% endblock %}
 
 {% block breadcrumbmodule %}
     {{ parent() }}
-	<em>{{ "advert.post.list"|trans|capitalize }}</em>
+    <a href="{{ url('admin_advert_advertiser_list') }}">{{ "advert.advertiser.list"|trans|capitalize }}</a>
+    <i class="fa fa-chevron-right"></i>
+    <span>{{ post.name|capitalize }}</span>
+    <i class="fa fa-chevron-right"></i>
+	<em>{{ "advert.postulate.list"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
 <div id="page_content_inner">
     <div class="md-card">
-        {% if posts is not empty %}
+        {% if postulates is not empty %}
             <div class="md-card-toolbar toggle-action uk-hidden">
                 <div class="md-card-toolbar-actions">
                     <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
@@ -40,7 +35,7 @@
                             </ul>
                         </div>
                     </div>
-                    <input type="hidden" value="{{ posts|length|default('0') }}" id="toggle-items-count">
+                    <input type="hidden" value="{{ postulates|length|default('0') }}" id="toggle-items-count">
                     <input type="hidden" value="0" id="toggle-items-checked-count">
                 </div>
             </div>
@@ -50,54 +45,40 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>{{ "advert.post.name"|trans }}</th>
-                    <th>{{ "advert.post.category"|trans }}</th>
-                    <th>{{ "advert.post.expiresAt"|trans }}</th>
-                    <th>{{ "advert.post.advertiser"|trans }}</th>
-                    <th>{{ "advert.post.pinned"|trans }}</th>
-                    <th>{{ "advert.post.enablePostulate"|trans }}</th>
+                    <th>{{ "advert.postulate.user"|trans }}</th>
+                    <th>{{ "advert.postulate.post"|trans }}</th>
+                    <th>{{ "advert.postulate.createdAt"|trans }}</th>
+                    <th>{{ "advert.postulate.confirmed"|trans }}</th>
+                    <th>{{ "advert.postulate.confirmedAt"|trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    {% for post in posts %}
-                        <tr class="toggleable" id="item-{{ post.id }}">
+                    {% for postulate in postulates %}
+                        <tr class="toggleable" id="item-{{ postulate.id }}">
                             <td>
                                 <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
-                                    <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ post.id }}">&#xE835;</i>
+                                    <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ postulate.id }}">&#xE835;</i>
                                 </a>
                             </td>
-                            <td>
-                            	<div class="uk-text-truncate" style="width: 250px;">
-                                    <a href="{{ url('admin_advert_post_update', {'id': post.id}) }}" title="{{ post.name }}">
-                                        {{ post.name }}
-                                    </a>
-                                </div>
-                            </td>
-                            <td>{{ post.category.name }}</td>
-                            <td><small>{{ post.expiresAt|date('d-m-y H:i')|default('-') }}</small></td>
-                            <td>{{ post.advertiser.name }}</td>
-                            <td class="uk-text-center"><input type="checkbox" value="{{ post.isPinned|default(0) }}" disabled=""></td>
-                            <td class="uk-text-center"><input type="checkbox" value="{{ post.enablePostulate|default(0) }}" disabled=""></td>
+                            <td>{{ postulate.user }}</td>
+                            <td>{{ postulate.post.name }}</td>
+                            <td><small>{{ postulate.createdAt|date('d-m-y H:i')|default('-') }}</small></td>
+                            <td><small>{{ postulate.confirmedAt|date('d-m-y H:i')|default('-') }}</small></td>
+                            <td class="uk-text-center"><input type="checkbox" value="{{ postulate.confirmed|default(0) }}" disabled=""></td>
                             <td class="uk-text-right">
                                 <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
                                     <a><i class="fa fa-ellipsis-h"></i></a>
                                     <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
                                         <ul class="uk-nav uk-nav-dropdown">
                                             <li>
-                                                <a href="{{ url('admin_advert_post_update', {'id': post.id}) }}">
+                                                <a href="{{ url('admin_advert_postulate_confirm', {'id': postulate.id}) }}">
                                                     <i class="fa fa-pencil"></i>
-                                                    {{ "button.update"|trans }}
+                                                    {{ "advert.postulate.confirm"|trans }}
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{{ url('admin_advert_postulate_list', {'id': post.id}) }}">
-                                                    <i class="fa fa-users"></i>
-                                                    {{ "advert.post.manage_postulate"|trans }}
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_post_delete', {'id': post.id}) }}" data-text="{{ 'advert.post.delete'|trans({'%postName%': post.name}) }}" data-label="{{ post.name }}" class="remove-item">
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_postulate_delete', {'id': postulate.id}) }}" data-text="{{ 'advert.postulate.delete'|trans({'%postName%': post.name}) }}" data-label="{{ postulate.name }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
                                                     {{ "button.remove"|trans }}
                                                 </a>
