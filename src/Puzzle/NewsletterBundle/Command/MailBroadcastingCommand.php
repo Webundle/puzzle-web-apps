@@ -24,22 +24,11 @@ class MailBroadcastingCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this->setName('puzzle:newsletter:subscriber-mail-broadcasting')
-			 ->setDescription('Send mail to all subscribers');
+			 ->setDescription('Send mail to all subscribers')
+			 ->addArgument("template");
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 * @see \Symfony\Component\Console\Command\Command::interact()
-	 */
-	protected function interact(InputInterface $input, OutputInterface $output)
-	{
-	    $dialog = $this->getHelper('question');
-	    
-	    $this->subject = $dialog->ask($input, $output, new Question('Sujet: '));
-	    $this->template = $dialog->ask($input, $output, new Question('Modèle: '));
-	}
-	
+
 	public function execute(InputInterface $input, OutputInterface $output){
-	    $this->getContainer()->get('newsletter.mail_sender')->sendBroadcast($this->subject, $this->template);
+	    $this->getContainer()->get('newsletter.mail_sender')->sendBroadcast($input->getArgument("template"));
 	}
 }

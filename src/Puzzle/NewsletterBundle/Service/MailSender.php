@@ -38,11 +38,13 @@ class MailSender
 		$this->fromEmail = $fromEmail;
 	}
 	
-	public function sendBroadcast($subject, $templateSlug) {
+	public function sendBroadcast($templateId) {
 	    $subscribers = $this->em->getRepository(Subscriber::class)->findAll();
-	    $template = $this->em->getRepository(Template::class)->findOneBy(['slug' => $templateSlug]);
+	    if (! $template = $this->em->find(Template::class, $templateId)) {
+	    	$template = $this->em->getRepository(Template::class)->findOneBy(['slug' => $templateId]);
+	    }
 	    
-	    $subject = $subject ?? $template->getName();
+	    $subject = $template->getName();
 	    $body = $template->getContent();
 	    $to = [];
 	    

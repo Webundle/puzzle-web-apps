@@ -38,6 +38,7 @@ class FileManager {
     public function createFolder(string $folderTarget, User $user, bool $apply = false) {
         if ($folderTarget !== null) {
             $folder = $this->em->getRepository(Folder::class)->find($folderTarget);
+            $folder->setBaseDir($this->baseDir);
             
             if ($folder === null) {
                 $folderNames = explode('/', $folderTarget);
@@ -70,6 +71,7 @@ class FileManager {
                 'appName' => Folder::ROOT_APP_NAME,
                 'name' => Folder::ROOT_NAME
             ]);
+            $folder->setBaseDir($this->baseDir);
             
             if ($folder === null) {
                 $folder = new Folder();
@@ -155,6 +157,7 @@ class FileManager {
      */
     public function copyFile(File $file, Folder $folder, bool $isOverwritable = false)
     {
+        $folder->setBaseDir($this->baseDir);
         $name= $file->getName();
         $extension = $file->getExtension();
         
