@@ -75,11 +75,8 @@ class AppController extends Controller
         $files = null;
         if (! empty($folder->getFiles())) {
             $list = $this->get('admin.util.doctrine_query_parameter')->formatForInClause($folder->getFiles());
-            $dql   = "SELECT f FROM MediaBundle:File f WHERE f.id IN :list";
-            $files = $em->createQuery($dql)
-                        ->setParameter('list', $list)
-                        ->getResults()
-            ;
+            $dql   = "SELECT f FROM MediaBundle:File f WHERE f.id IN ".$list;
+            $files = $em->createQuery($dql)->getResult();
         }
         
     	return $this->render("AppBundle:Media:show_folder.html.twig", array(
