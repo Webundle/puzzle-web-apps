@@ -9,9 +9,13 @@ services:
           - { name: twig.extension }
           
     newsletter.subscriber_listener:
-            class: Puzzle\NewsletterBundle\Listener\SubscriberListener
-            arguments: ["@mailer", "%newsletter_email%"]
-            public: false
-            tags:
-                - { name: kernel.event_listener, event: "newsletter.add_subscriber", method: onAdd }
+        class: Puzzle\NewsletterBundle\Listener\SubscriberListener
+        arguments: ["@mailer", "%newsletter_email%"]
+        public: false
+        tags:
+            - { name: kernel.event_listener, event: "newsletter.add_subscriber", method: onAdd }
+
+    newsletter.mail_sender:
+        class: Puzzle\NewsletterBundle\Service\MailSender
+        arguments: ["@doctrine.orm.entity_manager", "@mailer", "%newsletter_email%"]
     

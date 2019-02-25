@@ -9,6 +9,7 @@ use Puzzle\MediaBundle\Traits\DocumentTrait;
 use Puzzle\AdminBundle\Traits\Describable;
 use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
+use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
 
 /**
  * Template
@@ -21,6 +22,7 @@ class Template
 {
     use PrimaryKeyTrait,
         Timestampable,
+        Sluggable,
         Blameable
     ;
 
@@ -32,9 +34,9 @@ class Template
     
     /**
      * @var string
-     * @ORM\Column(name="trigger", type="string", length=255)
+     * @ORM\Column(name="event", type="string", length=255, nullable=true)
      */
-    private $trigger;
+    private $event;
     
     /**
      * @var string
@@ -42,6 +44,10 @@ class Template
      */
     private $content;
    
+    public function getSluggableFields() {
+        return ['name'];
+    }
+    
     public function setName($name) :self {
         $this->name = $name;
         return $this;
@@ -51,13 +57,13 @@ class Template
         return $this->name;
     }
     
-    public function setTrigger($trigger) :self {
-        $this->trigger = $trigger;
+    public function setEvent($event) :self {
+        $this->event = $event;
         return $this;
     }
     
-    public function getTrigger() :?string {
-        return $this->trigger;
+    public function getEvent() :?string {
+        return $this->event;
     }
     
     public function setContent($content) :self{
