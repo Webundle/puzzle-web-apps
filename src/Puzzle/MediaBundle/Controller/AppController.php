@@ -71,17 +71,16 @@ class AppController extends Controller
         if (! $folder = $em->find(Folder::class, $id)) {
             $folder = $em->getRepository(Folder::class)->findOneBy(['slug' => $id]);
         }
-
-        $em    = $this->getDoctrine()->getManager();
-        $dql   = "SELECT p FROM MediaBundle:File p WHERE p.folder = :folder";
-        $query = $em->createQuery($dql)->setParameter('folder', $folder->getId());
         
-        $paginator  = $this->get('knp_paginator');
-        $files = $paginator->paginate(
-            $query,
-            $request->query->get('page', 1)/*page number*/,
-            10/*limit per page*/
-        );
+        $files = null;
+        if (! empty($folder->getFiles())) {
+            $list = $this->get('admin.util.doctrine_query_parameter')->formatForInClause($folder->getFiles());
+            $dql   = "SELECT f FROM MediaBundle:File f WHERE f.id IN :list";
+            $files = $em->createQuery($dql)
+                        ->setParameter('list', $list)
+                        ->getResults()
+            ;
+        }
         
     	return $this->render("AppBundle:Media:show_folder.html.twig", array(
     	    'folder' => $folder,
