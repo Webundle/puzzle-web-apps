@@ -1,5 +1,5 @@
-admin_newsletter_subscriber_create:
+app_newsletter_subscriber_create:
     path:     /subscriber/create
-    defaults: { _controller: StaticBundle:App:createSubscriber }
+    defaults: { _controller: NewsletterBundle:App:createSubscriber }
     
   

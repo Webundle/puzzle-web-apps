@@ -1,0 +1,16 @@
+app_media_file_list:
+    path:     /file/list
+    defaults: { _controller: MediaBundle:App:listFiles }
+
+app_media_file_show:
+    path:     /file/{id}/show
+    defaults: { _controller: MediaBundle:App:showFile }
+
+# Folder
+app_media_folder_list:
+    path:     /folder/list
+    defaults: { _controller: MediaBundle:App:listFolders }
+
+app_media_folder_show:
+    path:     /folder/{id}/show
+    defaults: { _controller: MediaBundle:App:showFolder }
