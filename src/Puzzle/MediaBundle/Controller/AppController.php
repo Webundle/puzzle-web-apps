@@ -3,12 +3,9 @@
 namespace Puzzle\MediaBundle\Controller;
 
 use Puzzle\MediaBundle\Entity\Folder;
-use Puzzle\MediaBundle\Entity\Comment;
 use Puzzle\MediaBundle\Entity\File;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Puzzle\MediaBundle\Entity\CommentVote;
 
 /**
  * 
