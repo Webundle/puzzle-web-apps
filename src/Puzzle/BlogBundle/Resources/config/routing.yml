@@ -7,3 +7,7 @@ blog_admin:
 
 blog_app:
     resource: '@BlogBundle/Resources/config/routing/app.yml'
+    prefix:   '/blog'
+    host: '%host%'
+    options:
+        expose: true
