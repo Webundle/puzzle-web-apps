@@ -88,7 +88,11 @@ class MediaExtension extends \Twig_Extension
     }
     
     public function getFile($id) {
-        return $this->em->getRepository(File::class)->find($id);
+        if (! $file = $this->em->find(File::class, $id)) {
+            $file = $this->em->getRepository(File::class)->findOneBy(['path' => $id]);
+        }
+        
+        return $file;
     }
     
     public function getMediaSupportedExtensions(string $type = null) {
