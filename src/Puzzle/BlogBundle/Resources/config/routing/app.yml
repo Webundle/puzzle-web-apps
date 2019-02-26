@@ -16,6 +16,15 @@ app_blog_category_show:
     path:     /category/{id}/show
     defaults: { _controller: BlogBundle:App:showCategory }
 
+# Archive
+app_blog_archive_list:
+    path:     /archive/list
+    defaults: { _controller: BlogBundle:App:listArchives }
+
+app_blog_archive_show:
+    path:     /archive/{id}/show
+    defaults: { _controller: BlogBundle:App:showArchive }
+
 # Comment
 app_blog_comment_list:
     path:     /post/{id}/comment/list

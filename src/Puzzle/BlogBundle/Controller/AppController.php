@@ -63,21 +63,36 @@ class AppController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showCategoryAction(Request $request, Category $category) {
-        $em    = $this->getDoctrine()->getManager();
-        $dql   = "SELECT p FROM BlogBundle:Post p WHERE p.category = :category";
-        $query = $em->createQuery($dql)->setParameter('category', $category->getId());
-        
-        $paginator  = $this->get('knp_paginator');
-        $posts = $paginator->paginate(
-            $query,
-            $request->query->get('page', 1)/*page number*/,
-            10/*limit per page*/
-        );
-        
     	return $this->render("AppBundle:Blog:show_category.html.twig", array(
     	    'category' => $category,
-    	    'posts' => $posts,
+    	    'posts' => $category->getPosts(),
     	));
+    }
+    
+    /***
+     * List archives
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listArchivesAction(Request $request) {
+        return $this->render("AppBundle:Blog:list_archives.html.twig", [
+            'archives' => $this->getDoctrine()->getRepository(Category::class)->findBy([], ['month' => 'ASC'])
+        ]);
+    }
+    
+    
+    /***
+     * Show archive
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showArchiveAction(Request $request, Category $category) {
+        return $this->render("AppBundle:Blog:show_archive.html.twig", array(
+            'archive' => $archive,
+            'posts' => $archive->getPosts(),
+        ));
     }
     
     
