@@ -23,8 +23,9 @@ class FileManager {
      */
     protected $em;
     
-    public function __construct(EntityManager $em) {
+    public function __construct(EntityManager $em, $baseDir) {
         $this->em = $em;
+        $this->baseDir = $baseDir;
     }
     
     /**
