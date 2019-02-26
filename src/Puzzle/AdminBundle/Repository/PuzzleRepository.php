@@ -84,7 +84,7 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         $parameters = [];
         if (count($criteria) > 0) {
             foreach ($criteria as $key => $criterion) {
-                $predicates = mb_stripos('.', $criterion['key']) == 1 ? $criterion['key'] : 'o.'.$criterion['key'];
+                $predicates = count(explode('.', $criterion['key'])) > 1 ? $criterion['key'] : 'o.'.$criterion['key'];
                 $predicates .= empty($criterion['operator']) === false ?' '.$criterion['operator'] : " =";
                 
                 if ($criterion['value'] !== null) {
@@ -152,7 +152,7 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         $parameters = [];
         if (is_array($criteria) &&  count($criteria) > 0) {
             foreach ($criteria as $key => $criterion) {
-                $predicates = mb_stripos('.', $criterion['key']) == 1 ? $criterion['key'] : 'o.'.$criterion['key'];
+                $predicates = count(explode('.', $criterion['key'])) > 1 ? $criterion['key'] : 'o.'.$criterion['key'];
                 $predicates .= empty($criterion['operator']) === false ? ' '.$criterion['operator'] : " =";
                 
                 if ($criterion['value'] !== null) {

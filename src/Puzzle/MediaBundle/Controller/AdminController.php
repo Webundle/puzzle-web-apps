@@ -326,7 +326,10 @@ class AdminController extends Controller
         
         $folderDefault = $er->findOneBy(['appName' => Folder::ROOT_APP_NAME, 'name' => Folder::ROOT_NAME]);
         $folders = $er->customFindBy(
-            null, null, [['parent', null, 'IS NULL'], ['appName', 'media', '!=']]
+            null, null, [
+                ['key' => 'parent', 'value' => null, 'operator' => 'IS NULL'], 
+                ['key' => 'appName', 'value' => 'media','operator' => '!=']
+            ]
         );
         
         return $this->render("AdminBundle:Media:list_folders.html.twig", array(
@@ -347,7 +350,10 @@ class AdminController extends Controller
         }
         
         $folders = $er->customFindBy(
-            null, null, [['parent', $parent->getId()], ['appName', 'media']]
+            null, null, [
+                ['key' => 'parent', 'value' => $parent->getId()], 
+                ['key' => 'appName', 'value' => 'media']
+            ]
         );
         
         return $this->render("AdminBundle:Media:browse_folders.html.twig", array(
@@ -378,7 +384,7 @@ class AdminController extends Controller
         }
         
         $customCriteria = $criteria;
-        $customCriteria[] = ['parent', $folder->getId()];
+        $customCriteria[] = ['key' => 'parent', 'value' => $folder->getId()];
         
         $childs = $em->getRepository(Folder::class)->customFindBy(null, null, $customCriteria);
         unset($customCriteria);
@@ -393,7 +399,7 @@ class AdminController extends Controller
         }
         
         $customCriteria = $criteria;
-        $customCriteria[] = ['id', null, 'IN ('.$list.')'];
+        $customCriteria[] = ['key' =>  'id', 'value' => null, 'operator' => 'IN ('.$list.')'];
         if ($list !== null) {
             $files = $em->getRepository(File::class)->customFindBy(null, null, $customCriteria);
         }
