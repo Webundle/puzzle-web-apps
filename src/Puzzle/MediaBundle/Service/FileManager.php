@@ -38,7 +38,6 @@ class FileManager {
     public function createFolder(string $folderTarget, User $user, bool $apply = false) {
         if ($folderTarget !== null) {
             $folder = $this->em->getRepository(Folder::class)->find($folderTarget);
-            $folder->setBaseDir($this->baseDir);
             
             if ($folder === null) {
                 $folderNames = explode('/', $folderTarget);
@@ -66,12 +65,13 @@ class FileManager {
                     $array[$key] = $folder;
                 }
             }
+            
+            $folder->setBaseDir($this->baseDir);
         }else {
             $folder = $this->em->getRepository(Folder::class)->findOneBy([
                 'appName' => Folder::ROOT_APP_NAME,
                 'name' => Folder::ROOT_NAME
             ]);
-            $folder->setBaseDir($this->baseDir);
             
             if ($folder === null) {
                 $folder = new Folder();
@@ -80,6 +80,8 @@ class FileManager {
                 $this->em->persist($folder);
                 $$this->em->flush($folder);
             }
+            
+            $folder->setBaseDir($this->baseDir);
         }
         
         if ($apply === true && file_exists($folder->getAbsolutePath()) === false) {

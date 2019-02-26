@@ -21,16 +21,16 @@ class AbstractCategoryType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'blog.property.category.name'
+                'label' => 'blog.category.name'
             ])
             ->add('description', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'blog.property.category.description',
+                'label' => 'blog.category.description',
                 'required' => false
             ))
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'blog.property.category.picture',
+                'label' => 'blog.category.picture',
                 'required' => false,
                 'mapped' => false
             ))
