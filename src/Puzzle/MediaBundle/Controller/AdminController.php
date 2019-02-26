@@ -34,35 +34,35 @@ class AdminController extends Controller
 	    
 	    $criteria = [];
 	    if ($request->get('search')) {
-	        $criteria[] = ['name', '%'.$request->get('search').'%', 'LIKE'];
+	        $criteria[] = ['key' => name, 'value' => '%'.$request->get('search').'%', 'operator' => 'LIKE'];
 	    }
 	    
 	    switch ($type) {
 	        case "picture":
 	            $filters .= "*.(". MediaUtil::supportedPictureExtensions().")";
-	            $criteria[] = ['p.id', null, 'IS NOT NULL']; // fieldName, Value, Operator
+	            $criteria[] = ['key' => 'p.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["picture" => "p"]; // Associated Name, Alias
 	            break;
 	        case "audio":
 	            $filters .= "*.(".MediaUtil::supportedAudioExtensions().")";
-	            $criteria[] = ['a.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'a.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["audio" => "a"];
 	            break;
 	        case "video":
 	            $filters .= "*.(".MediaUtil::supportedVideoExtensions().")";
-	            $criteria[] = ['v.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'v.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["video" => "v"];
 	            break;
 	        case "document":
 	            $filters .= "*.(".MediaUtil::supportedDocumentExtensions().")";
-	            $criteria[] = ['d.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'd.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["document" => "d"];
 	            break;
 	        case "other":
-	            $criteria[] = ['p.id', null, 'IS NOT NULL'];
-	            $criteria[] = ['a.id', null, 'IS NOT NULL'];
-	            $criteria[] = ['v.id', null, 'IS NOT NULL'];
-	            $criteria[] = ['d.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'p.id', 'value' => null,'operator' => 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'v.id', 'value' => null,'operator' => 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'v.id', 'value' => null,'operator' => 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'd.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["picture" => "p", "document" => "d", "audio" => "a", "video" => "v"];
 	            $filters = "*";
 	            break;
@@ -73,7 +73,7 @@ class AdminController extends Controller
 	    
 	    $files = $em->getRepository(File::class)->customFindBy(null,$joins, $criteria, ['createdAt' => 'DESC']);
 	    $folders = $em->getRepository(Folder::class)->customFindBy(
-	        null, null, [['appName', 'media']], ['createdAt' => 'DESC']
+	        null, null, [['key' => 'appName', 'value' => 'media']], ['createdAt' => 'DESC']
 	        );
 	    
 	    if ($request->get('target') == 'modal') {
@@ -105,35 +105,35 @@ class AdminController extends Controller
 	    
 	    $criteria = [];
 	    if ($request->get('search')) {
-	        $criteria[] = ['name', '%'.$request->get('search').'%', 'LIKE'];
+	        $criteria[] = ['key' => name, 'value' => '%'.$request->get('search').'%', 'operator' => 'LIKE'];
 	    }
 	    
-	    switch ($type){
+	    switch ($type) {
 	        case "picture":
 	            $filters .= "*.(". MediaUtil::supportedPictureExtensions().")";
-	            $criteria[] = ['p.id', null, 'IS NOT NULL']; // fieldName, Value, Operator
+	            $criteria[] = ['key' => 'p.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["picture" => "p"]; // Associated Name, Alias
 	            break;
 	        case "audio":
 	            $filters .= "*.(".MediaUtil::supportedAudioExtensions().")";
-	            $criteria[] = ['a.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'a.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["audio" => "a"];
 	            break;
 	        case "video":
 	            $filters .= "*.(".MediaUtil::supportedVideoExtensions().")";
-	            $criteria[] = ['v.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'v.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["video" => "v"];
 	            break;
 	        case "document":
 	            $filters .= "*.(".MediaUtil::supportedDocumentExtensions().")";
-	            $criteria[] = ['d.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'd.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["document" => "d"];
 	            break;
 	        case "other":
-	            $criteria[] = ['p.id', null, 'IS NOT NULL'];
-	            $criteria[] = ['a.id', null, 'IS NOT NULL'];
-	            $criteria[] = ['v.id', null, 'IS NOT NULL'];
-	            $criteria[] = ['d.id', null, 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'p.id', 'value' => null,'operator' => 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'v.id', 'value' => null,'operator' => 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'v.id', 'value' => null,'operator' => 'IS NOT NULL'];
+	            $criteria[] = ['key' => 'd.id', 'value' => null,'operator' => 'IS NOT NULL'];
 	            $joins = ["picture" => "p", "document" => "d", "audio" => "a", "video" => "v"];
 	            $filters = "*";
 	            break;
@@ -374,7 +374,7 @@ class AdminController extends Controller
         $criteria = [];
         
         if ($request->query->get('search')) {
-            $criteria[] = ['name', '%'.$request->query->get('search').'%', 'LIKE'];
+            $criteria[] = ['key' => 'name', 'value' => '%'.$request->query->get('search').'%', 'operator' => 'LIKE'];
         }
         
         $customCriteria = $criteria;
