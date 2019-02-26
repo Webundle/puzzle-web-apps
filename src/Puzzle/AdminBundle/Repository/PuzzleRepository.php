@@ -84,12 +84,12 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         $parameters = [];
         if (count($criteria) > 0) {
             foreach ($criteria as $key => $criterion) {
-                $predicates = count(explode('.', $criterion[0])) > 1 ? $criterion[0] : 'o.'.$criterion[0];
-                $predicates .= count($criterion) == 3 ? ' '.$criterion[2]: " =";
+                $predicates = 'o.'.$criterion['key'];
+                $predicates .= $criterion['operator'] ?? " =";
                 
-                if ($criterion[1] !== null) {
-                    $predicates .= " :". str_ireplace('.', '', $criterion[0]);
-                    $parameters[str_ireplace('.', '', $criterion[0])] = $criterion[1];
+                if ($criterion['value'] !== null) {
+                    $predicates .= " :". str_ireplace('.', '', $criterion['key']);
+                    $parameters[str_ireplace('.', '', $criterion['key'])] = $criterion['value'];
                 }
                 
                 if ($key == 0) {
@@ -152,12 +152,12 @@ class PuzzleRepository extends \Doctrine\ORM\EntityRepository
         $parameters = [];
         if (is_array($criteria) &&  count($criteria) > 0) {
             foreach ($criteria as $key => $criterion) {
-                $predicates = count(explode('.', $criterion[0])) > 1 ? $criterion[0] : 'o.'.$criterion[0];
-                $predicates .= count($criterion) == 3 ? ' '.$criterion[2]: " =";
+                $predicates = 'o.'.$criterion['key'];
+                $predicates .= $criterion['operator'] ?? " =";
                 
-                if ($criterion[1] !== null) {
-                    $predicates .= " :". str_ireplace('.', '', $criterion[0]);
-                    $parameters[str_ireplace('.', '', $criterion[0])] = $criterion[1];
+                if ($criterion['value'] !== null) {
+                    $predicates .= " :". str_ireplace('.', '', $criterion['key']);
+                    $parameters[str_ireplace('.', '', $criterion['key'])] = $criterion['value'];
                 }
                 
                 if ($key == 0) {
