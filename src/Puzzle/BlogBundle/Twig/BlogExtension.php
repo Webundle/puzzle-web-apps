@@ -34,7 +34,7 @@ class BlogExtension extends \Twig_Extension
     public function getFunctions() {
         return [
             new \Twig_SimpleFunction('puzzle_blog_categories', [$this, 'getCategories'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('puzzle_blog_category', [$this, 'getCategories'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_blog_category', [$this, 'getCategory'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_blog_posts', [$this, 'getPosts'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_blog_post', [$this, 'getPost'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_blog_archives', [$this, 'getArchives'], ['needs_environment' => false, 'is_safe' => ['html']]),

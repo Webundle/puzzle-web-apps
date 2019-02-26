@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Puzzle\BlogBundle\Entity\CommentVote;
+use Puzzle\BlogBundle\Entity\Archive;
 
 /**
  * 
@@ -77,7 +78,7 @@ class AppController extends Controller
      */
     public function listArchivesAction(Request $request) {
         return $this->render("AppBundle:Blog:list_archives.html.twig", [
-            'archives' => $this->getDoctrine()->getRepository(Category::class)->findBy([], ['month' => 'ASC'])
+            'archives' => $this->getDoctrine()->getRepository(Archive::class)->findBy([], ['month' => 'ASC'])
         ]);
     }
     
@@ -88,7 +89,7 @@ class AppController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showArchiveAction(Request $request, Category $category) {
+    public function showArchiveAction(Request $request, Archive $archive) {
         return $this->render("AppBundle:Blog:show_archive.html.twig", array(
             'archive' => $archive,
             'posts' => $archive->getPosts(),
