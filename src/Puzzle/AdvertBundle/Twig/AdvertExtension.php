@@ -7,6 +7,7 @@ use Puzzle\AdvertBundle\Entity\Post;
 use Puzzle\AdvertBundle\Entity\Category;
 use Puzzle\AdvertBundle\Entity\Archive;
 use Puzzle\AdvertBundle\Entity\Advertiser;
+use Puzzle\AdvertBundle\Entity\Postulate;
 
 /**
  *
@@ -38,6 +39,8 @@ class AdvertExtension extends \Twig_Extension
             new \Twig_SimpleFunction('puzzle_advert_advertiser', [$this, 'getAdvertiser'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_posts', [$this, 'getPosts'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_post', [$this, 'getPost'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_advert_postulates', [$this, 'getPostulates'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_advert_postulate', [$this, 'getPostulate'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_archives', [$this, 'getArchives'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_advert_archive', [$this, 'getArchive'], ['needs_environment' => false, 'is_safe' => ['html']]),
         ];
@@ -101,5 +104,18 @@ class AdvertExtension extends \Twig_Extension
         }
         
         return $post;
+    }
+    
+    public function getPostulates(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['createdAt' => 'DESC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Postulate::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Postulate::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
+    }
+    
+    public function getPostulate($id) {
+        return $this->em->find(Postulate::class, $id);
     }
 }
