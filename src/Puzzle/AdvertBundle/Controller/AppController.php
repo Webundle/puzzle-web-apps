@@ -85,14 +85,19 @@ class AppController extends Controller
     public function createPostulateAction(Request $request, $id) {
         $em = $this->get('doctrine.orm.entity_manager');
         $post = $em->find(Post::class, $id);
+        $user = $this->getUser();
         
-        $postulate = new Postulate();
-        $postulate->setUser($this->getUser());
-        $postulate->setPost($post);
+        if (! $postulate = $em->getRepository(Postulate::class)->findOneBy(['post' => $id, 'user' => $user->getId()])) {
+            $postulate = new Postulate();
+            $postulate->setUser($user);
+            $postulate->setPost($post);
+            
+            $em->persist($postulate);
+            $em->flush();
+            
+            return new JsonResponse(null, 204);
+        }
         
-        $em->persist($postulate);
-        $em->flush();
-        
-        return new JsonResponse(null, 200);
+        return new JsonResponse(null, 304);
     }
 }
