@@ -82,7 +82,7 @@ class AppController extends Controller
     /**
      * Create postulate
      */
-    public function createPostulate(Request $request, $id) {
+    public function createPostulateAction(Request $request, $id) {
         $em = $this->get('doctrine.orm.entity_manager');
         $post = $em->find(Post::class, $id);
         
