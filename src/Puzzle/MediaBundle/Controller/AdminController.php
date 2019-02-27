@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 use Puzzle\MediaBundle\Event\FolderEvent;
 use Puzzle\MediaBundle\Form\Type\FolderUpdateType;
+use Puzzle\MediaBundle\Entity\Comment;
 
 /**
  * 
@@ -696,5 +697,71 @@ class AdminController extends Controller
         }
         
         return new JsonResponse(['status' => true, 'target' => $folder->getPath().'.zip']);
+    }
+    
+    /***
+     * Show Comments
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listCommentsAction(Request $request)
+    {
+        $comments = $this->getDoctrine()
+                        ->getRepository(Comment::class)
+                        ->findBy(['file' => $request->get('file')],['createdAt' => 'DESC']);
+        
+        return $this->render("AdminBundle:Media:list_comments.html.twig", array(
+            'comments' => $comments
+        ));
+    }
+    
+    /**
+     * Update Comment
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function updateCommentAction(Request $request, $id)
+    {
+        $data = $request->request->all();
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository(Comment::class)->find($id);
+        
+        if(isset($data['is_visible']) && $data['is_visible'] == "on"){
+            $comment->setIsVisbile(true);
+        }else{
+            $comment->setIsVisbile(false);
+        }
+        
+        $em->flush();
+        
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse(null, 204);
+        }
+        
+        return $this->redirect($this->generateUrl('admin_media_comment_list'));
+    }
+    
+    
+    /***
+     * Delete comment
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteCommentAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository(Comment::class)->find($id);
+        
+        $em->remove($comment);
+        $em->flush();
+        
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse(null, 204);
+        }
+        
+        return $this->redirect($this->generateUrl('admin_media_comment_list'));
     }
 }

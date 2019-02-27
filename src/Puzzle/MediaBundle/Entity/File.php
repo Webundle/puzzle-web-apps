@@ -7,6 +7,7 @@ use Puzzle\MediaBundle\Util\MediaUtil;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
 use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * File
@@ -55,6 +56,12 @@ class File
     private $size;
     
     /**
+     * @ORM\Column(name="enable_comments", type="boolean")
+     * @var boolean
+     */
+    private $enableComments;
+    
+    /**
      * @ORM\OneToOne(targetEntity="Picture", mappedBy="file", cascade={"persist", "remove"})
      */
     private $picture;
@@ -74,9 +81,17 @@ class File
      */
     private $document;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="file")
+     */
+    private $comments;
+    
     protected $baseDir;
     
     public function __construct(array $properties = null) {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->enableComments = true;
+        
         if (isset($properties['name']) === true) {
             $this->name = $properties['name'];
         }
@@ -139,6 +154,15 @@ class File
     	return $this->path;
     }
     
+    public function setEnableComments($enableComments) : self {
+        $this->enableComments = $enableComments;
+        return $this;
+    }
+    
+    public function getEnableComments() :? bool {
+        return $this->enableComments;
+    }
+    
     public function setBaseDir($baseDir) {
         $this->baseDir = $baseDir;
         return $this;
@@ -190,6 +214,22 @@ class File
 
     public function getDocument() :? Document {
         return $this->document;
+    }
+    
+    public function addComment(Comment $comment) : self {
+        if ($this->comments === null || $this->comments->contains($comment) === false) {
+            $this->comments->add($comment);
+        }
+        
+        return $this;
+    }
+    
+    public function removeComment(Comment $comment) : self {
+        $this->comments->removeElement($comment);
+    }
+    
+    public function getComments() :? Collection {
+        return $this->comments;
     }
     
     public function isPicture() {

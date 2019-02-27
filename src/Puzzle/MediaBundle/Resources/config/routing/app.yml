@@ -14,3 +14,28 @@ app_media_folder_list:
 app_media_folder_show:
     path:     /folder/{id}/show
     defaults: { _controller: MediaBundle:App:showFolder }
+
+# Comment
+app_media_comment_list:
+    path:     /post/{id}/comment/list
+    defaults: { _controller: MediaBundle:App:listComments }
+    
+app_media_comment_create:
+    path:     /post/{id}/comment/create
+    defaults: { _controller: MediaBundle:App:createComment }
+
+app_media_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: MediaBundle:App:updateComment }
+
+app_media_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: MediaBundle:App:deleteComment } 
+
+app_media_comment_vote_create:
+    path:     /comment/{id}/vote/create
+    defaults: { _controller: MediaBundle:App:createCommentVote } 
+
+app_media_comment_vote_delete:
+    path:     /comment/vote/{id}/delete
+    defaults: { _controller: MediaBundle:App:deleteCommentVote } 

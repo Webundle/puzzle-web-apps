@@ -57,7 +57,7 @@ class MediaExtension extends \Twig_Extension
         return $folder;
     }
     
-    public function getFolderFiles($folderId, $limit = 5) {
+    public function getFolderFiles($folderId, $page = 1, $limit = null) {
         $folder = $this->getFolder($folderId);
         $files = $list = null;
         $criteria = [];
@@ -71,8 +71,14 @@ class MediaExtension extends \Twig_Extension
                 }
             }
             
-            $criteria[] = ['id', null, 'IN ('.$list.')'];
-            $files = $this->em->getRepository(File::class)->customFindBy(null, null, $criteria, ['createdAt' => 'DESC'], $limit);
+            $criteria[] = ['key' => 'id', 'value' => null, 'operator' => 'IN ('.$list.')'];
+            
+            if (is_int($limit) === true) {
+                $query = $this->em->getRepository(Folder::class)->customGetQuery(null, null, $criteria, ['createdAt' => 'DESC'], $limit);
+                return $this->paginator->paginate($query, $page, $limit);
+            }
+            
+            return  $this->em->getRepository(File::class)->customFindBy(null, null, $criteria, ['createdAt' => 'DESC'], null);
         }
         
         return $files;

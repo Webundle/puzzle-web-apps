@@ -63,3 +63,24 @@ admin_media_folder_delete:
     path:     /folder/{id}/delete
     defaults: { _controller: MediaBundle:Admin:deleteFolder }
 
+
+# Comment
+admin_media_comment_list:
+    path:     /comment/list
+    defaults: { _controller: 'MediaBundle:Admin:listComments' }
+
+admin_media_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: 'MediaBundle:Admin:updateComment' }
+    
+admin_media_comment_approve:
+    path:     /comment/{id}/approve
+    defaults: { _controller: 'MediaBundle:Admin:approveComment' }
+    
+admin_media_comment_disapprove:
+    path:     /comment/{id}/disapprove
+    defaults: { _controller: 'MediaBundle:Admin:disapproveComment' }
+
+admin_media_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: 'MediaBundle:Admin:deleteComment' }
