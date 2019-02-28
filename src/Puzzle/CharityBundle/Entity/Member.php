@@ -1,0 +1,143 @@
+<?php
+
+namespace Puzzle\CharityBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Puzzle\AdminBundle\Traits\DatetimeTrait;
+use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
+use Doctrine\Common\Collections\Collection;
+use Puzzle\UserBundle\Entity\User;
+
+/**
+ * Charity Member
+ * 
+ * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
+ *
+ * @ORM\Table(name="charity_member")
+ * @ORM\Entity(repositoryClass="Puzzle\ContactBundle\Repository\ContactRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Member
+{
+    use PrimaryKeyTrait, Timestampable;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     */
+    private $firstName;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     */
+    private $email;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="phoneNumber", type="string", length=255, nullable=true)
+     */
+    private $phoneNumber;
+    
+    /**
+     * @var bool
+     * @ORM\Column(name="enabled", type="boolean")
+     */
+    private $enabled;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Donation", mappedBy="member")
+     */
+    private $donations;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Puzzle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+    
+    public function __construct() {
+        $this->donations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->enabled = false;
+    }
+    
+    public function setFirstName($firstName) : self {
+        $this->firstName = $firstName;
+        return $this;
+    }
+    
+    public function getFirstName() :? string {
+        return $this->firstName;
+    }
+    
+    public function setLastName($lastName) : self {
+        $this->lastName = $lastName;
+        return $this;
+    }
+    
+    public function getLastName() :? string {
+        return $this->lastName;
+    }
+    public function setEmail($email) : self {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getEmail() :? string {
+        return $this->email;
+    }
+    
+    public function setPhoneNumber($phoneNumber) : self {
+        $this->phoneNumber = $phoneNumber;
+        return $this;
+    }
+
+    public function getPhoneNumber() :? string {
+        return $this->phoneNumber;
+    }
+    
+    public function setEnabled($enabled) :self {
+        $this->enabled = $enabled;
+        return $this;
+    }
+    
+    public function isEnabled() :?bool {
+        return $this->enabled;
+    }
+    
+    public function setUser(User $user) :self {
+        $this->user = $user;
+        return $this;
+    }
+    
+    public function getUser() :?User {
+        return $this->user;
+    }
+  
+    public function addDonation(Donation $donation) : self {
+        if ($this->donations === null || $this->donations->contains($donation) === false){
+            $this->donations->add($donation);
+        }
+        
+        return $this;
+    }
+    
+    public function removeDonation(Donation $donation) : self {
+        $this->donations->removeElement($donation);
+    }
+    
+    public function getDonations() :? Collection {
+        return $this->donations;
+    }
+    
+    public function __toString() {
+        return trim($this->lastName. ' '. $this->firstName);
+    }
+}

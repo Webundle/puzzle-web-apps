@@ -1,0 +1,90 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr':{ 'class': 'uk-form-stacked'}}) }}
+    <div class="uk-width-medium-7-10 uk-container-center">
+        <div class="md-card">
+            <div class="md-card-content">
+                <section>
+                    <div class="parsley-row uk-margin-bottom">
+                        {{ form_label(form.user, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                        {{ form_widget(form.user, {'attr': {'data-md-selectize' : true}, 'id': 'select-user'}) }}
+                    </div>
+                    <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                        <div class="parsley-row">
+                            <div class="uk-input-group">
+                                <span class="uk-input-group-addon">
+                                    <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                </span>
+                                {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'charity.member.blank'|trans }}</small>
+                            </div>
+                        </div>
+                        <div class=" parsley-row">
+                            <div class="uk-input-group">
+                                <span class="uk-input-group-addon">
+                                    <a href="#"><i class="material-icons">&#xE85E;</i></a>
+                                </span>
+                                {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'charity.member.blank'|trans }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                        <div class=" parsley-row">
+                            <div class="uk-input-group">
+                                <span class="uk-input-group-addon">
+                                    <a href="#"><i class="material-icons">&#xE0BE;</i></a>
+                                </span>
+                                {{ form_label(form.email, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'charity.member.blank'|trans }}</small>
+                            </div>
+                        </div>
+                        <div class="parsley-row">
+                            <div class="uk-input-group">
+                                <span class="uk-input-group-addon">
+                                    <a href="#"><i class="material-icons">&#xE0CD;</i></a>
+                                </span>
+                                {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'charity.member.blank'|trans }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                        <div class="parsley-row">
+                            <div class="uk-float-right">
+                                {{ form_widget(form.enabled, {'attr': {'data-switchery' : true}}) }}
+                            </div>
+                            {{ form_label(form.enabled, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        </div>
+                        {% if member is not defined %}
+                            <div class="parsley-row">
+                                <div class="uk-float-right">
+                                    {{ form_widget(form.createAccount, {'attr': {'data-switchery' : true}}) }}
+                                </div>
+                                {{ form_label(form.createAccount, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_charity_member_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if member is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

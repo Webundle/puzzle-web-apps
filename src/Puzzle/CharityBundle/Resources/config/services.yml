@@ -1,4 +1,15 @@
 services:
-#    charity.example:
-#        class: CharityBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    charity.member.listener:
+        class: Puzzle\CharityBundle\Listener\MemberListener
+        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%user.registration.address%' ]
+        tags:
+            - { name: kernel.event_listener, event: "user.created", method: onCreatedUser }
+            - { name: kernel.event_listener, event: "charity.member.created", method: onCreated }
+
+    # Twig extension
+    charity.twig.extension:
+        class: Puzzle\CharityBundle\Twig\CharityExtension
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
+        public: false
+        tags:
+            - { name: twig.extension }

@@ -1,0 +1,20 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Charity:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "charity.cause.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_charity_cause_list') }} ">
+       {{ 'charity.cause.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "charity.cause.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Charity:form_cause.html.twig' with { 'form' : form } %}
+    </div>
+{% endblock %}

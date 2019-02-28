@@ -1,0 +1,20 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Charity:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "charity.member.update"|trans|capitalize }} {{ member }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_charity_member_list') }} ">
+       {{ 'charity.member.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "charity.member.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Charity:form_member.html.twig' with {'form': form, 'member': member} %}
+    </div>
+{% endblock %}

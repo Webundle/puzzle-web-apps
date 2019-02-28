@@ -1,0 +1,10 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3>{{ "advert.category.update"|trans }}</h3>
+    </div>
+    <div class="uk-modal-body">
+        {% include 'AdminBundle:Charity:form_category.html.twig' with {'form': form, 'category': category} %}
+    </div>
+</div>

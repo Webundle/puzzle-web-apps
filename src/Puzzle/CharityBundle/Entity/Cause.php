@@ -13,7 +13,9 @@ use Puzzle\AdminBundle\Traits\Taggable;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Cause
+ * Charity Cause
+ * 
+ * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
  *
  * @ORM\Table(name="charity_cause")
  * @ORM\Entity(repositoryClass="Puzzle\CharityBundle\Repository\CauseRepository")
@@ -22,12 +24,44 @@ use Doctrine\Common\Collections\Collection;
 class Cause
 {
     use PrimaryKeyTrait,
-        Nameable,
-        Describable,
-        Pictureable,
-        DatetimePeriodTrait,
-        Timestampable,
-        Taggable;
+        Timestampable
+    ;
+    
+    /**
+     * @ORM\Column(name="name", type="string", length=255)
+     * @var string
+     */
+    private $name;
+    
+    /**
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var string
+     */
+    private $description;
+    
+    /**
+     * @ORM\Column(name="expiresAt", type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $expiresAt;
+    
+    /**
+     * @ORM\Column(name="visible", type="boolean")
+     * @var boolean
+     */
+    private $visible;
+    
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $picture;
+    
+    /**
+    * @ORM\Column(name="tag", type="simple_array", nullable=true)
+    * @var array
+    */
+    private $tags;
     
     /**
      * @var int
@@ -64,7 +98,74 @@ class Cause
     public function getSlugglableFields() {
         return ['name'];
     }
-
+    
+    
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+    
+    public function setDescription($description) {
+        $this->description = $description;
+        return $this;
+    }
+    
+    public function getDescription() {
+        return $this->description;
+    }
+    
+    public function setPicture($picture) {
+        $this->picture = $picture;
+        return $this;
+    }
+    
+    public function getPicture() {
+        return $this->picture;
+    }
+    
+    public function setTags($tags) : self {
+        $this->tags = $tags;
+        return $this;
+    }
+    
+    public function addTag($tag) : self {
+        $this->tags[] = $tag;
+        $this->tags = array_unique($this->tags);
+        
+        return $this;
+    }
+    
+    public function removeTag($tag) : self {
+        $this->tags = array_diff($this->tags, [$tag]);
+        return $this;
+    }
+    
+    public function getTags() :? array {
+        return $this->tags;
+    }
+    
+    public function setVisible(bool $visible) : self {
+        $this->visible = $visible;
+        return $this;
+    }
+    
+    public function isVisible() :? bool {
+        return $this->visible;
+    }
+    
+    public function setExpiresAt(\DateTime $expiresAt) :self {
+        $this->expiresAt = $expiresAt;
+        return $this;
+    }
+    
+    public function getExpiresAt() :?\DateTime {
+        return $this->expiresAt;
+    }
+    
     public function setTotalAmount($totalAmount) : self {
         $this->totalAmount = $totalAmount;
         return $this;
@@ -109,14 +210,21 @@ class Cause
     }
     
     public function getAmountRatio() {
-        return $this->totalAmount > 0 ? $this->paidAmount / $this->totalAmount : null;
+        $ratio = null;
+        
+        if ($this->totalAmount > 0) {
+            $ratio = $this->paidAmount / $this->totalAmount;
+            $ratio = round($ratio * 100, 2).' %';
+        }
+        
+        return $ratio;
     }
     
     public function isClosable() {
-        return $this->endedAt !== null;
+        return $this->expiresAt !== null;
     }
     
     public function isClosed() {
-        return $this->endedAt->getTimestamp() < time();
+        return $this->expiresAt->getTimestamp() < time();
     }
 }

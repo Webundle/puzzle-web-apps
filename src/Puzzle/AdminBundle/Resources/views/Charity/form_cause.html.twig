@@ -1,0 +1,75 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr': {'id': 'form_validation', 'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-xLarge-7-10 uk-width-large-7-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                        <div class="uk-width-large-1-1">
+                            <div class="uk-form-row">
+                                {{ form_label(form.name, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.name, {'attr' : {'class': 'md-input'}}) }}
+                            </div>
+                             <div class="uk-form-row">
+                                {{ form_widget(form.description, {'id': 'wysiwyg_ckeditor'}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.category, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {{ form_widget(form.category, {'attr': {'data-md-selectize' : true}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.tags, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {% if post is defined and post.tags is not empty %}
+                            {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}, 'value': post.tags|join(',')}) }}
+                        {% else %}
+                            {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}}) }}
+                        {% endif %}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.totalAmount, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {{ form_widget(form.totalAmount, {'attr' : {'class': 'md-input'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.visible, {'attr': {'data-switchery' : true}}) }}
+                        </div>
+                        {{ form_label(form.visible, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        {{ form_label(form.expiresAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {% if cause is not defined or cause.expiresAt is empty %}
+                            {{ form_widget(form.expiresAt, {'attr': {'class': 'datepicker'}}) }}
+                        {% else %}
+                            {{ form_widget(form.expiresAt, {'attr': {'class': 'datepicker'}, 'value' : cause.expiresAt|date('Y-m-d H:i') }) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': cause is defined ? cause.picture : null, 'type': 'picture', 'context': 'charity/cause', 'multiple': false })) }}
+        </div>
+    </div>
+    <div class="uk-width-1-1 uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_charity_cause_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if cause is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

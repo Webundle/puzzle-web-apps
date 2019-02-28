@@ -1,15 +1,13 @@
-cause:
-    resource: '@CharityBundle/Resources/config/routing/cause.yml'
-    prefix: '/causes'
-    
-category:
-    resource: '@CharityBundle/Resources/config/routing/category.yml'
-    prefix: '/categories'
+charity_admin:
+    resource: '@CharityBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%charity'
+    host: '%admin_host%'
+    options:
+        expose: true
 
-donation:
-    resource: '@CharityBundle/Resources/config/routing/donation.yml'
-    prefix: '/donations'
-
-volunteer:
-    resource: '@CharityBundle/Resources/config/routing/volunteer.yml'
-    prefix: '/volunteers'
+charity_app:
+    resource: '@CharityBundle/Resources/config/routing/app.yml'
+    prefix:   '/charity'
+    host: '%host%'
+    options:
+        expose: true

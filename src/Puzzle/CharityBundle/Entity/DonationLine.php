@@ -8,6 +8,8 @@ use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 
 /**
  * DonationLine
+ * 
+ * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
  *
  * @ORM\Table(name="charity_donation_line")
  * @ORM\Entity(repositoryClass="Puzzle\CharityBundle\Repository\DonationLineRepository")

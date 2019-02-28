@@ -1,0 +1,35 @@
+# Category
+app_charity_category_list:
+    path:     /category/list
+    defaults: { _controller: 'CharityBundle:App:listCategories' }
+
+app_charity_category_show:
+    path:     /category/{id}
+    defaults: { _controller: 'CharityBundle:App:showCategory' }
+
+# Cause
+app_charity_cause_list:
+    path:     /cause/list
+    defaults: { _controller: 'CharityBundle:App:listCauses' }
+    
+app_charity_cause_show:
+    path:     /cause/{id}
+    defaults: { _controller: 'CharityBundle:App:showCause' }
+
+# Donation
+app_charity_donation_list:
+    path:     /donation/list
+    defaults: { _controller: 'CharityBundle:App:listDonations' }
+
+app_charity_donation_update:
+    path:     /donation/{id}
+    defaults: { _controller: 'CharityBundle:App:showDonation' }
+
+# Member
+app_charity_volunteer_list:
+    path:     /volunteer/list
+    defaults: { _controller: 'CharityBundle:App:listVolunteers' }
+
+app_charity_volunteer_delete:
+    path:     /volunteer/{id}
+    defaults: { _controller: 'CharityBundle:App:deleteVolunteer' }

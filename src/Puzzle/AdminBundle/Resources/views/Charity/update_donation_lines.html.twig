@@ -1,0 +1,77 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Charity:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "charity.donation.update"|trans|capitalize }} {{ donation.member }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href="{{ url('admin_charity_donation_list') }}">
+       {{ 'charity.donation.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "charity.donation.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        <form action="{{ url('admin_charity_donation_update_lines', {'id': donation.id}) }}" method="POST">
+            <div class="md-card">
+                <div class="md-card-toolbar">
+                    <h3 class="md-card-toolbar-heading-text">
+                        {{ "charity.donation.manage_donation_lines"|trans|capitalize }}
+                        ({{ "charity.donation.totalAmount"|trans|capitalize }} : {{ donation.totalAmount }})
+                    </h3>
+                </div>
+                 <div class="md-card-content" id="container-element">
+                    {% for i in 0..donation.countDonationLines - 1 %}
+                            {% if donationLines[i] is defined and donationLines[i] is not empty %}
+                                <div class="uk-grid uk-margin-bottom" id="container_elements_{{ i }}">
+                                    <div class="uk-width-medium-1-3">
+                                        <input class="md-input" type="text" name="donation_line_date_{{ i }}" id="donation_line_date_{{ i }}" data-uk-datepicker="{format:'DD-MM-YYYY'}" placeholder="{{ 'charity.donationLine.donatedAt'|trans }}" value="{{ donationLines[i].donatedAt|date('d-m-Y') }}" {% if donationLines[i].status == true %}disabled{% endif %}>
+                                    </div>
+                                    <div class="uk-width-medium-1-3">
+                                        <input type="number" name="donation_line_amount_{{ i }}" id="donation_line_amount_{{ i }}" required class="md-input" placeholder="{{'charity.donationLine.amount'|trans }}" value="{{ donationLines[i].amount }}" {% if donationLines[i].status == true %}disabled{% endif %}/>
+                                    </div>
+                                    <div class="uk-width-medium-1-3 uk-margin-small-top">
+                                        <select id="donation_line_status_{{ i }}" data-md-selectize name="donation_line_status_{{ i }}" required {% if donationLines[i].status == true %}disabled{% endif %}>
+                                            <option value="">{{'charity.donationLine.status.title'|trans }}</option>
+                                            <option value="0" {% if donationLines[i].status == false %}selected{% endif %}>{{'charity.donationLine.status.unpaid'|trans }}</option>
+                                            <option value="1" {% if donationLines[i].status == true %}selected{% endif %}>{{'charity.donationLine.status.paid'|trans }}</option>
+                                        </select>
+                                    </div>
+                                    {% if donationLines[i].status == false %}<input type="hidden" name="donation_line_{{ i }}" value="{{ donationLines[i].id }}">{% endif %}
+                                </div>
+                            {% else %}
+                                <div class="uk-grid uk-margin-bottom" id="container_elements_{{ i }}">
+                                    <div class="uk-width-medium-1-3">
+                                        <input class="md-input" type="text" name="donation_line_date_{{ i }}" id="donation_line_date_{{ i }}" data-uk-datepicker="{format:'DD-MM-YYYY'}" placeholder="Date">
+                                    </div>
+                                    <div class="uk-width-medium-1-3">
+                                        <input type="number" name="donation_line_amount_{{ i }}" id="donation_line_amount_{{ i }}" required class="md-input" placeholder="Montant"/>
+                                    </div>
+                                    <div class="uk-width-medium-1-3 uk-margin-small-top">
+                                        <select id="donation_line_status_{{ i }}" data-md-selectize name="donation_line_status_{{ i }}" required>
+                                            <option value="">{{ 'charity.donationLine.status.title'|trans }}</option>
+                                            <option value="0">{{ 'charity.donationLine.status.unpaid'|trans }}</option>
+                                            <option value="1">{{ 'charity.donationLine.status.paid'|trans }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                </div>
+            </div>
+            <div class="uk-text-center uk-margin-top">
+                <a class="md-btn md-btn-default" href="{{ url('admin_charity_donation_update', {'id': donation.id}) }}">
+                    <i class="fa fa-arrow-left"></i>
+                    {{ 'button.back'|trans }}
+                </a>
+                <button class="md-btn md-btn-success" type="submit">
+                    {{ 'button.update'|trans }}
+                    <i class="fa fa-check"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

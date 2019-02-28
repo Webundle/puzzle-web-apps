@@ -42,7 +42,7 @@ class BlogExtension extends \Twig_Extension
             new \Twig_SimpleFunction('puzzle_blog_comments', [$this, 'getComments'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_blog_comment', [$this, 'getComment'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_blog_comment_votes', [$this, 'getCommentVotes'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('puzzle_blog_comment', [$this, 'getCommentVote'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_blog_comment_vote', [$this, 'getCommentVote'], ['needs_environment' => false, 'is_safe' => ['html']]),
         ];
     }
     

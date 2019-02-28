@@ -20,17 +20,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('charity');
 		
-        $rootNode
-	        ->children()
-		        ->scalarNode('title')->defaultValue('Charité')->end()
-		        ->scalarNode('icon')->defaultValue('favorite')->end()
-		        ->scalarNode('description')->defaultValue('Gérer vos oeuvres sociales')->end()
-		        ->booleanNode('enable')->defaultFalse()->end()
-		        ->scalarNode('dependencies')->defaultValue('user,media')->end()
-		        ->scalarNode('admin_menu')->defaultValue("CharityBundle::admin_menu.html.twig")->end()
-	        ->end()
-        ;
-        
         return $treeBuilder;
     }
 }

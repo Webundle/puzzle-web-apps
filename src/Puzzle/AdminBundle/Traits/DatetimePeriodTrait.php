@@ -14,14 +14,12 @@ trait DatetimePeriodTrait
 {
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="started_at", type="datetime", nullable=true)
      */
     private $startedAt;
     
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="ended_at", type="datetime", nullable=true)
      */
     private $endedAt;

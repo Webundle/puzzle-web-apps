@@ -60,8 +60,8 @@ class AdminController extends Controller
             $user->setAccountExpiresAt(new \DateTime($data['accountExpiresAt']));
             
             $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
             $em->flush();
-            
             /** User $user */
             $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATING, new UserEvent($user, [
                 'plainPassword' => $data['plainPassword']['first']
@@ -71,25 +71,11 @@ class AdminController extends Controller
                 /** User $user */
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_CREATED, new UserEvent($user, [
                     'plainPassword' => $data['plainPassword']['first'],
-                    'confirmationUrl' => $this->generate('admin_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+                    'confirmationUrl' => $this->generateUrl('security_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
                 ]));
             }
             
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
             $em->flush();
-            
-            $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
-            if ($picture !== null) {
-                $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $picture,
-                    'context' => MediaUtil::extractContext(User::class),
-                    'user' => $this->getUser(),
-                    'closure' => function($filename) use ($user) {
-                        $user->setPicture($filename);
-                    }
-                ]));
-            }
             
             $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $user->getFullName()], 'messages'));
             return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
@@ -169,7 +155,7 @@ class AdminController extends Controller
         
         /** User $user */
         $this->get('event_dispatcher')->dispatch(UserEvents::USER_ENABLED, new UserEvent($user, [
-            'confirmationUrl' => $this->generateUrl('app_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+            'confirmationUrl' => $this->generateUrl('security_user_confirm_registration', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL)
         ]));
         
         $message = $this->get('translator')->trans('user.registration.email.notification', [

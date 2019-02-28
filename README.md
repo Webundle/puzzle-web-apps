@@ -1244,3 +1244,110 @@ app:
                 sub_paths: [app_advert_post_show]
                 parent: ~
 ```
+
+
+---
+
+## **Charity Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\CharityBundle\CharityBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+advert:
+    resource: "@CharityBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all charity routes by typing: `php bin/console debug:router | grep charity`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    navigation:
+        nodes:
+            ...
+            # Charity
+            charity:
+                label: 'charity.title'
+                description: 'charity.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-heart'
+                parent: ~
+                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+            charity_cause:
+                label: 'charity.cause.sidebar'
+                description: 'charity.cause.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_charity_cause_list'
+                sub_paths: ['admin_charity_cause_create', 'admin_charity_cause_update', 'admin_charity_cause_show']
+                parent: charity
+                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+            charity_category:
+                label: 'charity.category.sidebar'
+                description: 'charity.category.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_charity_category_list'
+                sub_paths: ['admin_charity_category_create', 'admin_charity_category_update', 'admin_charity_category_show']
+                parent: charity
+                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+            charity_member:
+                label: 'charity.member.sidebar'
+                description: 'charity.member.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_charity_member_list'
+                sub_paths: ['admin_charity_member_create', 'admin_charity_member_update', 'admin_charity_member_show']
+                parent: charity
+                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+            charity_donation:
+                label: 'charity.donation.sidebar'
+                description: 'charity.donation.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_charity_donation_list'
+                sub_paths: ['admin_charity_donation_create', 'admin_charity_donation_update', 'admin_charity_donation_show', 'admin_charity_donation_update_lines']
+                parent: charity
+                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+                
+# App Configuration
+app:
+    ...
+    navigation:
+        nodes:
+            ...
+            charity_cause:
+                label: 'app.charity.title'
+                translation_domain: 'app'
+                path: app_charity_cause_list
+                sub_paths: [app_charity_cause_show]
+                parent: ~
+```

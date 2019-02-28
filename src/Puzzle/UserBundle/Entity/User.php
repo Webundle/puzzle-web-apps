@@ -133,7 +133,7 @@ use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
       
       public function __construct() {
           $this->roles = [];
-          $this->enabled = true;
+          $this->enabled = false;
           $this->locked = false;
           $this->passwordChanged = false;
           $this->groups = new \Doctrine\Common\Collections\ArrayCollection();

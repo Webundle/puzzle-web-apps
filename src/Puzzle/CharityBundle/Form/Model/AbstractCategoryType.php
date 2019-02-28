@@ -21,28 +21,12 @@ class AbstractCategoryType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'charity.property.post.name',
-                'label_attr' => ['class' => 'uk-form-label'],
-                'attr' => ['class' => 'md-input slugglable'],
+                'label' => 'charity.category.name',
             ])
             ->add('description', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'charity.property.post.description',
-                'attr' => ['class' => 'md-input'],
+                'label' => 'charity.category.description',
                 'required' => false
-            ))
-            ->add('picture', HiddenType::class, array(
-                'translation_domain' => 'messages',
-                'label' => 'charity.property.category.picture',
-                'required' => false,
-                'mapped' => false
-            ))
-            ->add('save', SubmitType::class, array(
-                'translation_domain' => 'messages',
-                'label' => 'button.save',
-                'attr' => [
-                    'class' => "md-fab md-fab-accent"
-                ]
             ))
         ;
     }

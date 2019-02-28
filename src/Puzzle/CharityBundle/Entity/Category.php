@@ -16,7 +16,7 @@ use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 /**
  * Charity Category
  * 
- * @author qwincy <qwincypercy@fermentuse.com>
+ * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
  *
  * @ORM\Table(name="charity_category")
  * @ORM\Entity(repositoryClass="Puzzle\CharityBundle\Repository\CategoryRepository")
@@ -27,7 +27,6 @@ class Category implements NodeInterface
     use PrimaryKeyTrait,
         Nameable,
         Describable,
-        Pictureable,
         Timestampable,
         Blameable,
         Sluggable,

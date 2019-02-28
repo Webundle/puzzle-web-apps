@@ -1,0 +1,80 @@
+# Category
+admin_charity_category_list:
+    path:     /category/list
+    defaults: { _controller: 'CharityBundle:Admin:listCategories' }
+
+admin_charity_category_create:
+    path:     /category/create
+    defaults: { _controller: 'CharityBundle:Admin:createCategory' }
+
+admin_charity_category_show:
+    path:     /category/{id}
+    defaults: { _controller: 'CharityBundle:Admin:showCategory' }
+
+admin_charity_category_update:
+    path:     /category/{id}/update
+    defaults: { _controller: 'CharityBundle:Admin:updateCategory' }
+    
+admin_charity_category_delete:
+    path:     /category/{id}/delete
+    defaults: { _controller: 'CharityBundle:Admin:deleteCategory' }
+
+# Cause
+admin_charity_cause_list:
+    path:     /cause/list
+    defaults: { _controller: 'CharityBundle:Admin:listCauses' }
+
+admin_charity_cause_create:
+    path:     /cause/create
+    defaults: { _controller: 'CharityBundle:Admin:createCause' }
+    
+admin_charity_cause_update:
+    path:     /cause/{id}/update
+    defaults: { _controller: 'CharityBundle:Admin:updateCause' }
+
+admin_charity_cause_delete:
+    path:     /cause/{id}/delete
+    defaults: { _controller: 'CharityBundle:Admin:deleteCause' }
+
+# Donation
+admin_charity_donation_list:
+    path:     /donation/list
+    defaults: { _controller: 'CharityBundle:Admin:listDonations' }
+
+admin_charity_donation_create:
+    path:     /donation/create
+    defaults: { _controller: 'CharityBundle:Admin:createDonation' }
+    
+admin_charity_donation_update:
+    path:     /donation/{id}/update
+    defaults: { _controller: 'CharityBundle:Admin:updateDonation' }
+
+admin_charity_donation_update_lines:
+    path:     /donation/{id}/update/lines
+    defaults: { _controller: 'CharityBundle:Admin:updateDonationLines' }
+
+admin_charity_donation_delete:
+    path:     /donation/{id}/delete
+    defaults: { _controller: 'CharityBundle:Admin:deleteDonation' }
+
+admin_charity_donation_line_add:
+    path:     /donation/{id}/line/add
+    defaults: { _controller: 'CharityBundle:Admin:addDonationLineForm' }
+
+
+# Member
+admin_charity_member_list:
+    path:     /member/list
+    defaults: { _controller: 'CharityBundle:Admin:listMembers' }
+
+admin_charity_member_create:
+    path:     /member/create
+    defaults: { _controller: 'CharityBundle:Admin:createMember' }
+    
+admin_charity_member_update:
+    path:     /member/{id}/update
+    defaults: { _controller: 'CharityBundle:Admin:updateMember' }
+
+admin_charity_member_delete:
+    path:     /member/{id}/delete
+    defaults: { _controller: 'CharityBundle:Admin:deleteMember' }

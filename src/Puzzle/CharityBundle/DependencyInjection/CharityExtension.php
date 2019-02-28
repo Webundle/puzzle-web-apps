@@ -24,12 +24,5 @@ class CharityExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        
-        $container->setParameter('charity.title', $config['title']);
-        $container->setParameter('charity.icon', $config['icon']);
-        $container->setParameter('charity.description', $config['description']);
-        $container->setParameter('charity.enable', $config['enable']);
-        $container->setParameter('charity.dependencies', $config['dependencies']);
-        $container->setParameter('charity.admin_menu', $config['admin_menu']);
     }
 }
