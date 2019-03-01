@@ -22,6 +22,10 @@ admin_user_update_credentials:
     path:   /{id}/update-credentials
     defaults: { _controller: UserBundle:Admin:updateUserCredentials }
 
+admin_user_update_settings:
+    path:   /{id}/update-settings
+    defaults: { _controller: UserBundle:Admin:updateUserSettings }
+
 admin_user_delete:
     path:   /{id}/delete
     defaults: { _controller: UserBundle:Admin:deleteUser }

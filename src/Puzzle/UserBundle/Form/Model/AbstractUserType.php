@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 /**
  * @author AGNES Gnagne Cédric <cecenho55@gmail.com>
@@ -85,9 +88,23 @@ class AbstractUserType extends AbstractType
                 'mapped' => false,
             ))
         ;
+        
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+            $form = $event->getForm();
+            $roles = $options['roles'] ?? [];
+            
+            $form->add('roles', ChoiceType::class, array(
+                'translation_domain' => 'messages',
+                'label' => 'user.account.roles',
+                'choices' => $roles,
+                'multiple' => true,
+                'required' => false
+            ));
+        });
     }
     
     public function configureOptions(OptionsResolver $resolver){
+        $resolver->setRequired('roles');
         $resolver->setDefaults(array(
             'data_class' => User::class,
             'validation_groups' => array(

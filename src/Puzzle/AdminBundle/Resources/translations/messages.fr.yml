@@ -41,6 +41,7 @@ success:
 #Admin
 admin:
     title : 'Adminstration'
+    role: 'Administrateur'
     navigation:
         dashboard: 
             title: 'Tableau de bord'
@@ -87,6 +88,7 @@ blog:
     title: 'Actualités'
     description: 'Gérer les actualités'
     icon: 'fa fa-newspaper-o'
+    role: 'Gérer les actualités'
     post:
         sidebar: 'Articles'
         list: 'Liste des articles'
@@ -133,6 +135,7 @@ advert:
     title: 'Annonces'
     description: 'Gérer les Annonces'
     icon: 'fa fa-newspaper-o'
+    role: 'Gérer les annonces'
     post:
         sidebar: 'Annonces'
         list: 'Liste des annonces'
@@ -197,6 +200,7 @@ advert:
 media:
     title: 'Médiathèque'
     description: 'Gérer vos photos, audios, vidéos et autres documents'
+    role: 'Gérer la médiathèque'
     icon: "fa fa-cloud"
     actions: 'Actions'
     search: 'Rechercher parmis les'
@@ -276,6 +280,7 @@ media:
 expertise:
     title: 'Vitrine'
     description: 'Gérer les services, les projets déjà réalisés, les témoignages, la FAQs, le personnel'
+    role: 'Gérer la vitrine'
     service:
         sidebar: 'Services'
         name: 'Nom'
@@ -395,6 +400,7 @@ expertise:
 contact:
     title: 'Contact'
     description: 'Gérer les contacts et groupes de contacts'
+    role: 'Gérer les contacts'
     icon: 'contacts'
     sidebar: 'Contacts'
     firstName: 'Prénoms'
@@ -447,6 +453,7 @@ contact:
 static:
     title: 'CMS'
     description: 'Gérer les pages'
+    role: 'Gérer les pages'
     page:
         sidebar: 'Pages'
         name: 'Nom'
@@ -486,6 +493,7 @@ static:
 newsletter:
     title: 'Newsletter'
     description: 'Gérer les abonnés, envoyer des mails'
+    role: 'Gérer la newsletter'
     subscriber:
         sidebar: 'Abonnés'
         subscriber:
@@ -530,6 +538,8 @@ newsletter:
 user:
     title: 'Comptes'
     description: 'Gestion des comptes utilisateurs'
+    role: 'Accéder à l''espace utilisateur'
+    role_account: 'Gestion de comptes'
     icon: 'supervisor_account'
     my_account: 'Mon compte'
     logout: 'Déconnexion'
@@ -607,8 +617,10 @@ user:
         create: 'Nouvel utilisateur'
         update: 'Modifier un utilisateur'
         enable: 'Activer'
+        roles: 'Roles'
         delete: 'Etes-vous sûr de vouloir supprimer l''utilisateur <em>%user%</em>'
         delete_list: 'Etes-vous sûr de vouloir supprimer la sélection d''utilisateurs'
+        update_settings: 'Mon compte'
     group:
         sidebar: 'Groupes'
         name: 'Nom'
@@ -625,6 +637,7 @@ user:
 calendar:
     title: 'Calendrier'
     description: 'Gérer les évenements et des agendas d''événements'
+    role: 'Gérer le calendrier'
     icon: 'event'
     moment:
         sidebar: 'Evénements'
@@ -717,7 +730,8 @@ scheduling:
 #Charity
 charity:
     title: 'Contributions'
-    description: ''
+    description: 'Gérer les campagnes, les contributions, les memmbres'
+    role: 'Gérer les contributions'
     member:
         sidebar: 'Membres'
         fullName: 'Nom & Prénoms'

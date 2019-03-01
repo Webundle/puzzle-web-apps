@@ -1,0 +1,87 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:User:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "user.account.update"|trans|capitalize }} {{ user }} {% endblock %}
+
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <em>{{ "user.account.update_settings"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {{ form_start(form, {'attr': {'class': 'uk-form-stacked'}}) }}
+            <div class="uk-width-medium-5-10 uk-container-center">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <div class="uk-form-row">
+                            {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">                        
+                            {{ form_label(form.email, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.username, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.username, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.plainPassword.first, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'md-input'}}) }}
+                            {{ form_errors(form.plainPassword) }}
+                        </div>
+                        <div class="uk-form-row">
+                            {{ form_label(form.plainPassword.second, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'md-input'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-text-center uk-margin-top">
+                <button class="md-btn md-btn-success" type="submit">
+                    {% if user is defined %}
+                        {{ 'button.update'|trans }}
+                    {% else %}
+                        {{ 'button.add'|trans }}
+                    {% endif %}
+                    <i class="fa fa-check"></i>
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        'bundles/admin/js/kendoui_custom.js'
+        'bundles/admin/js/kendoui.js'
+
+        output="compile/js/admin_user_update.min.js" 
+        %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        // Datetime Picker
+        $("#credentials_expires_at, #account_expires_at").kendoDateTimePicker({
+            format: "dd-MM-yyyy HH:mm"
+        });
+    </script>
+    <script type="text/javascript">
+        var $kUI_multiselect_roles = $('#kUI_multiselect_roles');
+        if($kUI_multiselect_roles.length) {
+            $kUI_multiselect_roles.kendoMultiSelect();
+        }
+    </script>
+{% endblock %}

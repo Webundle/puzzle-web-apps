@@ -45,7 +45,7 @@
 					   </a>
 						<div class="uk-dropdown uk-dropdown-small">
 							<ul class="uk-nav js-uk-prevent">
-								<li><a href="{{ url('admin_user_update', {'id': app.user.id}) }}">
+								<li><a href="{{ url('admin_user_update_settings', {'id': app.user.id}) }}">
                                     <i class="fa fa-user"></i>
                                     {{ 'user.my_account'|trans }}
 								    </a>
@@ -105,8 +105,11 @@
 	<div id="page_heading" data-uk-sticky="{ top: 48, media: 960 }">
         {% block headingactions %}{% endblock %}
         <span class="sub_heading">
-            <a href="{{ url('admin_homepage') }}">
+            <a href="{{ url('app_homepage') }}" target="_blank">
                 <i class="fa fa-home"></i>
+            </a>
+            <i class="fa fa-chevron-right"></i>
+            <a href="{{ url('admin_homepage') }}">
                 {{ 'dashboard.title'|trans }}
             </a>
             {% block breadcrumbmodule %}{% endblock %}

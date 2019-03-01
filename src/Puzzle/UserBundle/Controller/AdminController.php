@@ -19,6 +19,7 @@ use Puzzle\UserBundle\Event\UserEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Puzzle\UserBundle\Form\Type\UserChangeSettingsType;
 
 class AdminController extends Controller
 {
@@ -42,22 +43,36 @@ class AdminController extends Controller
      */
     public function createUserAction(Request $request){
         $user = new User();
+        
+        $moduleAvailables = explode(',', $this->getParameter('admin')['modules_available']);
+        $translator = $this->get('translator');
+        $roles = [];
+        
+        foreach ($moduleAvailables as $moduleAvailable) {
+            $roles[$translator->trans($moduleAvailable.'.role', [], 'messages')] =  $moduleAvailable;
+        }
+        
         $form = $this->createForm(UserCreateType::class, $user, [
             'method' => 'POST',
-            'action' => $this->generateUrl('admin_user_create')
+            'action' => $this->generateUrl('admin_user_create'),
+            'roles' => $roles
         ]);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
             $data = $request->request->all()['admin_user_create'];
             
-            // Update roles
-            $roles = $request->request->get('roles') !== "" ? $request->request->get('roles') : $data['roles'];
-            $user->setRoles(explode(',', $roles));
+//             // Update roles
+//             $roles = $request->request->get('roles') !== "" ? $request->request->get('roles') : $data['roles'];
+//             $user->setRoles(explode(',', $roles));
             
-            // Update Security account
-            $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiresAt']));
-            $user->setAccountExpiresAt(new \DateTime($data['accountExpiresAt']));
+            if (! empty($data['credentialsExpiresAt'])) {
+                $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiresAt']));
+            }
+            
+            if (! empty($data['accountExpiresAt'])) {
+                $user->setAccountExpiresAt(new \DateTime($data['accountExpiresAt']));
+            }
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -83,7 +98,6 @@ class AdminController extends Controller
         
         return $this->render("AdminBundle:User:create_user.html.twig", [
             'form' => $form->createView(),
-            'modules' => $this->getParameter('admin')['modules_available']
         ]);
     }
     
@@ -99,29 +113,39 @@ class AdminController extends Controller
         /** @var User $user */
         $user = $em->find(User::class, $id);
         
+        $moduleAvailables = explode(',', $this->getParameter('admin')['modules_available']);
+        $translator = $this->get('translator');
+        $roles = [];
+        
+        foreach ($moduleAvailables as $moduleAvailable) {
+            $roles[$translator->trans($moduleAvailable.'.role', [], 'messages')] =  strtoupper('role_'.$moduleAvailable);
+        }
+        
+        $roles[$translator->trans('user.role_account', [], 'messages')] =  'ROLE_ACCOUNT';
+        
         $form = $this->createForm(UserUpdateType::class, $user, [
             'method' => 'POST',
-            'action' => $this->generateUrl('admin_user_update', ['id' => $user->getId()])
+            'action' => $this->generateUrl('admin_user_update', ['id' => $user->getId()]),
+            'roles' => $roles
         ]);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
             $data = $request->request->all()['admin_user_update'];
             
-            // Update roles
-            $roles = $request->request->get('roles') !== "" ? $request->request->get('roles') : $data['roles'];
-            $user->setRoles(explode(',', $roles));
-            
             // Update Security account
-            if (isset($data['credentialsExpiresAt']) && $data['credentialsExpiresAt']) {
+            if (! empty($data['credentialsExpiresAt'])) {
                 $user->setCredentialsExpiresAt(new \DateTime($data['credentialsExpiresAt']));
+            }else {
+                $user->setCredentialsExpiresAt(null);
             }
             
-            if (isset($data['accountExpiresAt']) && $data['accountExpiresAt']) {
+            if (! empty($data['accountExpiresAt'])) {
                 $user->setAccountExpiresAt(new \DateTime($data['accountExpiresAt']));
+            }else {
+                $user->setAccountExpiresAt(null);
             }
             
-            $em = $this->getDoctrine()->getManager();
             $em->flush();
             
             // Update password
@@ -139,6 +163,51 @@ class AdminController extends Controller
         }
         
         return $this->render("AdminBundle:User:update_user.html.twig", [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+    
+    
+    /***
+     * Update user
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateUserSettingsAction(Request $request, $id) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $em->find(User::class, $id);
+        
+        $form = $this->createForm(UserChangeSettingsType::class, $user, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_user_update_settings', ['id' => $user->getId()]),
+            'roles' => []
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $data = $request->request->all()['admin_user_update_settings'];
+            
+            $em->flush();
+            
+            // Update password
+            if (isset($data['plainPassword']['first']) === true && $data['plainPassword']['first'] !== "") {
+                /** User $user */
+                $this->get('event_dispatcher')->dispatch(UserEvents::USER_UPDATING, new UserEvent($user, [
+                    'plainPassword' => $data['plainPassword']['first']
+                ]));
+            }
+            
+            $em->flush();
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $user->getFullName()], 'messages'));
+            return $this->redirectToRoute('admin_user_update_settings', ['id' => $id]);
+        }
+        
+        return $this->render("AdminBundle:User:update_user_settings.html.twig", [
             'user' => $user,
             'form' => $form->createView()
         ]);

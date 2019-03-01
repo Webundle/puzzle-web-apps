@@ -49,10 +49,10 @@ class UserProvider implements UserProviderInterface
 		    throw $ex;
 		}
 		
-		if ($user->hasRole('ROLE_USER')) {
-		    $ex = new AccessDeniedException('Your account is not allowed in this space.');
-		    throw $ex;
-		}
+// 		if ($user->hasRole('ROLE_USER')) {
+// 		    $ex = new AccessDeniedException('Your account is not allowed in this space.');
+// 		    throw $ex;
+// 		}
 		
 		if (!$user->isAccountNonLocked()) {
 		    $ex = new LockedException('User account is locked.');

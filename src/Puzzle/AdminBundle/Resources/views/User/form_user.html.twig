@@ -42,7 +42,7 @@
                 <div class="md-card-content">
                     <div class="uk-form-row">
                         {{ form_label(form.credentialsExpiresAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
-                        {% if user is defined %}
+                        {% if user is defined and user.accountExpiresAt is not empty %}
                             {{ form_widget(form.credentialsExpiresAt, {'id': 'credentials_expires_at', 'attr': {'style': 'width:100%'}, 'value': user.credentialsExpiresAt|date('d-m-Y H:i')}) }}
                         {% else %}
                             {{ form_widget(form.credentialsExpiresAt, {'id': 'credentials_expires_at', 'attr': {'style': 'width:100%'}}) }}
@@ -50,7 +50,7 @@
                     </div>
                     <div class="uk-form-row">
                         {{ form_label(form.accountExpiresAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
-                        {% if user is defined %}
+                        {% if user is defined and user.accountExpiresAt is not empty %}
                             {{ form_widget(form.accountExpiresAt, {'id': 'account_expires_at', 'attr': {'style': 'width:100%'}, 'value': user.accountExpiresAt|date('d-m-Y H:i')}) }}
                         {% else %}
                             {{ form_widget(form.accountExpiresAt, {'id': 'account_expires_at', 'attr': {'style': 'width:100%'}}) }}
@@ -67,6 +67,10 @@
                             {{ form_widget(form.locked, {'attr': {'data-switchery': true}}) }}
                         </div>
                         {{ form_label(form.locked, null, {'label_attr': {'class': 'uk-display-block uk-margin-small-top uk-form-label'}}) }}
+                    </div>
+                     <div class="uk-form-row">
+                        {{ form_label(form.roles) }}
+                        {{ form_widget(form.roles, {'id': 'kUI_multiselect_roles'}) }}
                     </div>
                 </div>
             </div>

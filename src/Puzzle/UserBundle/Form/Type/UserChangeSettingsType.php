@@ -4,6 +4,8 @@ namespace Puzzle\UserBundle\Form\Type;
 use Puzzle\UserBundle\Form\Model\AbstractUserType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  *
@@ -12,18 +14,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UserChangeSettingsType extends AbstractUserType
 {
-	public function __construct() {
-		parent::__construct(false);
-	}
-	
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		parent::buildForm($builder, $options);
 		
-		$builder->remove('roles')
-// 				->remove('username')
-				->remove('plainPassword')
-				->remove('accountExpiresAt')
-				->remove('credentialsExpiresAt');
+		$builder->remove('accountExpiresAt')
+				->remove('credentialsExpiresAt')
+				->remove('enabled')
+				->remove('locked')
+	    ;
+		
+		$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+		    $form = $event->getForm();
+		    $form->remove('roles');
+		});
 	}
 	
 	public function configureOptions(OptionsResolver $resolver) {
