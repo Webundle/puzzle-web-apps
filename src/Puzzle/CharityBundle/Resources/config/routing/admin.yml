@@ -38,11 +38,11 @@ admin_charity_cause_delete:
 
 # Donation
 admin_charity_donation_list:
-    path:     /donation/list
+    path:     /cause/{id}/donation/list
     defaults: { _controller: 'CharityBundle:Admin:listDonations' }
 
 admin_charity_donation_create:
-    path:     /donation/create
+    path:     /cause/{id}/donation/create
     defaults: { _controller: 'CharityBundle:Admin:createDonation' }
     
 admin_charity_donation_update:

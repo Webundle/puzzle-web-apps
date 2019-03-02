@@ -36,7 +36,7 @@
     </div>
 </div>
 <div class="uk-text-center uk-margin-top">
-    <a class="md-btn md-btn-default" href="{{ url('admin_charity_donation_list') }}">
+    <a class="md-btn md-btn-default" href="{{ url('admin_charity_donation_list', {'id': cause.id}) }}">
         <i class="fa fa-arrow-left"></i>
         {{ 'button.cancel'|trans }}
     </a>

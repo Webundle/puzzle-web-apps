@@ -25,6 +25,7 @@ use Puzzle\CharityBundle\Form\Type\MemberUpdateType;
 use Puzzle\CharityBundle\Form\Type\MemberCreateType;
 use Puzzle\CharityBundle\Event\MemberEvent;
 use Puzzle\CharityBundle\CharityEvents;
+use Puzzle\CharityBundle\Event\DonationEvent;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -420,14 +421,16 @@ class AdminController extends Controller
 	 * @param Request $request
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-    public function listDonationsAction(Request $request) {
+    public function listDonationsAction(Request $request, $id) {
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.entity_manager');
         $criteria = empty($request->query->get('cause')) === false ? ['cause' => $request->query->get('cause')] : [];
+        $cause = $em->find(Cause::class, $id);
         
-    	 return $this->render('AdminBundle:Charity:list_donations.html.twig', array(
-    	     'donations' =>  $em->getRepository(Donation::class)->findBy($criteria, ['createdAt' => 'ASC'])
-    	 )); 
+    	return $this->render('AdminBundle:Charity:list_donations.html.twig', array(
+    	    'donations' =>  $em->getRepository(Donation::class)->findBy($criteria, ['createdAt' => 'ASC']),
+    	    'cause' => $cause
+    	)); 
     }
     
     /**
@@ -439,11 +442,7 @@ class AdminController extends Controller
      */
     public function showDonationAction(Request $request, $id) {
     	$donation = $this->getDoctrine()->getRepository(Donation::class)->find($id);
-    	$content = $this->renderView("AdminBundle:Charity:show_donation.html.twig", array('donation' => $donation));
-    	
-    	$mpdf = new Mpdf();
-    	$mpdf->WriteHTML($content);
-    	$mpdf->Output();
+    	return $this->render("AdminBundle:Charity:show_donation.html.twig", array('donation' => $donation));
     }
     
     /**
@@ -466,36 +465,45 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createDonationAction(Request $request)
+    public function createDonationAction(Request $request, $id)
     {
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
         $donation = new Donation();
+        
+        if ($cause = $em->find(Cause::class, $id)) {
+            $donation->setCause($cause);
+        }
         
         $form = $this->createForm(DonationCreateType::class, $donation, [
             'method' => 'POST',
-            'action' => $this->generateUrl('admin_charity_donation_create')
+            'action' => $this->generateUrl('admin_charity_donation_create', ['id' => $id])
         ]);
     	
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $cause = $donation->getCause();
             $paidAmount = $donation->getPaidAmount();
             
-            $donation->setPaidAmount($paidAmount);
+            $cause = $donation->getCause();
             $cause->setPaidAmount($cause->getPaidAmount() + $paidAmount);
     	    
     	    /** @var EntityManager $em */
     	    $em = $this->get('doctrine.orm.entity_manager');
     	    $em->persist($donation);
-    	    
     	    $em->flush();
     	    
+    	    if ($donation->getPaidAmount() > 0) {
+    	        $this->get('event_dispatcher')->dispatch(CharityEvents::CHARITY_DONATION_CREATED, new DonationEvent($donation));
+    	    }
+    	    
     	    $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $donation->getMember()], 'messages'));
-    	    return $this->redirectToRoute('admin_charity_donation_list');
+    	    return $this->redirectToRoute('admin_charity_donation_list', ['id' => $id]);
     	}
     	
     	return $this->render('AdminBundle:Charity:create_donation.html.twig', array(
-    		'form' => $form->createView()
+    	    'form' => $form->createView(),
+    	    'cause' => $cause
     	));
     }
     
@@ -518,10 +526,9 @@ class AdminController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $cause = $donation->getCause();
             $paidAmount = $donation->getPaidAmount();
             
-            $donation->setPaidAmount($paidAmount);
+            $cause = $donation->getCause();
             $cause->setPaidAmount($cause->getPaidAmount() + $paidAmount);
             
             /** @var EntityManager $em */
@@ -529,11 +536,12 @@ class AdminController extends Controller
             $em->flush();
             
             $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $donation->getMember()], 'messages'));
-            return $this->redirectToRoute('admin_charity_donation_list');
+            return $this->redirectToRoute('admin_charity_donation_list', ['id' => $id]);
         }
     	
         return $this->render('AdminBundle:Charity:update_donation.html.twig', array(
             'donation' => $donation,
+            'cause' => $donation->getCause(),
             'form' => $form->createView()
         ));
     }
@@ -604,6 +612,11 @@ class AdminController extends Controller
             '%item%' => $donation->getMember()
         ], 'messages');
         
+        $paidAmount = $donation->getPaidAmount();
+        
+        $cause = $donation->getCause();
+        $cause->setPaidAmount($cause->getPaidAmount() - $paidAmount);
+        
         $em = $this->getDoctrine()->getManager();
         $em->remove($donation);
         $em->flush();
@@ -613,6 +626,6 @@ class AdminController extends Controller
         }
         
         $this->addFlash('success', $message);
-    	return $this->redirectToRoute('admin_charity_donation_list');
+    	return $this->redirectToRoute('admin_charity_donation_list', ['id' => $cause->getId()]);
     }
 }

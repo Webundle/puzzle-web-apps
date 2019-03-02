@@ -6,7 +6,7 @@
 
 {% block headingactions %}
 <div class="heading_actions">
-    <a href="{{ url('admin_charity_donation_create') }}">
+    <a href="{{ url('admin_charity_donation_create', {'id': cause.id}) }}">
         <span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
         <i class="fa fa-plus-circle"></i>
     </a>
@@ -15,6 +15,14 @@
 
 {% block breadcrumbmodule %}
     {{ parent() }}
+    <a href=" {{ url('admin_charity_cause_list', {'id': cause.id}) }} ">
+       {{ 'charity.cause.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <a href=" {{ url('admin_charity_cause_update', {'id': cause.id}) }} ">
+        {{ "charity.cause.update"|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
     <em>{{ "charity.donation.list"|trans|capitalize }}</em>
 {% endblock %}
 

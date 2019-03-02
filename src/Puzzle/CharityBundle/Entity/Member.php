@@ -53,6 +53,12 @@ class Member
     private $enabled;
     
     /**
+     * @var \DateTime
+     * @ORM\Column(name="enabled_at", type="datetime", nullable=true)
+     */
+    private $enabledAt;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Donation", mappedBy="member")
      */
     private $donations;
@@ -110,6 +116,15 @@ class Member
     
     public function isEnabled() :?bool {
         return $this->enabled;
+    }
+    
+    public function setEnabledAt(\DateTime $enabledAt) :self {
+        $this->enabledAt = $enabledAt;
+        return $this;
+    }
+    
+    public function getEnabledAt() {
+        return $this->enabledAt;
     }
     
     public function setUser(User $user) :self {

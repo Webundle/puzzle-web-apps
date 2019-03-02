@@ -39,7 +39,7 @@ class DonationLine
     
     /**
      * @ORM\ManyToOne(targetEntity="Donation", inversedBy="donationLines")
-     * @ORM\JoinColumn(name="donation_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="donation_id", referencedColumnName="id", onDelete="cascade")
      */
     private $donation;
 
