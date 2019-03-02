@@ -3,16 +3,13 @@
 namespace Puzzle\CharityBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
+use Puzzle\CharityBundle\CharityEvents;
 use Puzzle\CharityBundle\Entity\Donation;
 use Puzzle\CharityBundle\Event\DonationEvent;
-use Puzzle\UserBundle\Entity\User;
-use Puzzle\UserBundle\Event\UserEvent;
-use Puzzle\UserBundle\Util\TokenGenerator;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Puzzle\NewsletterBundle\Entity\Template;
-use Puzzle\CharityBundle\CharityEvents;
+use Puzzle\UserBundle\Event\UserEvent;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author qwincy <qwincypercy@fermentuse.com>
@@ -55,51 +52,29 @@ class DonationListener
 	 * @param \Swift_Mailer $mailer
 	 * @param string $fromEmail
 	 */
-	public function __construct(EntityManager $em, Router $router, \Swift_Mailer $mailer, \Twig_Environment $twig, TranslatorInterface $translator, array $config){
+	public function __construct(EntityManager $em, Router $router, \Swift_Mailer $mailer, \Twig_Environment $twig, TranslatorInterface $translator, string $registrationEmailAddress){
 		$this->em = $em;
 		$this->mailer = $mailer;
 		$this->router = $router;
 		$this->twig = $twig;
 		$this->translator = $translator;
-		$this->config = $config;
+		$this->registrationEmailAddress = $registrationEmailAddress;
 	}
 	
-	public function onCreatedMember(UserEvent $event) {
-	    $user = $event->getUser();
-	    
-	    if (! $donation = $this->em->getRepository(Donation::class)->findOneBy(['email' => $user->getEmail()])) {
-	        $donation = new Donation();
-	        $donation->setFirstName($user->getFirstName());
-	        $donation->setLastName($user->getLastName());
-	        $donation->setEmail($user->getEmail());
-	        $donation->setPhoneNumber($user->getPhoneNumber());
-	        $donation->setUser($user);
-	        
-	        $this->em->persist($donation);
-	        $this->em->flush($donation);
-	    }
-	    
-	    return;
-	}
-	
-	public function onCreated(DonationEvent $event) {
+	public function onPaid(DonationEvent $event) {
 	    $donation = $event->getDonation();
-	    $member = $donation->getMember();
 	    
-	    if ($member->isEnabled() === false) {
-	        $member->setEnabled(true);
-	        $member->setEnabledAt(new \DateTime());
-	        
-	        $this->em->flush($member);
+	    if ($donation->getPaidAmount() == 0) {
+	        return;
 	    }
 	    
-	    if ($template = $this->em->getRepository(Template::class)->findOneBy(['event' => CharityEvents::CHARITY_DONATION_CREATED])) {
+	    if ($template = $this->em->getRepository(Template::class)->findOneBy(['event' => CharityEvents::CHARITY_DONATION_PAID])) {
 	        $subject = $template->getName();
 	        
 	        $env = new \Twig_Environment(new \Twig_Loader_Array(['template' => $template->getContent()]));
 	        $body = $env->render('template', array('donation' => $donation));
 	        
-	        $this->sendEmail($this->config['website']['email'], $member->getEmail(), $subject, $body);
+	        $this->sendEmail($this->registrationEmailAddress, $donation->getMember()->getEmail(), $subject, $body);
 	    }
 	    
 	    return;

@@ -5,12 +5,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: "user.created", method: onCreatedUser }
             - { name: kernel.event_listener, event: "charity.member.created", method: onCreated }
+            - { name: kernel.event_listener, event: "charity.member.enabled", method: onEnabled }
 
     charity.donation.listener:
         class: Puzzle\CharityBundle\Listener\DonationListener
-        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%app%' ]
+        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%user.registration.address%' ]
         tags:
-            - { name: kernel.event_listener, event: "charity.donation.created", method: onCreated }
+            - { name: kernel.event_listener, event: "charity.donation.paid", method: onPaid }
 
     # Twig extension
     charity.twig.extension:

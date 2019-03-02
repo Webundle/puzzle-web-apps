@@ -26,6 +26,7 @@ use Puzzle\CharityBundle\Form\Type\MemberCreateType;
 use Puzzle\CharityBundle\Event\MemberEvent;
 use Puzzle\CharityBundle\CharityEvents;
 use Puzzle\CharityBundle\Event\DonationEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -73,9 +74,9 @@ class AdminController extends Controller
             $em->persist($member);
             $em->flush();
             
-            if (! empty($data['createAccount']) && $data['createAccount'] == 1) {
-                $this->get('event_dispatcher')->dispatch(CharityEvents::CHARITY_MEMBER_CREATED, new MemberEvent($member));
-            }
+            $this->get('event_dispatcher')->dispatch(CharityEvents::CHARITY_MEMBER_CREATED, new MemberEvent($member, [
+                'createAccount' => $data['createAccount'] ?? null
+            ]));
             
             $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $member->getEmail()], 'messages'));
             return $this->redirectToRoute('admin_charity_member_list');
@@ -493,9 +494,10 @@ class AdminController extends Controller
     	    $em->persist($donation);
     	    $em->flush();
     	    
-    	    if ($donation->getPaidAmount() > 0) {
-    	        $this->get('event_dispatcher')->dispatch(CharityEvents::CHARITY_DONATION_CREATED, new DonationEvent($donation));
-    	    }
+    	    /** @var EventDispatcher $dispatcher */
+    	    $dispatcher = $this->get('event_dispatcher');
+    	    $dispatcher->dispatch(CharityEvents::CHARITY_DONATION_PAID, new DonationEvent($donation));
+    	    $dispatcher->dispatch(CharityEvents::CHARITY_MEMBER_ENABLED, new MemberEvent($donation->getMember()));
     	    
     	    $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $donation->getMember()], 'messages'));
     	    return $this->redirectToRoute('admin_charity_donation_list', ['id' => $id]);
@@ -535,8 +537,13 @@ class AdminController extends Controller
             $em = $this->get('doctrine.orm.entity_manager');
             $em->flush();
             
+            /** @var EventDispatcher $dispatcher */
+            $dispatcher = $this->get('event_dispatcher');
+            $dispatcher->dispatch(CharityEvents::CHARITY_DONATION_PAID, new DonationEvent($donation));
+            $dispatcher->dispatch(CharityEvents::CHARITY_MEMBER_ENABLED, new MemberEvent($donation->getMember()));
+            
             $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $donation->getMember()], 'messages'));
-            return $this->redirectToRoute('admin_charity_donation_list', ['id' => $id]);
+            return $this->redirectToRoute('admin_charity_donation_update', ['id' => $donation->getId()]);
         }
     	
         return $this->render('AdminBundle:Charity:update_donation.html.twig', array(
@@ -587,6 +594,11 @@ class AdminController extends Controller
             $cause->setPaidAmount($cause->getPaidAmount() + $paidAmount);
             
             $em->flush();
+            
+            /** @var EventDispatcher $dispatcher */
+            $dispatcher = $this->get('event_dispatcher');
+            $dispatcher->dispatch(CharityEvents::CHARITY_DONATION_PAID, new DonationEvent($donation));
+            $dispatcher->dispatch(CharityEvents::CHARITY_MEMBER_ENABLED, new MemberEvent($donation->getMember()));
             
             $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $donation->getMember()], 'messages'));
             return $this->redirectToRoute('admin_charity_donation_update_lines', ['id' => $donation->getId()]);

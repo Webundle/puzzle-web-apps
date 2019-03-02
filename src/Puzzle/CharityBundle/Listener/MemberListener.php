@@ -11,6 +11,8 @@ use Puzzle\UserBundle\Util\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Puzzle\CharityBundle\CharityEvents;
+use Puzzle\NewsletterBundle\Entity\Template;
 
 /**
  * @author qwincy <qwincypercy@fermentuse.com>
@@ -62,28 +64,25 @@ class MemberListener
 		$this->registrationEmailAddress = $registrationEmailAddress;
 	}
 	
-	public function onCreatedUser(UserEvent $event) {
-	    $user = $event->getUser();
-	    
-	    if (! $member = $this->em->getRepository(Member::class)->findOneBy(['email' => $user->getEmail()])) {
-	        $member = new Member();
-	        $member->setFirstName($user->getFirstName());
-	        $member->setLastName($user->getLastName());
-	        $member->setEmail($user->getEmail());
-	        $member->setPhoneNumber($user->getPhoneNumber());
-	        $member->setUser($user);
-	        
-	        $this->em->persist($member);
-	        $this->em->flush($member);
-	    }
-	    
-	    return;
-	}
-	
+	/**
+	 * Send mail when member is created
+	 * @param MemberEvent $event
+	 */
 	public function onCreated(MemberEvent $event) {
 	    $member = $event->getMember();
+	    $data = $event->getData();
 	    
-	    if (! $user = $this->em->getRepository(User::class)->findOneBy(['email' => $member->getEmail()])) {
+	    if ($template = $this->em->getRepository(Template::class)->findOneBy(['event' => CharityEvents::CHARITY_MEMBER_CREATED])) {
+	        $subject = $template->getName();
+	        
+	        $env = new \Twig_Environment(new \Twig_Loader_Array(['template' => $template->getContent()]));
+	        $body = $env->render('template', array('member' => $member));
+	        
+	        $this->sendEmail($this->registrationEmailAddress, $member->getEmail(), $subject, $body);
+	    }
+	    
+	    if (! empty($data['createAccount']) && $data['createAccount'] == 1) {
+	        # User registration
 	        $user = new User();
 	        $user->setEmail($member->getEmail());
 	        $user->setUsername($member->getEmail());
@@ -92,15 +91,17 @@ class MemberListener
 	        
 	        $user->setPlainPassword(TokenGenerator::generate(8));
 	        $user->setPassword(hash('sha512', $user->getPlainPassword()));
-	        $user->setRoles(array("ROLE_USER"));
+	        $user->setRoles(array(User::ROLE_DEFAULT));
 	        $user->setConfirmationToken(TokenGenerator::generate(12));
 	        
 	        $this->em->persist($user);
 	        $this->em->flush($user);
 	        
+	        // Associate member to user account
 	        $member->setUser($user);
 	        $this->em->flush($member);
 	        
+	        # User registration email
 	        $subject = $this->translator->trans('user.registration.email.subject', ['%fullName%' => (string) $user], 'messages');
 	        $body = $this->translator->trans('user.registration.email.message', [
 	            '%fullName%' => (string) $user,
@@ -110,6 +111,68 @@ class MemberListener
 	        ], 'messages');
 	        
 	        $this->sendEmail($this->registrationEmailAddress, $user->getEmail(), $subject, $body);
+	    }
+	    
+	    return;
+	}
+	
+	
+	/**
+	 * Create member when user is registered
+	 * @param UserEvent $event
+	 */
+	public function onCreatedUser(UserEvent $event) {
+	    $user = $event->getUser();
+	    
+	    if ($this->em->getRepository(Member::class)->findOneBy(['email' => $user->getEmail()])) {
+	        return;
+	    }
+	    
+	    $member = new Member();
+	    $member->setFirstName($user->getFirstName());
+	    $member->setLastName($user->getLastName());
+	    $member->setEmail($user->getEmail());
+	    $member->setPhoneNumber($user->getPhoneNumber());
+	    $member->setUser($user);
+	    
+	    $this->em->persist($member);
+	    $this->em->flush($member);
+	    
+	    if ($template = $this->em->getRepository(Template::class)->findOneBy(['event' => CharityEvents::CHARITY_MEMBER_CREATED])) {
+	        $subject = $template->getName();
+	        
+	        $env = new \Twig_Environment(new \Twig_Loader_Array(['template' => $template->getContent()]));
+	        $body = $env->render('template', array('member' => $member));
+	        
+	        $this->sendEmail($this->registrationEmailAddress, $member->getEmail(), $subject, $body);
+	    }
+	    
+	    return;
+	}
+	
+	/**
+	 * Enable member when a first donation is created
+	 * @param MemberEvent $event
+	 */
+	public function onEnabled(MemberEvent $event) {
+	    $member = $event->getMember();
+	    
+	    if ($member->isEnabled() === true) {
+	        return;
+	    }
+	    
+	    $member->setEnabled(true);
+	    $member->setEnabledAt(new \DateTime());
+	    
+	    $this->em->flush($member);
+	    
+	    if ($template = $this->em->getRepository(Template::class)->findOneBy(['event' => CharityEvents::CHARITY_MEMBER_ENABLED])) {
+	        $subject = $template->getName();
+	        
+	        $env = new \Twig_Environment(new \Twig_Loader_Array(['template' => $template->getContent()]));
+	        $body = $env->render('template', array('member' => $member));
+	        
+	        $this->sendEmail($this->registrationEmailAddress, $member->getEmail(), $subject, $body);
 	    }
 	    
 	    return;

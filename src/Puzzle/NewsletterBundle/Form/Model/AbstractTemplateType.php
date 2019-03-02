@@ -20,7 +20,7 @@ class AbstractTemplateType extends AbstractType
                 'translation_domain' => 'messages',
                 'label' => 'newsletter.template.name',
             ])
-            ->add('event', TextareaType::class, array(
+            ->add('event', TextType::class, array(
                 'translation_domain' => 'messages',
                 'label' => 'newsletter.template.event',
                 'required' => false
