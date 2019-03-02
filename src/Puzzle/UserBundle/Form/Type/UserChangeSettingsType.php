@@ -22,11 +22,6 @@ class UserChangeSettingsType extends AbstractUserType
 				->remove('enabled')
 				->remove('locked')
 	    ;
-		
-		$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
-		    $form = $event->getForm();
-		    $form->remove('roles');
-		});
 	}
 	
 	public function configureOptions(OptionsResolver $resolver) {

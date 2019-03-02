@@ -183,8 +183,7 @@ class AdminController extends Controller
         
         $form = $this->createForm(UserChangeSettingsType::class, $user, [
             'method' => 'POST',
-            'action' => $this->generateUrl('admin_user_update_settings', ['id' => $user->getId()]),
-            'roles' => []
+            'action' => $this->generateUrl('admin_user_update_settings', ['id' => $user->getId()])
         ]);
         $form->handleRequest($request);
         
