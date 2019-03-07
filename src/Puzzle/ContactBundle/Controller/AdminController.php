@@ -46,6 +46,13 @@ class AdminController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
+            if ($user = $contact->getUser()) {
+                $contact->setEmail($contact->getEmail() ?? $user->getEmail());
+                $contact->setFirstName($contact->getFirstName() ?? $user->getFirstName());
+                $contact->setLastName($contact->getLastName() ?? $user->getLastName());
+                $contact->setPhoneNumber($contact->getPhoneNumber() ?? $user->getPhoneNumber());
+            }
+            
             $data = $request->request->all()['admin_contact_create'];
             $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
             
@@ -87,7 +94,7 @@ class AdminController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['admin_contact_create'];
+            $data = $request->request->all()['admin_contact_update'];
             $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
             
             if ($contact->getPicture() === null || $contact->getPicture() !== $picture) {

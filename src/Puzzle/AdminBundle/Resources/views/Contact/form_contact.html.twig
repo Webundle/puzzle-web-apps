@@ -6,6 +6,12 @@
             <div class="md-card">
                 <div class="md-card-content">
                     <section>
+                        {% if contact is not defined %}
+                            <div class="parsley-row uk-margin-bottom">
+                                {{ form_label(form.user, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.user, {'attr': {'data-md-selectize' : true}, 'id': 'select-user'}) }}
+                            </div>
+                        {% endif %}
                         <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
                             <div class="parsley-row">
                                 <div class="uk-input-group">
@@ -14,6 +20,7 @@
                                     </span>
                                     {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
                                     {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                                    <small>{{ 'charity.member.blank'|trans }}</small>
                                 </div>
                             </div>
                             <div class=" parsley-row">
@@ -23,6 +30,7 @@
                                     </span>
                                     {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
                                     {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                                    <small>{{ 'charity.member.blank'|trans }}</small>
                                 </div>
                             </div>
                         </div>
@@ -34,6 +42,7 @@
                                     </span>
                                     {{ form_label(form.email, null, {'label_attr': {'class': 'uk-form-label'}}) }}
                                     {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                                    <small>{{ 'charity.member.blank'|trans }}</small>
                                 </div>
                             </div>
                             <div class="parsley-row">
@@ -43,6 +52,7 @@
                                     </span>
                                     {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
                                     {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                                    <small>{{ 'charity.member.blank'|trans }}</small>
                                 </div>
                             </div>
                         </div>

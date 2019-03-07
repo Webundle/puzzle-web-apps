@@ -18,3 +18,15 @@
         {% include 'AdminBundle:Contact:form_contact.html.twig' with { 'form': form, 'contact': contact } %}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('#select-user').change(function(){
+        	console.log($(this).val());
+        	if ($(this).val() != '') {
+        		$('input').removeAttr('required');
+        	}
+        });
+    </script>
+{% endblock %}

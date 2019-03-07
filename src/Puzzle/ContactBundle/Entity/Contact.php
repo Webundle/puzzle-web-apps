@@ -7,6 +7,7 @@ use Puzzle\AdminBundle\Traits\DatetimeTrait;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 use Doctrine\Common\Collections\Collection;
+use Puzzle\UserBundle\Entity\User;
 
 /**
  * Contact
@@ -68,16 +69,10 @@ class Contact
     private $position;
     
     /**
-     * @var string
-     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
+     * @ORM\OneToOne(targetEntity="Puzzle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $subject;
-    
-    /**
-     * @var string
-     * @ORM\Column(name="message", type="text", nullable=true)
-     */
-    private $message;
+    private $user;
     
     /**
      * @ORM\OneToMany(targetEntity="Request", mappedBy="contact")
@@ -165,22 +160,13 @@ class Contact
         return $this->picture;
     }
     
-    public function setSubject($subject) :self {
-        $this->subject = $subject;
+    public function setUser(User $user) :self {
+        $this->user = $user;
         return $this;
     }
     
-    public function getSubject() :?string {
-        return $this->subject;
-    }
-    
-    public function setMessage($message) :self {
-        $this->message = $message;
-        return $this;
-    }
-    
-    public function getMessage() :?string {
-        return $this->message;
+    public function getUser() :?User {
+        return $this->user;
     }
     
     public function setGroups (Collection $groups) :self {

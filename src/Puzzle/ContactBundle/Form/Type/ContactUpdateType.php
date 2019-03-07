@@ -4,6 +4,7 @@ namespace Puzzle\ContactBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Puzzle\ContactBundle\Form\Model\AbstractContactType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * 
@@ -12,6 +13,11 @@ use Puzzle\ContactBundle\Form\Model\AbstractContactType;
  */
 class ContactUpdateType extends AbstractContactType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options){
+        parent::buildForm($builder, $options);
+        $builder->remove('user');
+    }
+    
     public function configureOptions(OptionsResolver $resolver) {
         parent::configureOptions($resolver);
         

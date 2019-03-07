@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Puzzle\UserBundle\Entity\User;
 
 /**
  * @author AGNES Gnagne Cédric <cecenho55@gmail.com>
@@ -34,6 +36,13 @@ class AbstractContactType extends AbstractType
                 'label' => 'contact.phoneNumber',
                 'required' => false
             ])
+            ->add('user', EntityType::class, array(
+                'translation_domain' => 'messages',
+                'label' => 'charity.member.user',
+                'class' => User::class,
+                'required' => false,
+                'choice_label' => 'fullName'
+            ))
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
                 'label' => 'contact.picture',
