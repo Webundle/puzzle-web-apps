@@ -64,7 +64,7 @@ class Member
     private $donations;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Puzzle\UserBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="Puzzle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
