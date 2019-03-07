@@ -1,0 +1,51 @@
+# Post
+app_learning_post_list:
+    path:     /post/list
+    defaults: { _controller: LearningBundle:App:listPosts }
+
+app_learning_post_show:
+    path:     /post/{slug}
+    defaults: { _controller: LearningBundle:App:showPost }
+
+# Category
+app_learning_category_list:
+    path:     /category/list
+    defaults: { _controller: LearningBundle:App:listCategories }
+
+app_learning_category_show:
+    path:     /category/{id}/show
+    defaults: { _controller: LearningBundle:App:showCategory }
+
+# Archive
+app_learning_archive_list:
+    path:     /archive/list
+    defaults: { _controller: LearningBundle:App:listArchives }
+
+app_learning_archive_show:
+    path:     /archive/{id}/show
+    defaults: { _controller: LearningBundle:App:showArchive }
+
+# Comment
+app_learning_comment_list:
+    path:     /post/{id}/comment/list
+    defaults: { _controller: LearningBundle:App:listComments }
+    
+app_learning_comment_create:
+    path:     /post/{id}/comment/create
+    defaults: { _controller: LearningBundle:App:createComment }
+
+app_learning_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: LearningBundle:App:updateComment }
+
+app_learning_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: LearningBundle:App:deleteComment } 
+
+app_learning_comment_vote_create:
+    path:     /comment/{id}/vote/create
+    defaults: { _controller: LearningBundle:App:createCommentVote } 
+
+app_learning_comment_vote_delete:
+    path:     /comment/vote/{id}/delete
+    defaults: { _controller: LearningBundle:App:deleteCommentVote } 

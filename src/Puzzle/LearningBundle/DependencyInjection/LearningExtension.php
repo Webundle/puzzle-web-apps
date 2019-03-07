@@ -25,12 +25,5 @@ class LearningExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('parameters.yml');
-        
-//         $container->setParameter('learning.navigation.title', $config['navigation']['title']);
-//         $container->setParameter('learning.navigation.icon', $config['navigation']['icon']);
-//         $container->setParameter('learning.navigation.description', $config['navigation']['description']);
-//         $container->setParameter('learning.navigation.enable', $config['navigation']['enable']);
-//         $container->setParameter('learning.navigation.dependencies', $config['navigation']['dependencies']);
-//         $container->setParameter('learning.navigation.admin_menu', $config['navigation']['admin_menu']);
     }
 }

@@ -20,21 +20,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('learning');
 		
-//         $rootNode
-// 	        ->children()
-// 	           ->arrayNode('navigation')
-// 	               ->children()
-//     	               ->scalarNode('title')->defaultValue('Learning')->end()
-//     	               ->scalarNode('icon')->defaultValue('mic')->end()
-//     	               ->scalarNode('description')->defaultValue('Learning')->end()
-//     	               ->booleanNode('enable')->defaultfalse()->end()
-//     	               ->scalarNode('dependencies')->defaultValue('user,media')->end()
-//     	               ->scalarNode('admin_menu')->defaultValue("LearningBundle::admin_menu.html.twig")->end()
-// 	               ->end()
-// 	           ->end()
-// 	        ->end()
-//         ;
-        
         return $treeBuilder;
     }
 }

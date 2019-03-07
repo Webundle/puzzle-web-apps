@@ -6,7 +6,6 @@ use Puzzle\LearningBundle\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,26 +20,18 @@ class AbstractCategoryType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'translation_domain' => 'messages',
-                'label' => 'learning.property.post.name',
-                'label_attr' => ['class' => 'uk-form-label'],
-                'attr' => ['class' => 'md-input slugglable'],
+                'label' => 'learning.post.name'
             ])
             ->add('description', TextareaType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'learning.property.post.description',
-                'attr' => ['class' => 'md-input'],
+                'label' => 'learning.post.description',
                 'required' => false
             ))
             ->add('picture', HiddenType::class, array(
                 'translation_domain' => 'messages',
-                'label' => 'learning.property.category.picture',
+                'label' => 'learning.category.picture',
                 'required' => false,
                 'mapped' => false
-            ))
-            ->add('save', SubmitType::class, array(
-                'translation_domain' => 'messages',
-                'label' => 'button.save',
-                'attr' => ['class' => "md-fab md-fab-accent"]
             ))
         ;
     }

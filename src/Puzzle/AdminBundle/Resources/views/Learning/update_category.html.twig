@@ -1,0 +1,20 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Learning:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "learning.category.update"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+    <a href=" {{ url('admin_learning_category_list') }} ">
+       {{ 'learning.category.list'|trans|capitalize }}
+    </a>
+	<i class="fa fa-chevron-right"></i>
+	<em>{{ "learning.category.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Learning:form_category.html.twig' with { 'form': form, 'category': category } %}
+    </div>
+{% endblock %}

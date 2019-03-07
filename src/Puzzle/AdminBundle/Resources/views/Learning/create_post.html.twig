@@ -1,0 +1,20 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Learning:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "learning.post.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+	{{ parent() }}
+    <a href=" {{ url('admin_learning_post_list') }} ">
+       {{ 'learning.post.list'|trans|capitalize }}
+    </a>
+	<i class="fa fa-chevron-right"></i>
+	<em>{{ "learning.post.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Learning:form_post.html.twig' with {'form': form} %}
+    </div>
+{% endblock %}

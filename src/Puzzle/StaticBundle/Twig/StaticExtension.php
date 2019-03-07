@@ -23,10 +23,10 @@ class StaticExtension extends \Twig_Extension
     
     public function getFunctions() {
         return [
-            new \Twig_SimpleFunction('static_pages', [$this, 'getPages'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('static_page', [$this, 'getPage'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_templates', [$this, 'getTemplates'], ['needs_environment' => false, 'is_safe' => ['html']]),
-            new \Twig_SimpleFunction('newsletter_template', [$this, 'getTemplate'], ['needs_environment' => false, 'is_safe' => ['html']])
+            new \Twig_SimpleFunction('puzzle_static_pages', [$this, 'getPages'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_static_page', [$this, 'getPage'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_static_templates', [$this, 'getTemplates'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_static_template', [$this, 'getTemplate'], ['needs_environment' => false, 'is_safe' => ['html']])
         ];
     }
     

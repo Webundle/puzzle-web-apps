@@ -1,0 +1,58 @@
+# Admin
+admin_learning_category_list:
+    path:     /category/list
+    defaults: { _controller: 'LearningBundle:Admin:listCategories' }
+
+admin_learning_category_create:
+    path:     /category/create
+    defaults: { _controller: 'LearningBundle:Admin:createCategory' }
+
+admin_learning_category_show:
+    path:     /category/{id}
+    defaults: { _controller: 'LearningBundle:Admin:showCategory' }
+
+admin_learning_category_update:
+    path:     /category/{id}/update
+    defaults: { _controller: 'LearningBundle:Admin:updateCategory' }
+    
+admin_learning_category_delete:
+    path:     /category/{id}/delete
+    defaults: { _controller: 'LearningBundle:Admin:deleteCategory' }
+
+# Admin
+admin_learning_post_list:
+    path:     /post/list
+    defaults: { _controller: 'LearningBundle:Admin:listPosts' }
+
+admin_learning_post_create:
+    path:     /post/create
+    defaults: { _controller: 'LearningBundle:Admin:createPost' }
+    
+admin_learning_post_update:
+    path:     /post/{id}/update
+    defaults: { _controller: 'LearningBundle:Admin:updatePost' }
+
+admin_learning_post_delete:
+    path:     /post/{id}/delete
+    defaults: { _controller: 'LearningBundle:Admin:deletePost' }
+
+# Admin
+admin_learning_comment_list:
+    path:     /comment/list
+    defaults: { _controller: 'LearningBundle:Admin:listComments' }
+
+admin_learning_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: 'LearningBundle:Admin:updateComment' }
+    
+admin_learning_comment_approve:
+    path:     /comment/{id}/approve
+    defaults: { _controller: 'LearningBundle:Admin:approveComment' }
+    
+admin_learning_comment_disapprove:
+    path:     /comment/{id}/disapprove
+    defaults: { _controller: 'LearningBundle:Admin:disapproveComment' }
+
+admin_learning_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: 'LearningBundle:Admin:deleteComment' }

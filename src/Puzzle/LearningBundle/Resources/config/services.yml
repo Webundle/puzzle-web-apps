@@ -1,20 +1,10 @@
 services:
-    learning.category_listener:
-        class: Puzzle\LearningBundle\Listener\CategoryListener
-        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager"]
-        tags:
-            - { name: kernel.event_listener, event: "create_category", method: onAddPicture }
-            - { name: kernel.event_listener, event: "update_category", method: onAddPicture }
-            - { name: kernel.event_listener, event: "remove_category", method: onRemove }
-
     learning.post_listener:
         class: Puzzle\LearningBundle\Listener\PostListener
-        arguments: [ "@doctrine.orm.entity_manager", "@media.file_manager"]
+        arguments: [ "@doctrine.orm.entity_manager" ]
         public: false
         tags:
-            - { name: kernel.event_listener, event: "create_post", method: onAddFile }
-            - { name: kernel.event_listener, event: "update_post", method: onAddFile }
-            - { name: kernel.event_listener, event: "remove_post", method: onRemove }
+            - { name: kernel.event_listener, event: "learning.post.create", method: onCreate }
 
     learning.twig.extension:
         class: Puzzle\LearningBundle\Twig\LearningExtension

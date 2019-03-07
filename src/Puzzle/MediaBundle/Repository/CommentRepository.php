@@ -1,6 +1,6 @@
 <?php
 
-namespace Puzzle\LearningBundle\Repository;
+namespace Puzzle\MediaBundle\Repository;
 
 use Puzzle\AdminBundle\Repository\PuzzleRepository;
 
