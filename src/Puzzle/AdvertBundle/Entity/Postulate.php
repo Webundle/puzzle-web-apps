@@ -37,6 +37,18 @@ class Postulate
     private $confirmedAt;
     
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $file;
+    
+    /**
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var string
+     */
+    private $description;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Puzzle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -62,6 +74,24 @@ class Postulate
     
     public function isConfirmed() :? bool {
         return $this->confirmed;
+    }
+    
+    public function setFile($file) {
+        $this->file = $file;
+        return $this;
+    }
+    
+    public function getFile() {
+        return $this->file;
+    }
+    
+    public function setDescription($description) {
+        $this->description = $description;
+        return $this;
+    }
+    
+    public function getDescription() {
+        return $this->description;
     }
     
     public function setUser(User $user) : self {

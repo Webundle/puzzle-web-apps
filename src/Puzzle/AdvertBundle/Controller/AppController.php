@@ -82,22 +82,40 @@ class AppController extends Controller
     /**
      * Create postulate
      */
-    public function createPostulateAction(Request $request, $id) {
+    public function createPostulateAction(Request $request, $id)
+    {
         $em = $this->get('doctrine.orm.entity_manager');
         $post = $em->find(Post::class, $id);
         $user = $this->getUser();
         
         if (! $postulate = $em->getRepository(Postulate::class)->findOneBy(['post' => $id, 'user' => $user->getId()])) {
+            $data = $request->request->all();
+            $file = null;
+            
+            if (count($_FILES) > 0) {
+                $folder = $this->get('media.file_manager')->createFolder($data['context'], $user);
+                $media = $this->get('media.upload_manager')->prepareUpload($_FILES, $folder, $user);
+                $file = $media[0]->getPath();
+            }
+        
             $postulate = new Postulate();
             $postulate->setUser($user);
             $postulate->setPost($post);
+            $postulate->setFile($file);
+            $postulate->setDescription($data['description']);
             
             $em->persist($postulate);
             $em->flush();
             
-            return new JsonResponse(null, 204);
+            if ($request->isXmlHttpRequest() === true) {
+                return new JsonResponse(null, 204);
+            }
+            
+            $this->addFlash('success', $this->get('translator')->trans('app.advert.postulate.created', ['%postName%' => $post->getName()], 'app'));
+            return $this->redirectToRoute('app_advert_post_show', ['id' => $id]);
         }
         
-        return new JsonResponse(null, 304);
+        $this->addFlash('success', $this->get('translator')->trans('app.advert.postulate.duplicated', ['%postName%' => $post->getName()], 'app'));
+        return $this->redirectToRoute('app_advert_post_show', ['id' => $id]);
     }
 }

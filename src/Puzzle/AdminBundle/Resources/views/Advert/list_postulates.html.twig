@@ -72,11 +72,19 @@
                                     <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
                                         <ul class="uk-nav uk-nav-dropdown">
                                             <li>
-                                                <a href="{{ url('admin_advert_postulate_confirm', {'id': postulate.id}) }}">
+                                                <a href="{{ url('admin_advert_post_update', {'id': postulate.id}) }}">
                                                     <i class="fa fa-pencil"></i>
                                                     {{ "advert.postulate.confirm"|trans }}
                                                 </a>
                                             </li>
+                                            {% if postulate.file is not empty %}
+                                                <li>
+                                                    <a href="{{ postulate.file }}" target="blank">
+                                                        <i class="fa fa-file-text"></i>
+                                                        {{ "advert.postulate.file"|trans }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
                                             <li>
                                                 <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_postulate_delete', {'id': postulate.id}) }}" data-text="{{ 'advert.postulate.delete'|trans({'%postName%': post.name}) }}" data-label="{{ postulate.name }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
