@@ -1,5 +1,11 @@
 services:
-  # Twig extension
+    # Listeners
+    cntact.listener:
+        class: Puzzle\ContactBundle\Listener\ContactListener
+        arguments: [ '@doctrine.orm.entity_manager', '@router', '@mailer', '@twig', '@translator', '%app%' ]
+        tags:
+            - { name: kernel.event_listener, event: "contact.create_contact", method: onCreated }
+    # Twig extension
     contact.twig.extension:
         class: Puzzle\ContactBundle\Twig\ContactExtension
         arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]

@@ -80,13 +80,14 @@ class Contact
     private $requests ;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Group", inversedBy="contacts")
-     * @ORM\JoinTable(name="contact_groups",
-     *      joinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="Group", mappedBy="contacts")
      */
     private $groups;
+    
+    
+    public function __construct() {
+        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+    }
     
     public function setEmail($email) : self {
         $this->email = $email;

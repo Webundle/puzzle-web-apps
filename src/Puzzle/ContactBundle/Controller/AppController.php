@@ -7,6 +7,9 @@ use Puzzle\ContactBundle\Entity\Group;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Puzzle\ContactBundle\ContactEvents;
+use Puzzle\ContactBundle\Event\ContactEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class AppController extends Controller
 {
@@ -20,7 +23,7 @@ class AppController extends Controller
         $data = $requestHttp->request->all();
         $em = $this->getDoctrine()->getManager();
         
-        if (! $contact = $em->getRepository(Contact::class)->findOneBy(['email' => $data['email']])){
+        if (! $contact = $em->getRepository(Contact::class)->findOneBy(['email' => $data['email']])) {
             $contact = new Contact(); 
             $em->persist($contact);
             
@@ -59,32 +62,11 @@ class AppController extends Controller
             }
         }
         
-        // Contact Request
-        if (isset($data['subject']) && $data['subject'] && isset($data['message']) && $data['message']) {
-            $request = new \Puzzle\ContactBundle\Entity\Request();
-            $request->setSubject($data['subject']);
-            $request->setMessage($data['message']);
-            $request->setContact($contact);
-            
-            $em->persist($request);
-        }
-        
-        // Contact Group
-        if (! empty($data['group'])) {
-            $group = $em->getRepository(Group::class)->find($data['group']);
-            
-            if ($group === null) {
-                $group = new Group();
-                $group->setName($data['group']);
-                $group->setDescription($data['group']);
-                
-                $em->persist($group);
-            }
-            
-            $group->addContact($contact);
-        }
-        
         $em->flush();
+        
+        /** @var EventDispatcher $dispatcher */
+        $dispatcher = $this->get('event_dispatcher');
+        $dispatcher->dispacth(ContactEvents::CREATE_CONTACT, new ContactEvent($contact, $data));
         
         if ($requestHttp->isXmlHttpRequest() === true){
             return new JsonResponse($this->get('translator')->trans('contact.request.success', [], 'messages'));

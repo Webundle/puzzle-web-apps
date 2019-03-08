@@ -47,9 +47,12 @@ class Group implements NodeInterface
      */
     private $parentNode;
     
-    
     /**
-     * @ORM\ManyToMany(targetEntity="Contact", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="Contact", inversedBy="groups")
+     * @ORM\JoinTable(name="contact_groups",
+     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="contact_id", referencedColumnName="id")}
+     * )
      */
     private $contacts;
     
