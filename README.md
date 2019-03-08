@@ -417,6 +417,7 @@ admin:
         email: 'johndoe@exemple.ci' # Customize with your own admin email
     time_format: "H:i" # customize time format
     date_format: "d-m-Y" # customize date format
+    modules_available: 'admin'
     navigation:
         nodes:
             dashboard:
@@ -497,6 +498,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+        modules_available: '..,user'
     navigation:
         nodes:
             ...
@@ -509,21 +511,21 @@ admin:
                 attr:
                     class: 'fa fa-users'
                 parent: ~
-                user_roles: ['ROLE_ADMIN']
+                user_roles: ['ROLE_ACCOUNT']
             user_list:
                 label: 'user.account.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_user_list'
                 sub_paths: ['admin_user_create', 'admin_user_update', 'admin_user_show']
                 parent: user
-                user_roles: ['ROLE_ADMIN']
+                user_roles: ['ROLE_ACCOUNT']
             user_group:
                 label: 'user.group.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_user_group_list'
                 sub_paths: ['admin_user_group_create', 'admin_user_group_update', 'admin_user_group_show']
                 parent: user
-                user_roles: ['ROLE_ADMIN']
+                user_roles: ['ROLE_ACCOUNT']
 
 # Puzzle User configuration
 user:
@@ -531,6 +533,24 @@ user:
         confirmation_link: true # Send confirmation url to enable account manually
         redirect_uri: '' # redirect uri after registration
         address: 'johndoe@exemple.ci' # registration address
+```
+### 
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # User
+        ROLE_ACCOUNT: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_ACCOUNT]
+        ...
+    access_control:
+        ...
+        # User
+        - {path: ^%admin_prefix%user, host: "%admin_host%", roles: ROLE_ACCOUNT }
+
 ```
 
 ---
@@ -580,6 +600,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: 'media'
     navigation:
         nodes:
             ...
@@ -592,14 +613,14 @@ admin:
                 attr:
                     class: 'fa fa-cloud'
                 parent: ~
-                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+                user_roles: ['ROLE_MEDIA']
             media_file:
                 label: 'media.file.sidebar'
                 description: 'media.file.description'
                 translation_domain: 'messages'
                 path: 'admin_media_file_list'
                 parent: media
-                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+                user_roles: ['ROLE_MEDIA']
             media_folder:
                 label: 'media.folder.sidebar'
                 description: 'media.folder.description'
@@ -607,7 +628,7 @@ admin:
                 path: 'admin_media_folder_list'
                 sub_paths: ['admin_media_folder_create', 'admin_media_folder_update', 'admin_media_folder_show']
                 parent: media
-                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+                user_roles: ['ROLE_MEDIA']
 ```
 ### 
 ### **Step 4: Define base directory**
@@ -615,6 +636,24 @@ Defined media base directory by adding it in the `app/config/parameters.yml` fil
 ```yaml
 ...
 media_base_dir: '%kernel.root_dir%/../web'
+```
+
+### **Step 5: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Media
+        ROLE_MEDIA: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_MEDIA]
+        ...
+    access_control:
+        ...
+        # Media
+        - {path: ^%admin_prefix%media, host: "%admin_host%", roles: ROLE_MEDIA }
+
 ```
 
 
@@ -665,6 +704,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,blog'
     navigation:
         nodes:
             ...
@@ -676,7 +716,7 @@ admin:
                 attr:
                     class: 'fa fa-newspaper-o'
                 parent: ~
-                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
+                user_roles: ['ROLE_BLOG']
             blog_post:
                 label: 'blog.navigation.post'
                 description: 'blog.post.description'
@@ -684,7 +724,7 @@ admin:
                 path: 'admin_blog_post_list'
                 sub_paths: ['admin_blog_post_create', 'admin_blog_post_update', 'admin_blog_post_show']
                 parent: blog
-                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
+                user_roles: ['ROLE_BLOG']
             blog_category:
                 label: 'blog.navigation.category'
                 description: 'blog.category.description'
@@ -692,7 +732,7 @@ admin:
                 path: 'admin_blog_category_list'
                 sub_paths: ['admin_blog_category_create', 'admin_blog_category_update', 'admin_blog_category_show']
                 parent: blog
-                user_roles: ['ROLE_BLOG', 'ROLE_ADMIN']
+                user_roles: ['ROLE_BLOG']
                 
 # App Configuration
 app:
@@ -706,6 +746,24 @@ app:
                 path: app_blog_post_list
                 sub_paths: [app_blog_post_show]
                 parent: ~
+```
+
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Blog
+        ROLE_BLOG: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_BLOG]
+        ...
+    access_control:
+        ...
+        # Blog
+        - {path: ^%admin_prefix%blog, host: "%admin_host%", roles: ROLE_BLOG }
+
 ```
 
 
@@ -757,6 +815,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,calendar'
     navigation:
         nodes:
             ...
@@ -769,14 +828,14 @@ admin:
                 attr:
                     class: 'fa fa-calendar'
                 parent: ~
-                user_roles: ['ROLE_MEDIA', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CALENDAR']
             calendar_agenda:
                 label: 'calendar.agenda.sidebar'
                 description: 'calendar.agenda.description'
                 translation_domain: 'messages'
                 path: 'admin_calendar_agenda_list'
                 parent: calendar
-                user_roles: ['ROLE_CALENDAR', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CALENDAR']
             calendar_moment:
                 label: 'calendar.moment.sidebar'
                 description: 'calendar.moment.description'
@@ -784,11 +843,29 @@ admin:
                 path: 'admin_calendar_moment_list'
                 sub_paths: ['admin_calendar_moment_create', 'admin_calendar_moment_update', 'admin_calendar_moment_show']
                 parent: calendar
-                user_roles: ['ROLE_CALENDAR', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CALENDAR']
 ```
 
 ### **Step 4: Requirements**
 For this bundle to work, you have to install [supervisord](http://supervisord.org/installing.html)
+
+### **Step 5: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Calendar
+        ROLE_CALENDAR: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_CALENDAR]
+        ...
+    access_control:
+        ...
+        # Calendar
+        - {path: ^%admin_prefix%calendar, host: "%admin_host%", roles: ROLE_CALENDAR }
+
+```
 
 
 ---
@@ -838,6 +915,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,contact'
     navigation:
         nodes:
             ...
@@ -849,31 +927,47 @@ admin:
                 attr:
                     class: 'fa fa-book'
                 parent: ~
-                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CONTACT']
             contact_list:
                 label: 'contact.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_contact_list'
                 sub_paths: ['admin_contact_create', 'admin_contact_update']
                 parent: contact
-                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CONTACT']
             contact_group:
                 label: 'contact.group.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_contact_group_list'
                 sub_paths: ['admin_contact_group_create', 'admin_contact_group_update']
                 parent: contact
-                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CONTACT']
             contact_request:
                 label: 'contact.request.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_contact_request_list'
-                sub_paths: ['admin_contact_request_create', 'admin_contact_request_update']
+                sub_paths: ['admin_contact_request_show', 'admin_contact_request_update']
                 parent: contact
-                user_roles: ['ROLE_CONTACT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CONTACT']
 ```
 
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Contact
+        ROLE_CONTACT: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_CONTACT]
+        ...
+    access_control:
+        ...
+        # Contact
+        - {path: ^%admin_prefix%calendar, host: "%admin_host%", roles: ROLE_CONTACT }
 
+```
 
 ---
 
@@ -922,6 +1016,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,expertise'
     navigation:
         nodes:
             ...
@@ -933,65 +1028,82 @@ admin:
                 attr:
                     class: 'fa fa-suitcase'
                 parent: ~
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_service:
                 label: 'expertise.service.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_service_list'
                 sub_paths: ['admin_expertise_service_create', 'admin_expertise_service_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_feature:
                 label: 'expertise.feature.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_feature_list'
                 sub_paths: ['admin_expertise_feature_create', 'admin_expertise_feature_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_project:
                 label: 'expertise.project.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_project_list'
                 sub_paths: ['admin_expertise_project_create', 'admin_expertise_project_update', 'admin_expertise_project_update_gallery']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_staff:
                 label: 'expertise.staff.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_staff_list'
                 sub_paths: ['admin_expertise_staff_create', 'admin_expertise_staff_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_pricing:
                 label: 'expertise.pricing.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_pricing_list'
                 sub_paths: ['admin_expertise_pricing_create', 'admin_expertise_pricing_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_partner:
                 label: 'expertise.partner.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_partner_list'
                 sub_paths: ['admin_expertise_partner_create', 'admin_expertise_partner_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_testimonial:
                 label: 'expertise.testimonial.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_testimonial_list'
                 sub_paths: ['admin_expertise_testimonial_create', 'admin_expertise_testimonial_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
             expertise_faq:
                 label: 'expertise.faq.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_expertise_faq_list'
                 sub_paths: ['admin_expertise_faq_create', 'admin_expertise_faq_update']
                 parent: expertise
-                user_roles: ['ROLE_EXPERTISE', 'ROLE_ADMIN']
+                user_roles: ['ROLE_EXPERTISE']
 ```
 
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Expertise
+        ROLE_EXPERTISE: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_EXPERTISE]
+        ...
+    access_control:
+        ...
+        # Expertise
+        - {path: ^%admin_prefix%expertise, host: "%admin_host%", roles: ROLE_EXPERTISE }
+
+```
 
 ---
 
@@ -1040,6 +1152,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,newsletter'
     navigation:
         nodes:
             ...
@@ -1051,30 +1164,47 @@ admin:
                 attr:
                     class: 'fa fa-envelope-o'
                 parent: ~
-                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+                user_roles: ['ROLE_NEWSLETTER']
             newsletter_subscriber:
                 label: 'newsletter.subscriber.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_newsletter_subscriber_list'
                 sub_paths: ['admin_newsletter_subscriber_create', 'admin_newsletter_subscriber_update']
                 parent: newsletter
-                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+                user_roles: ['ROLE_NEWSLETTER']
             newsletter_group:
                 label: 'newsletter.group.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_newsletter_group_list'
                 sub_paths: ['admin_newsletter_group_create', 'admin_newsletter_group_update']
                 parent: newsletter
-                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+                user_roles: ['ROLE_NEWSLETTER']
             newsletter_template:
                 label: 'newsletter.template.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_newsletter_template_list'
                 sub_paths: ['admin_newsletter_template_create', 'admin_newsletter_template_update']
                 parent: newsletter
-                user_roles: ['ROLE_NEWSLETTER', 'ROLE_ADMIN']
+                user_roles: ['ROLE_NEWSLETTER']
 ```
 
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Newsletter
+        ROLE_NEWSLETTER: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_NEWSLETTER]
+        ...
+    access_control:
+        ...
+        # Newsletter
+        - {path: ^%admin_prefix%newsletter, host: "%admin_host%", roles: ROLE_NEWSLETTER }
+
+```
 
 ---
 
@@ -1123,6 +1253,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,static'
     navigation:
         nodes:
             ...
@@ -1135,7 +1266,7 @@ admin:
                 attr:
                     class: 'fa fa-file-text'
                 parent: ~
-                user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+                user_roles: ['ROLE_STATIC']
             static_page:
                 label: 'static.page.sidebar'
                 description: 'static.page.description'
@@ -1143,7 +1274,7 @@ admin:
                 path: 'admin_static_page_list'
                 sub_paths: ['admin_static_page_create', 'admin_static_page_update']
                 parent: static
-                user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+                user_roles: ['ROLE_STATIC']
             static_template:
                 label: 'static.template.sidebar'
                 description: 'static.template.description'
@@ -1151,9 +1282,26 @@ admin:
                 path: 'admin_static_template_list'
                 sub_paths: ['admin_static_template_create', 'admin_static_template_update']
                 parent: static
-                user_roles: ['ROLE_STATIC', 'ROLE_ADMIN']
+                user_roles: ['ROLE_STATIC']
 ```
 
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Static
+        ROLE_STATIC: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_STATIC]
+        ...
+    access_control:
+        ...
+        # Static
+        - {path: ^%admin_prefix%static, host: "%admin_host%", roles: ROLE_STATIC }
+
+```
 
 ---
 
@@ -1202,6 +1350,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,advert'
     navigation:
         nodes:
             ...
@@ -1213,7 +1362,7 @@ admin:
                 attr:
                     class: 'fa fa-newspaper-o'
                 parent: ~
-                user_roles: ['ROLE_ADVERT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_ADVERT']
             advert_post:
                 label: 'advert.navigation.post'
                 description: 'advert.post.description'
@@ -1221,7 +1370,7 @@ admin:
                 path: 'admin_advert_post_list'
                 sub_paths: ['admin_advert_post_create', 'admin_advert_post_update', 'admin_advert_post_show']
                 parent: advert
-                user_roles: ['ROLE_ADVERT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_ADVERT']
             advert_category:
                 label: 'advert.navigation.category'
                 description: 'advert.category.description'
@@ -1229,7 +1378,7 @@ admin:
                 path: 'admin_advert_category_list'
                 sub_paths: ['admin_advert_category_create', 'admin_advert_category_update', 'admin_advert_category_show']
                 parent: advert
-                user_roles: ['ROLE_ADVERT', 'ROLE_ADMIN']
+                user_roles: ['ROLE_ADVERT']
                 
 # App Configuration
 app:
@@ -1243,6 +1392,24 @@ app:
                 path: app_advert_post_list
                 sub_paths: [app_advert_post_show]
                 parent: ~
+```
+
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Advert
+        ROLE_ADVERT: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_ADVERT]
+        ...
+    access_control:
+        ...
+        # Advert
+        - {path: ^%admin_prefix%advert, host: "%admin_host%", roles: ROLE_ADVERT }
+
 ```
 
 
@@ -1293,6 +1460,7 @@ Configure admin bundle by adding it in the `app/config/config.yml` file of your 
 ```yaml
 admin:
     ...
+    modules_available: '..,charity'
     navigation:
         nodes:
             ...
@@ -1304,15 +1472,15 @@ admin:
                 attr:
                     class: 'fa fa-heart'
                 parent: ~
-                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CHARITY']
             charity_cause:
                 label: 'charity.cause.sidebar'
                 description: 'charity.cause.sidebar'
                 translation_domain: 'messages'
                 path: 'admin_charity_cause_list'
-                sub_paths: ['admin_charity_cause_create', 'admin_charity_cause_update', 'admin_charity_cause_show']
+                sub_paths: ['admin_charity_cause_create', 'admin_charity_cause_update', 'admin_charity_cause_show', 'admin_charity_donation_list', 'admin_charity_donation_create', 'admin_charity_donation_update', 'admin_charity_donation_show', 'admin_charity_donation_update_lines']
                 parent: charity
-                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CHARITY']
             charity_category:
                 label: 'charity.category.sidebar'
                 description: 'charity.category.sidebar'
@@ -1320,7 +1488,7 @@ admin:
                 path: 'admin_charity_category_list'
                 sub_paths: ['admin_charity_category_create', 'admin_charity_category_update', 'admin_charity_category_show']
                 parent: charity
-                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CHARITY']
             charity_member:
                 label: 'charity.member.sidebar'
                 description: 'charity.member.sidebar'
@@ -1328,15 +1496,15 @@ admin:
                 path: 'admin_charity_member_list'
                 sub_paths: ['admin_charity_member_create', 'admin_charity_member_update', 'admin_charity_member_show']
                 parent: charity
-                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
-            charity_donation:
-                label: 'charity.donation.sidebar'
-                description: 'charity.donation.sidebar'
+                user_roles: ['ROLE_CHARITY']
+            charity_group:
+                label: 'charity.group.sidebar'
+                description: 'charity.group.sidebar'
                 translation_domain: 'messages'
-                path: 'admin_charity_donation_list'
-                sub_paths: ['admin_charity_donation_create', 'admin_charity_donation_update', 'admin_charity_donation_show', 'admin_charity_donation_update_lines']
+                path: 'admin_charity_group_list'
+                sub_paths: ['admin_charity_group_create', 'admin_charity_group_update', 'admin_charity_group_show']
                 parent: charity
-                user_roles: ['ROLE_CHARITY', 'ROLE_ADMIN']
+                user_roles: ['ROLE_CHARITY']
                 
 # App Configuration
 app:
@@ -1350,4 +1518,132 @@ app:
                 path: app_charity_cause_list
                 sub_paths: [app_charity_cause_show]
                 parent: ~
+```
+
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Charity
+        ROLE_CHARITY: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_CHARITY]
+        ...
+    access_control:
+        ...
+        # Charity
+        - {path: ^%admin_prefix%charity, host: "%admin_host%", roles: ROLE_CHARITY }
+
+```
+
+
+---
+
+## **Learning Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\LearningBundle\LearningBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@LearningBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all learning routes by typing: `php bin/console debug:router | grep learning`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    modules_available: '..,learning'
+    navigation:
+        nodes:
+            ...
+            # Learning
+            learning:
+                label: 'learning.title'
+                description: 'learning.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-microphone'
+                parent: ~
+                user_roles: ['ROLE_LEARNING']
+            learning_post:
+                label: 'learning.post.sidebar'
+                description: 'learning.post.description'
+                translation_domain: 'messages'
+                path: 'admin_learning_post_list'
+                sub_paths: ['admin_learning_post_create', 'admin_learning_post_update', 'admin_learning_post_show']
+                parent: learning
+                user_roles: ['ROLE_LEARNING']
+            learning_category:
+                label: 'learning.category.sidebar'
+                description: 'learning.category.description'
+                translation_domain: 'messages'
+                path: 'admin_learning_category_list'
+                sub_paths: ['admin_learning_category_create', 'admin_learning_category_update', 'admin_learning_category_show']
+                parent: learning
+                user_roles: ['ROLE_LEARNING']
+                
+# App Configuration
+app:
+    ...
+    navigation:
+        nodes:
+            ...
+            learning_post:
+                label: 'app.learning.title'
+                translation_domain: 'app'
+                path: app_learning_post_list
+                sub_paths: [app_learning_post_show]
+                parent: ~
+```
+
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Learning
+        ROLE_LEARNING: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_LEARNING]
+        ...
+    access_control:
+        ...
+        # Learning
+        - {path: ^%admin_prefix%learning, host: "%admin_host%", roles: ROLE_LEARNING }
+
 ```
