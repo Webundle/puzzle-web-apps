@@ -12,7 +12,7 @@ use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
  * @author qwincy <qwincypercy@fermentuse.com>
  * 
  * @ORM\Table(name="learning_comment_vote")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Puzzle\LearningBundle\Repository\CommentVoteRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class CommentVote

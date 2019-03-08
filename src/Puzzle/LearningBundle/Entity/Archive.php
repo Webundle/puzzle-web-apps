@@ -9,7 +9,7 @@ use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
  * Archive
  *
  * @ORM\Table(name="learning_archive")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Puzzle\LearningBundle\Repository\ArchiveRepository")
  */
 class Archive
 {
