@@ -5,10 +5,12 @@
         <div class="md-card">
             <div class="md-card-content">
                 <section>
-                    <div class="parsley-row uk-margin-bottom">
-                        {{ form_label(form.user, null, {'label_attr': {'class': 'uk-form-label'}}) }}
-                        {{ form_widget(form.user, {'attr': {'data-md-selectize' : true}, 'id': 'select-user'}) }}
-                    </div>
+                    {% if member is not defined %}
+                        <div class="parsley-row uk-margin-bottom">
+                            {{ form_label(form.user, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                            {{ form_widget(form.user, {'attr': {'data-md-selectize' : true}, 'id': 'select-user'}) }}
+                        </div>
+                    {% endif %}
                     <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
                         <div class="parsley-row">
                             <div class="uk-input-group">

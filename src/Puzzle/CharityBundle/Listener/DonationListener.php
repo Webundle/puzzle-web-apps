@@ -4,10 +4,8 @@ namespace Puzzle\CharityBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
 use Puzzle\CharityBundle\CharityEvents;
-use Puzzle\CharityBundle\Entity\Donation;
 use Puzzle\CharityBundle\Event\DonationEvent;
 use Puzzle\NewsletterBundle\Entity\Template;
-use Puzzle\UserBundle\Event\UserEvent;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
 
