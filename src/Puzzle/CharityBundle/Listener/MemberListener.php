@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Puzzle\CharityBundle\CharityEvents;
 use Puzzle\NewsletterBundle\Entity\Template;
+use Puzzle\CharityBundle\Entity\Group;
 
 /**
  * @author qwincy <qwincypercy@fermentuse.com>
@@ -111,6 +112,22 @@ class MemberListener
 	        ], 'messages');
 	        
 	        $this->sendEmail($this->registrationEmailAddress, $user->getEmail(), $subject, $body);
+	    }
+	    
+	    // Group
+	    if (! empty($data['group'])) {
+	        $group = $this->em->getRepository(Group::class)->find($data['group']);
+	        
+	        if ($group === null) {
+	            $group = new Group();
+	            $group->setName($data['group']);
+	            $group->setDescription($data['group']);
+	            
+	            $this->em->persist($group);
+	        }
+	        
+	        $group->addMember($member);
+	        $this->em->flush($group);
 	    }
 	    
 	    return;

@@ -27,6 +27,9 @@ use Puzzle\CharityBundle\Event\MemberEvent;
 use Puzzle\CharityBundle\CharityEvents;
 use Puzzle\CharityBundle\Event\DonationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Puzzle\CharityBundle\Entity\Group;
+use Puzzle\CharityBundle\Form\Type\GroupCreateType;
+use Puzzle\CharityBundle\Form\Type\GroupUpdateType;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -135,6 +138,94 @@ class AdminController extends Controller
         
         $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_charity_member_list');
+    }
+    
+    /***
+     * Show groups
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listGroupsAction(Request $request) {
+        return $this->render("AdminBundle:Charity:list_groups.html.twig", array(
+            'groups' => $this->getDoctrine()->getRepository(Group::class)->findBy([], ['name' => 'ASC']),
+        ));
+    }
+    
+    /***
+     * Create group
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createGroupAction(Request $request){
+        $group = new Group();
+        $form = $this->createForm(GroupCreateType::class, $group, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_charity_group_create')
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($group);
+            $em->flush();
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_charity_group_list');
+        }
+        
+        return $this->render("AdminBundle:Charity:create_group.html.twig", [
+            'form' => $form->createView(),
+        ]);
+    }
+    
+    /***
+     * Update group
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateGroupAction(Request $request, Group $group){
+        $form = $this->createForm(GroupUpdateType::class, $group, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('admin_charity_group_update', ['id' => $group->getId()])
+        ]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $group->getName()], 'messages'));
+            return $this->redirectToRoute('admin_charity_group_list');
+        }
+        
+        return $this->render("AdminBundle:Charity:update_group.html.twig", [
+            'group' => $group,
+            'form' => $form->createView(),
+        ]);
+    }
+    
+    
+    /**
+     * Delete a group
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteGroupAction(Request $request, Group $group) {
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $group->getName()], 'messages');
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($group);
+        $em->flush();
+        
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('admin_charity_group_list');
     }
     
     /***

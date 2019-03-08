@@ -26,10 +26,25 @@ app_charity_donation_update:
     defaults: { _controller: 'CharityBundle:App:showDonation' }
 
 # Member
-app_charity_volunteer_list:
-    path:     /volunteer/list
-    defaults: { _controller: 'CharityBundle:App:listVolunteers' }
+app_charity_member_list:
+    path:     /member/list
+    defaults: { _controller: 'CharityBundle:App:listMembers' }
 
-app_charity_volunteer_delete:
-    path:     /volunteer/{id}
-    defaults: { _controller: 'CharityBundle:App:deleteVolunteer' }
+app_charity_member_create:
+    path:     /member/create
+    defaults: { _controller: 'CharityBundle:App:createMember' }
+    methods: POST
+
+app_charity_member_show:
+    path:     /member/{id}
+    defaults: { _controller: 'CharityBundle:App:showMember' }
+
+
+# Group
+app_charity_group_list:
+    path:     /group/list
+    defaults: { _controller: 'CharityBundle:App:listGroups' }
+    
+app_charity_group_show:
+    path:     /group/{id}
+    defaults: { _controller: 'CharityBundle:App:showGroup' }

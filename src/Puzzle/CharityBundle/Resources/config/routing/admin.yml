@@ -78,3 +78,25 @@ admin_charity_member_update:
 admin_charity_member_delete:
     path:     /member/{id}/delete
     defaults: { _controller: 'CharityBundle:Admin:deleteMember' }
+
+
+# Group
+admin_charity_group_list:
+    path:     /group/list
+    defaults: { _controller: CharityBundle:Admin:listGroups }
+    
+admin_charity_group_create:
+    path:     /group/create
+    defaults: { _controller: CharityBundle:Admin:creategroup }
+
+admin_charity_group_show:
+    path:     /group/{id}/show
+    defaults: { _controller: CharityBundle:Admin:showGroup }
+    
+admin_charity_group_update:
+    path:     /group/{id}/update
+    defaults: { _controller: CharityBundle:Admin:updateGroup }
+
+admin_charity_group_delete:
+    path:     /group/{id}/delete
+    defaults: { _controller: CharityBundle:Admin:deleteGroup }

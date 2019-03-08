@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Puzzle\CharityBundle\Entity\Donation;
 use Doctrine\ORM\EntityManager;
 use Puzzle\CharityBundle\Entity\Member;
+use Puzzle\CharityBundle\Entity\Group;
+use Puzzle\CharityBundle\Event\MemberEvent;
+use Puzzle\CharityBundle\CharityEvents;
+use Puzzle\UserBundle\Entity\User;
 
 /**
  * 
@@ -33,6 +37,43 @@ class AppController extends Controller
         ));
     }
     
+    /***
+     * Create Member
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createMemberAction(Request $request){
+        $data = $request->request->all();
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $this->getUser();
+        
+        if (! $member = $em->getRepository(Member::class)->findOneBy(['email' => $user->getEmail()])) {
+            $member = new Member();
+            $member->setEmail($user->getEmail());
+            $member->setFirstName($user->getFirstName());
+            $member->setLastName($user->getLastName());
+            $member->setPhoneNumber($user->getPhoneNumber());
+            $member->setUser($user);
+            
+            $em->persist($member);
+            $em->flush();
+            
+            $this->get('event_dispatcher')->dispatch(CharityEvents::CHARITY_MEMBER_CREATED, new MemberEvent($member, [
+                'group' => $data['group'] ?? null
+            ]));
+            
+            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $member->getEmail()], 'messages'));
+            return $this->redirectToRoute('admin_charity_member_list');
+        }
+        
+        return $this->render("AdminBundle:Charity:create_member.html.twig", [
+            'form' => $form->createView()
+        ]);
+    }
+    
     /**
      * Show member
      *
@@ -44,6 +85,37 @@ class AppController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         return $this->render("AppBundle:Charity:show_member.html.twig", array(
             'cause' => $em->find(Member::class, $id)
+        ));
+    }
+    
+    /***
+     * List groups
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listGroupsAction(Request $request) {
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        return $this->render("AppBundle:Charity:list_groups.html.twig", [
+            'groups' => $em->getRepository(Group::class)->findBy([], ['name' => 'DESC'])
+        ]);
+    }
+    
+    
+    /***
+     * Show group
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showGroupAction(Request $request, $id) {
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        $group = $em->find(Group::class, $id);
+        
+        return $this->render("AppBundle:Charity:show_group.html.twig", array(
+            'group' => $group
         ));
     }
     

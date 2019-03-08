@@ -8,6 +8,7 @@ use Puzzle\CharityBundle\Entity\Category;
 use Puzzle\CharityBundle\Entity\Member;
 use Puzzle\CharityBundle\Entity\Donation;
 use Puzzle\CharityBundle\Entity\DonationLine;
+use Puzzle\CharityBundle\Entity\Group;
 
 /**
  *
@@ -39,6 +40,8 @@ class CharityExtension extends \Twig_Extension
             new \Twig_SimpleFunction('puzzle_charity_cause', [$this, 'getCause'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_charity_members', [$this, 'getMembers'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_charity_member', [$this, 'getMember'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_charity_groups', [$this, 'getGroups'], ['needs_environment' => false, 'is_safe' => ['html']]),
+            new \Twig_SimpleFunction('puzzle_charity_group', [$this, 'getGroup'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_charity_donations', [$this, 'getDonations'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_charity_donation', [$this, 'getDonation'], ['needs_environment' => false, 'is_safe' => ['html']]),
             new \Twig_SimpleFunction('puzzle_charity_donation_lines', [$this, 'getDonationLines'], ['needs_environment' => false, 'is_safe' => ['html']]),
@@ -117,5 +120,22 @@ class CharityExtension extends \Twig_Extension
     
     public function getDonationLine($id) {
         return $this->em->find(DonationLine::class, $id);
+    }
+    
+    public function getGroups(array $fields = [], array $joins =[], array $criteria = [], array $orderBy = ['name' => 'ASC'], $limit = null, int $page = 1) {
+        if (is_int($limit) === true) {
+            $query = $this->em->getRepository(Group::class)->customGetQuery($fields, $joins, $criteria, $orderBy, null, null);
+            return $this->paginator->paginate($query, $page, $limit);
+        }
+        
+        return  $this->em->getRepository(Group::class)->customFindBy($fields, $joins, $criteria, $orderBy, null, null);
+    }
+    
+    public function getGroup($id) {
+        if (!$group = $this->em->find(Group::class, $id)) {
+            $group =  $this->em->getRepository(Group::class)->findOneBy(['slug' => $id]);
+        }
+        
+        return $group;
     }
 }

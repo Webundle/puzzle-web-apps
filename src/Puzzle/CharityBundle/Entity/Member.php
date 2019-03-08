@@ -15,7 +15,7 @@ use Puzzle\UserBundle\Entity\User;
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
  *
  * @ORM\Table(name="charity_member")
- * @ORM\Entity(repositoryClass="Puzzle\ContactBundle\Repository\ContactRepository")
+ * @ORM\Entity(repositoryClass="Puzzle\CharityBundle\Repository\MemberRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Member
@@ -69,8 +69,15 @@ class Member
      */
     private $user;
     
+    /**
+     * @var array
+     * @ORM\ManyToMany(targetEntity="Group", mappedBy="members")
+     */
+    private $groups;
+    
     public function __construct() {
         $this->donations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
         $this->enabled = false;
     }
     
@@ -152,7 +159,44 @@ class Member
         return $this->donations;
     }
     
+    
+    public function setGroups (Collection $groups) :self {
+        foreach ($groups as $group) {
+            $this->addGroup($group);
+        }
+        
+        return $this;
+    }
+    
+    public function addGroup(Group $group) :self {
+        if ($this->groups->count() === 0 || $this->groups->contains($group) === false) {
+            $this->groups->add($group);
+            $group->addUser($this);
+        }
+        
+        return $this;
+    }
+    
+    public function removeGroup(Group $group) :self {
+        if ($this->groups->contains($group) === true) {
+            $this->groups->removeElement($group);
+        }
+        
+        return $this;
+    }
+    
+    public function getGroups() :?Collection {
+        return $this->groups;
+    }
+    
+    public function getFullName(int $width = null) :?string {
+        $fullName = $this->firstName ?: '';
+        $fullName .= $this->lastName && $this->firstName ? ' '.$this->lastName : ($this->lastName ?: '');
+        
+        return $width && $fullName ? mb_strimwidth($fullName, 0, $width, '...') : $fullName;
+    }
+    
     public function __toString() {
-        return trim($this->lastName. ' '. $this->firstName);
+        return $this->getFullName();
     }
 }
