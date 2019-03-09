@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Puzzle\UserBundle\Entity\User;
 
 /**
  * 
@@ -38,10 +39,12 @@ class AbstractPostType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name'
             ))
-            ->add('speaker', TextType::class, [
+            ->add('speaker', EntityType::class, array(
                 'translation_domain' => 'messages',
                 'label' => 'learning.post.speaker',
-            ])
+                'class' => User::class,
+                'choice_label' => 'fullName'
+            ))
             ->add('tags', TextType::class, array(
                 'translation_domain' => 'messages',
                 'label' => 'learning.post.tags',

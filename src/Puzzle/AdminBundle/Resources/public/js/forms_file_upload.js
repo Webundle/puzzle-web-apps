@@ -1,7 +1,8 @@
-$(function() {
-    altair_form_file_upload.init(suffix = "", modal_to_close = "");
-});
+// $(function() {
+//     altair_form_file_upload.init(suffix = "", modal_to_close = "");
+// });
 
+    console.log(type);
 var altair_form_file_upload = {
     init: function(suffix) {
         
@@ -11,23 +12,23 @@ var altair_form_file_upload = {
              suffix = '_' + $("#file_type").val();
         }
 
-        var file_upload_context = $("#file_upload_context");
-        var file_upload_select = $("#file_upload_select");
-        var file_upload_drop = $("#file_upload_drop");
-        var file_filters = $("#file_filters");
-        var progressbar = $("#file_upload_progressbar");
+        var file_upload_context = $("#file_upload_context" + suffix);
+        var file_upload_select = $("#file_upload_select" + suffix);
+        var file_upload_drop = $("#file_upload_drop" + suffix);
+        var file_filters = $("#file_filters" + suffix);
+        var progressbar = $("#file_upload_progressbar" + suffix);
         var target_container = $("#target_container" + suffix);
         var target_element = $("#target" + suffix);
         var files_to_add = $("#files_to_add" + suffix);
         var url = Routing.generate('admin_media_file_upload', {'context': file_upload_context.val()});
 
-        if(file_upload_select.attr('multiple')){
+        if (file_upload_select.attr('multiple')) {
             var data =  files_to_add.val();
         }else{
             var data =  "";
         }
         
-        var bar         = progressbar.find('.uk-progress-bar'),
+        var bar         = $('#progress_bar' + suffix),
             settings    = {
                 action: url, 
                 allow : file_filters.val(),
@@ -41,6 +42,7 @@ var altair_form_file_upload = {
                 },
                 complete: function(response,xhr) {
                     var obj = JSON.parse(response);
+
                     if (data == "") {
                         data = obj.id;
                     }else{
@@ -59,18 +61,26 @@ var altair_form_file_upload = {
                         });
                     },280);*/
 
-                    var obj = JSON.parse(response);
-                    // Show picture
-                    target_container.removeClass("uk-hidden");
-                    target_container.addClass("uk-display-block");
-                    console.log(target_element);
-                    target_element.attr('src', obj.url);
-                    $('#item-count-container').removeClass('uk-hidden');
-                    $('#item-count').html(obj.url.split(',').length);
-                    // Hide modal
-                    UIkit.modal("#choose_files_modal").hide();
+
                     // Save picture value
                     files_to_add.val(data);
+                    
+                    // Show picture
+                    var obj = JSON.parse(response);
+                    var urls = obj.url.split(',');
+
+                    // Show preview
+                    target_container.removeClass("uk-hidden");
+                    target_container.addClass("uk-display-block");
+                    target_element.attr('src', urls[0]);
+
+                    // Count elements
+                    $('#item_count_container' + suffix).removeClass('uk-hidden');
+                    $('#item_count' + suffix).html(urls.length);
+
+                    // Hide modal
+                    UIkit.modal("#choose_files_modal_" + suffix).hide();
+
                     // Reload page automatically
                     if ($("#refresh-auto").val() == 1) {
                         window.location.assign($("#refresh-url").val());
@@ -90,20 +100,23 @@ var altair_form_file_upload = {
         
         url = selection_type == "multiple-select" ? url + "&multiple_select=1" : url;
         
-        /*$("#choose_files_modal_dialog").html("<div class=\"uk-text-center uk-margin-top uk-margin-bottom\"><i class=\"fa fa-spin fa-spinner fa-fw fa-5x\"></i></div>");*/
-        $("#choose_files_modal_dialog").html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
+        $("#choose_files_modal_dialog_" + type).html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
         
         $.ajax({
             url: url,
             async: false, // Synchrone mode
             success: function(response) {
-                $("#choose_files_modal_dialog").html(data);
+                $("#choose_files_modal_dialog_" + type).html(data);
             }
         });
     },
     select_files_from_media: function(suffix = "", source = "") {
 
-        suffix = suffix == "" ? "" : suffix = '_' + suffix;
+        if (suffix != "") {
+            suffix = '_' + suffix;
+        }else {
+             suffix = '_' + $("#file_type").val();
+        }
         
         var target_container = $("#target_container" + suffix),
             target_element = $("#target" + suffix),
@@ -124,7 +137,6 @@ var altair_form_file_upload = {
         }
 
         if (paths[0] != "#") {
-
             target_element.attr('src',paths[0]);
             target_container.removeClass('uk-hidden');
             files_to_add.val(paths.join(","));
@@ -132,28 +144,26 @@ var altair_form_file_upload = {
             if($("#refresh-auto").val() == 1){
                 window.location.assign($("#refresh-url").val());
             }else{
-                UIkit.modal("#choose_files_modal").hide();
-                /*UIkit.notify({
-                    message: "<i class=\"material-icons\">&#xE86C;</i>",
-                    pos: 'bottom-center'
-                });*/
+                UIkit.modal("#choose_files_modal" + suffix).hide();
             }
         } 
     }
 };
 
 // Load media
-$("#load_media").click(function(){
-    $("#fromMedia").html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
+$(".load_media").click(function(){
+    var type = $(this).data('type');
+    
+    $("#fromMedia_" + type).html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
 
     var url = Routing.generate('admin_media_file_browse', {
-        'type': $("#file_type").val(), 
-        'context': $("#file_upload_context").val(), 
-        'multiple_select': $("#enable_mutiple_select").val(), 
+        'type': type, 
+        'context': $("#file_upload_context_" + type).val(), 
+        'multiple_select': $("#enable_mutiple_select_" + type).val(), 
         'target': 'modal'
     });
     
     $.get(url, function(response) {
-        $('#fromMedia').html(response);
+        $('#fromMedia_' + type).html(response);
     });
 });

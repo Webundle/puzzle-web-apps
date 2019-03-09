@@ -276,7 +276,7 @@ class AdminController extends Controller
                 $post->setDocument($document);
             }
             
-            $dispatcher->dispatch(LearningEvents::CREATE_POST, new PostEvent($post));
+            $dispatcher->dispatch(LearningEvents::LEARNING_POST_CREATED, new PostEvent($post));
             
             $message = $this->get('translator')->trans('success.post', [
                 '%item%' => $post->getName()
@@ -337,7 +337,7 @@ class AdminController extends Controller
                     'path' => $audio,
                     'context' => MediaUtil::extractContext(Post::class),
                     'user' => $this->getUser(),
-                    'closure' => function($filename) use ($post) {$post->getAudio($filename);}
+                    'closure' => function($filename) use ($post) {$post->setAudio($filename);}
                 ]));
             }
             
@@ -347,17 +347,17 @@ class AdminController extends Controller
                     'path' => $video,
                     'context' => MediaUtil::extractContext(Post::class),
                     'user' => $this->getUser(),
-                    'closure' => function($filename) use ($post) {$post->getVideo($filename);}
+                    'closure' => function($filename) use ($post) {$post->setVideo($filename);}
                 ]));
             }
             
             $document = $request->request->get('document') !== null ? $request->request->get('document') : $data['document'];
-            if ($post->getVideo() === null || $post->getVideo() !== $document) {
+            if ($post->getDocument() === null || $post->getDocument() !== $document) {
                 $dispatcher->dispatch(MediaEvents::COPY_FILE, new FileEvent([
                     'path' => $document,
                     'context' => MediaUtil::extractContext(Post::class),
                     'user' => $this->getUser(),
-                    'closure' => function($filename) use ($post) {$post->getVideo($filename);}
+                    'closure' => function($filename) use ($post) {$post->setDocument($filename);}
                 ]));
             }
             

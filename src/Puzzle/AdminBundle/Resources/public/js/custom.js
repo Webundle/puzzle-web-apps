@@ -82,15 +82,6 @@ $("body").on('click', '#toggle-check', function(e){
     console.log();
 });
 
-// Choose files
-$('body').on('click', '.choose_files_btn', function(){
-    var context = $(this).data('context');
-    var type = $(this).data('type');
-    var multiple = $(this).data('multiple');
-
-    altair_form_file_upload.choose_files_modal(type, context, multiple);
-})
-
 // Mutiple select or unselect
 $('body').on('click', ".toggleable-btn-select", function(e){
     e.preventDefault();
@@ -183,6 +174,24 @@ $('body').on('click', '#show_more', function(e){
         $(this).removeClass("uk-hidden");
     })
 });
+
+
+var type = 'picture';
+var files_to_add = null;
+var target_container = null;
+var target_element = null;
+var context = null;
+var multiple = false;
+
+// Choose files
+$('body').on('click', '.choose_files_btn', function(){
+    context = $(this).data('context');
+    type = $(this).data('type');
+    multiple = $(this).data('multiple');
+    // Hide modal
+    UIkit.modal("#choose_files_modal_" + type).show();
+    altair_form_file_upload.init(type, context, multiple);
+})
 
 $('body').on('click', '.remove-file', function(e) {
     var id = $(this).attr('id'),

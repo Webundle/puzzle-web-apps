@@ -17,7 +17,7 @@ class PostListener
         $this->em = $em;
     }
     
-    public function onCreate(PostEvent $event)
+    public function onCreated(PostEvent $event)
     {
         $post = $event->getPost();
         $now = new \DateTime();

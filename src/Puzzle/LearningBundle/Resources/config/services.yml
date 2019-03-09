@@ -4,7 +4,7 @@ services:
         arguments: [ "@doctrine.orm.entity_manager" ]
         public: false
         tags:
-            - { name: kernel.event_listener, event: "learning.post.create", method: onCreate }
+            - { name: kernel.event_listener, event: "learning.post.created", method: onCreated }
 
     learning.twig.extension:
         class: Puzzle\LearningBundle\Twig\LearningExtension

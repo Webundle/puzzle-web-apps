@@ -157,7 +157,7 @@ learning:
         enable_comments: 'Commentaires'
         tags: 'Etiquettes'
         visible: 'Rendre visible'
-        speaker: 'Organisateur'
+        speaker: 'Formateur'
     category:
         sidebar: 'Catégories'
         list: 'Liste des catégories'

@@ -3,7 +3,7 @@
 <div class="md-card uk-margin-bottom" id="local-{{ type }}">
     <div class="md-card-toolbar">
         <div class="md-card-toolbar-actions">
-            <a href="#choose_files_modal" data-uk-modal="{ center:false }" data-uk-tooltip="{pos:'bottom'}" title="{{ "button.add"|trans }}" alt="{{ "button.add"|trans }}" data-context="{{ context is defined ? context : 'media'}}" data-multiple="{{ multiple is defined ? true : false}}" data-type="{{ type }}">
+            <a data-uk-tooltip="{pos:'bottom'}" title="{{ "button.add"|trans }}" alt="{{ "button.add"|trans }}" data-context="{{ context is defined ? context : 'media'}}" data-multiple="{{ multiple is defined ? true : false}}" data-type="{{ type }}" class="choose_files_btn">
                 <i class="md-icon material-icons">&#xE146;</i>
             </a>
         </div>
@@ -14,13 +14,13 @@
     <div class="md-card-content uk-text-center {% if data is empty or multiple == true %}uk-hidden{% endif %}" id="target_container_{{ type }}">
         {% if data is not empty and multiple == false %}
         	{% set file = puzzle_media_file(data) %}
-        	<embed src="{{ file != null ? file.path : "" }}" class="img_large" id="target_{{ type }}"></embed>
+        	<embed src="{{ file != null ? file.path : "" }}" class="img_large" id="target_{{ type }}" alt="{{ file.name }}"></embed>
         {% else %}
         	<embed src="" class="img_large" id="target_{{ type }}"></embed>
         {% endif %}
         {{ form_widget(formData, {'id': 'files_to_add_'~type}) }}
-        <div class="uk-hidden" id="item-count-container">
-            <span id="item-count"></span> {{ 'media.file.selected'|trans }}
+        <div class="uk-hidden" id="item_count_container_{{ type }}">
+            <span id="item_count_{{ type }}"></span> {{ 'media.file.selected'|trans }}
         </div>
     </div>
 </div>
@@ -44,38 +44,39 @@
     <input id="source-{{ type }}" name="source" value="local" type="hidden"/>
 </div>
 {% endif %}
-<div class="uk-modal" id="choose_files_modal">
-    <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog">
+<div class="uk-modal" id="choose_files_modal_{{ type }}">
+    <div class="uk-modal-dialog uk-modal-dialog-large" id="choose_files_modal_dialog_{{ type }}">
         <button type="button" class="uk-modal-close uk-close"></button>
         <div class="uk-margin-medium-bottom">
             <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-1-1">
-                    <ul class="uk-tab" data-uk-tab="{connect:'#tabs_1'}">
+                    <ul class="uk-tab" data-uk-tab="{connect:'#tabs_1_{{ type }}'}">
                         <li class="uk-active"><a href="#">{{ 'media.file.from_computer'|trans }}</a></li>
-                        <li><a href="#" id="load_media">{{ 'media.file.from_media'|trans }}</a></li>
+                        <li><a href="#" class="load_media" data-type="{{ type }}">{{ 'media.file.from_media'|trans }}</a></li>
                     </ul>
                     
-                    <ul id="tabs_1" class="uk-switcher uk-margin">
-                        <li id="fromLocal">
+                    <ul id="tabs_1_{{ type }}" class="uk-switcher uk-margin">
+                        <li id="fromLocal_{{ type }}">
                             <div class="uk-width-large-1-1">
-                                <div id="file_upload_drop" class="uk-file-upload">
+                                <div id="file_upload_drop_{{ type }}" class="uk-file-upload">
                                     <p class="uk-text">{{ 'media.file.drag_and_drop'|trans|upper }}</p>
                                     <p class="uk-text-muted uk-text-small uk-margin-small-bottom">{{ 'media.file.or'|trans|upper }}</p>
-                                    <a class="uk-form-file md-btn md-btn-flat md-btn-flat-primary" id="file_upload_label">{{ 'media.file.choose'|trans|upper }}<input id="file_upload_select" type="file" {% if multiple == 1 %}multiple{% endif %} accept="{{ accept }}"></a>
-                                    <input type="hidden" id="enable_mutiple_select" value="{{ multiple|default(false) }}">
-                                    <input type="hidden" id="file_filters" value="{{ filters }}">
-                                    <input type="hidden" id="file_upload_context" value="{{ context }}">
+                                    <a class="uk-form-file md-btn md-btn-flat md-btn-flat-primary" id="file_upload_label">{{ 'media.file.choose'|trans|upper }}<input id="file_upload_select_{{ type }}" type="file" {% if multiple == 1 %}multiple{% endif %} accept="{{ accept }}"></a>
+                                    <input type="hidden" id="enable_mutiple_select_{{ type }}" value="{{ multiple|default(false) }}">
+                                    <input type="hidden" id="file_filters_{{ type }}" value="{{ filters }}">
+                                    <input type="hidden" id="file_upload_context_{{ type }}" value="{{ context }}">
                                     <input type="hidden" id="file_type" value="{{ type }}">
                                 </div>
-                                <div id="file_upload_progressbar" class="uk-progress uk-hidden">
-                                    <div class="uk-progress-bar" style="width:0">0%</div>
+                                <div id="file_upload_progressbar_{{ type }}" class="uk-progress uk-hidden">
+                                    <div class="uk-progress-bar" style="width:0" id="progress_bar_{{ type }}">0%</div>
                                 </div>
                             </div>
                         </li>
-                        <li id="fromMedia"></li>
+                        <li id="fromMedia_{{ type }}"></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

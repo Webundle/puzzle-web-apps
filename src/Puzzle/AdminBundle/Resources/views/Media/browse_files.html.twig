@@ -8,7 +8,7 @@
                     <input type="checkbox" data-md-icheck class="md-check"/>
                     {{ 'select_all'|trans }}
                 </a> #}
-                <a href="#" class="md-btn md-btn-flat md-btn-flat-primary selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}">
+                <a href="#" class="md-btn md-btn-flat md-btn-flat-primary selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}" data-type="{{ type }}">
                     {{ 'media.file.choose'|trans}}
                 </a>
             </div>
@@ -19,9 +19,9 @@
                     <div>
                         <div class="md-card md-card-hover">
                             <div class="gallery_grid_picture md-card-content" id="grid_picture_{{file.id}}">
-                                <a href="{{ file.path }}" class="selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}">
+                                <a href="{{ file.path }}" class="selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}" data-type="{{ type }}">
                                     {% if file.picture is not empty %}
-                                        <img src="{{ file.path }}" id="item_{{ file.id }}">
+                                        <img src="{{ file.path }}" id="item_{{ file.id }}"> 
                                     {% elseif file.audio is not empty %}
                                         <audio src="{{ file.path }}" controls id="item_{{ file.id }}" style="width:100%"></audio>
                                     {% elseif file.video is not empty %}
@@ -31,17 +31,19 @@
                                     {% endif %}
                                 </a>
                                 <div class="gallery_grid_image_caption" style="height:40px">
-                                    {% if enableMultipleSelect == 1 %}
-                                        <div class="gallery_grid_image_menu" data-uk-dropdown="{pos:'top-right'}">
-                                            <span class="uk-text-muted uk-text-small uk-text-left">
-                                                <input type="checkbox" id="{{ file.id }}" data-md-icheck class="md-check"/> 
-                                            </span>
-                                    </div>
-                                    {% endif %}
-                                    <span class="gallery_image_title uk-text-truncate">{{ file.name }}</span>
-                                    <span class="uk-text-muted uk-text-small">
-                                        {{ file.createdAt|date('d-M-y') }} {{ file.sizeConvert }}
-                                    </span>
+                                    <a href="{{ file.path }}" class="selector_files_from_media {% if enableMultipleSelect == 1 %}multiple-select{% endif %}" data-type="{{ type }}">
+                                        {% if enableMultipleSelect == 1 %}
+                                            <div class="gallery_grid_image_menu" data-uk-dropdown="{pos:'top-right'}">
+                                                <span class="uk-text-muted uk-text-small uk-text-left">
+                                                    <input type="checkbox" id="{{ file.id }}" data-md-icheck class="md-check"/> 
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                        <span class="gallery_image_title uk-text-truncate">{{ file.name }}</span>
+                                        <span class="uk-text-muted uk-text-small">
+                                            {{ file.createdAt|date('d-M-y') }} {{ file.sizeConvert }}
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -67,12 +69,14 @@
     // Select files
     $(".selector_files_from_media").click(function(e){
         e.preventDefault();
-        if($(this).hasClass("multiple-select")){
-            altair_form_file_upload.select_files_from_media($("#file_type").val());
+        var type = $(this).data('type');
+
+        if ($(this).hasClass("multiple-select")) {
+            altair_form_file_upload.select_files_from_media(type);
         }else{
-            altair_form_file_upload.select_files_from_media($("#file_type").val(), $(this).attr("href"));
+            altair_form_file_upload.select_files_from_media(type, $(this).attr("href"));
         }
     });
     
-    altair_form_file_upload.init($("#file_type").val());
+    altair_form_file_upload.init(type);
 </script>

@@ -74,8 +74,8 @@ class Post
     private $category;
     
     /**
-     *  @var string
-     * @ORM\Column(name="speaker", type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Puzzle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
      */
     private $speaker;
     
@@ -169,12 +169,12 @@ class Post
         return $this->getName();
     }
 
-    public function setSpeaker(string  $speaker) : self {
+    public function setSpeaker(User  $speaker) : self {
         $this->speaker = $speaker;
         return $this;
     }
 
-    public function getSpeaker() :? string {
+    public function getSpeaker() :? User {
         return $this->speaker;
     }
 
