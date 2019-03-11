@@ -86,7 +86,7 @@
                                                 </li>
                                             {% endif %}
                                             <li>
-                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_postulate_delete', {'id': postulate.id}) }}" data-text="{{ 'advert.postulate.delete'|trans({'%postName%': post.name}) }}" data-label="{{ postulate.name }}" class="remove-item">
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_advert_postulate_delete', {'id': postulate.id}) }}" data-text="{{ 'advert.postulate.delete'|trans({'%postulateUser%': postulate.user}) }}" data-label="{{ postulate.user }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
                                                     {{ "button.remove"|trans }}
                                                 </a>
