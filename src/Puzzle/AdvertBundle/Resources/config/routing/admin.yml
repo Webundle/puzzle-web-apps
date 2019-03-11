@@ -62,10 +62,10 @@ admin_advert_postulate_list:
     path:     /post/{id}/postulate/list
     defaults: { _controller: 'AdvertBundle:Admin:listPostulates' }
 
-admin_advert_post_update:
+admin_advert_postulate_update:
     path:     /postulate/{id}/confirm
     defaults: { _controller: 'AdvertBundle:Admin:confirmPostulate' }
 
-admin_advert_post_delete:
+admin_advert_postulate_delete:
     path:     /postulate/{id}/delete
     defaults: { _controller: 'AdvertBundle:Admin:deletePostulate' }
