@@ -2,7 +2,6 @@
 //     altair_form_file_upload.init(suffix = "", modal_to_close = "");
 // });
 
-    console.log(type);
 var altair_form_file_upload = {
     init: function(suffix) {
         
@@ -11,7 +10,7 @@ var altair_form_file_upload = {
         }else {
              suffix = '_' + $("#file_type").val();
         }
-
+        
         var file_upload_context = $("#file_upload_context" + suffix);
         var file_upload_select = $("#file_upload_select" + suffix);
         var file_upload_drop = $("#file_upload_drop" + suffix);
@@ -79,7 +78,7 @@ var altair_form_file_upload = {
                     $('#item_count' + suffix).html(urls.length);
 
                     // Hide modal
-                    UIkit.modal("#choose_files_modal_" + suffix).hide();
+                    UIkit.modal("#choose_files_modal" + suffix).hide();
 
                     // Reload page automatically
                     if ($("#refresh-auto").val() == 1) {
@@ -91,7 +90,7 @@ var altair_form_file_upload = {
         var select = UIkit.uploadSelect(file_upload_select, settings),
             drop   = UIkit.uploadDrop(file_upload_drop, settings);
     },
-    choose_files_modal: function (type = "file", context = "media", selection_type = "") {
+    choose_file_modal: function (type = "file", context = "media", selection_type = "") {
         var url = Routing.generate('admin_media_file_list', {
             'context': context,
             'type': type,
@@ -100,13 +99,13 @@ var altair_form_file_upload = {
         
         url = selection_type == "multiple-select" ? url + "&multiple_select=1" : url;
         
-        $("#choose_files_modal_dialog_" + type).html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
+        $("#choose_file_modal_dialog_" + type).html('<div class="uk-text-center"><div class="md-preloader"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="96" width="96" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="33.5" stroke-width="4"></circle></svg></div></div>');
         
         $.ajax({
             url: url,
             async: false, // Synchrone mode
             success: function(response) {
-                $("#choose_files_modal_dialog_" + type).html(data);
+                $("#choose_file_modal_dialog_" + type).html(data);
             }
         });
     },
