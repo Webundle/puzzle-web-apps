@@ -51,6 +51,7 @@
                     <tr>
                         <th></th>
                         <th>{{ "charity.category.name"|trans }}</th>
+                        <th>{{ "charity.category.updatedAt"|trans }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -65,6 +66,7 @@
                                 <td>
                                     <a href="{{ url('admin_charity_category_update', {'id': category.id}) }}" class="show-modal">{{ category.name }}</a>
                                 </td>
+                                <td><small>{{ date_time_ago(category.updatedAt) }}</small></td>
                                 <td class="uk-text-right">
                                     <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
                                         <a><i class="fa fa-ellipsis-h"></i></a>

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 use Doctrine\Common\Collections\Collection;
 use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
+use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 
 /**
  * Group
@@ -16,7 +17,7 @@ use Knp\DoctrineBehaviors\Model\Sluggable\Sluggable;
  */
 class Group
 {
-    use PrimaryKeyTrait, Sluggable;
+    use PrimaryKeyTrait, Sluggable, Timestampable;
     
     /**
      * @var string

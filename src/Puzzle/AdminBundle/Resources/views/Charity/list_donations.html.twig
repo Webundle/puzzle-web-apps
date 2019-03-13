@@ -62,6 +62,7 @@
                     <th>{{ "charity.donation.cause"|trans }}</th>
                     <th class="uk-text-center">{{ "charity.donation.countDonationLines"|trans }}</th>
                     <th class="uk-text-center">{{ "charity.donation.amountRatio"|trans }}</th>
+                    <th>{{ "charity.donation.updatedAt"|trans }}</th>
                     {# <th class="uk-text-center">{{ "charity.donation.status"|trans }}</th> #}
                     <th></th>
                 </tr>
@@ -80,6 +81,7 @@
                             <td>{{ donation.cause.name }}</td>
                             <td class="uk-text-center">{{ donation.countDonationLines }}</td>
                             <td class="uk-text-center">{{ donation.amountRatio }}</td>
+                            <td><small>{{ date_time_ago(donation.updatedAt) }}</small></td>
                             {# <td class="uk-text-center">
                                 {% if donation.isClosable == true %}
                                     {% if donation.isClosed == true %}

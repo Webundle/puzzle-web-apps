@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Puzzle\AdminBundle\Util\DateUtil;
 
 /**
  *
@@ -63,7 +64,8 @@ class AdminExtension extends \Twig_Extension
     	    new \Twig_SimpleFunction('render_admin_navigation', [$this, 'renderNavigationBlock'], ['needs_environment' => false, 'is_safe' => ['html']]),
     	    new \Twig_SimpleFunction('render_admin_head_meta', [$this, 'renderHeadMeta'], ['needs_environment' => false, 'is_safe' => ['html']]),
     	    new \Twig_SimpleFunction('render_admin_head_title', [$this, 'renderHeadTitle'], ['needs_environment' => false, 'is_safe' => ['html']]),
-		    new \Twig_SimpleFunction('render_admin_dashboard', [$this, 'renderDashboardBlock'], ['needs_environment' => false, 'is_safe' => ['html']])
+		    new \Twig_SimpleFunction('render_admin_dashboard', [$this, 'renderDashboardBlock'], ['needs_environment' => false, 'is_safe' => ['html']]),
+		    new \Twig_SimpleFunction('date_time_ago', [$this, 'dateToTimeAgo'], ['needs_environment' => false, 'is_safe' => ['html']])
 		];
 	}
 	
@@ -218,5 +220,12 @@ class AdminExtension extends \Twig_Extension
 	    $meta = '<meta charset="UTF-8" />';
 	    
 	    return $meta;
+	}
+	
+	public function dateToTimeAgo($date) {
+	    $request = $this->requestStack->getCurrentRequest();
+	    $locale = $request->getLocale();
+	    
+	    return DateUtil::timeAgo($date, $locale);
 	}
 }

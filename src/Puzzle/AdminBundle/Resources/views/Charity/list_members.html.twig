@@ -54,6 +54,7 @@
                     <th>{{ "charity.member.email"|trans }}</th>
                     <th>{{ "charity.member.phoneNumber"|trans }}</th>
                     <th>{{ "charity.member.enabled.title"|trans }}</th>
+                    <th>{{ "charity.member.enabledAt"|trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -79,6 +80,13 @@
                                     <span class="uk-badge uk-badge-success">{{ "charity.member.enabled.activate"|trans }}</span>
                                 {% else %}
                                     <span class="uk-badge uk-badge-dark">{{ "charity.member.enabled.deactivate"|trans }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if member.enabledAt is not empty %}
+                                    <small>{{ date_time_ago(member.updatedAt) }}</small>
+                                {% else %}
+                                    -
                                 {% endif %}
                             </td>
                             <td class="uk-text-right">
