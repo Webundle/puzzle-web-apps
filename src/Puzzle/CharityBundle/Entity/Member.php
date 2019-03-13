@@ -70,14 +70,13 @@ class Member
     private $user;
     
     /**
-     * @var array
-     * @ORM\ManyToMany(targetEntity="Group", mappedBy="members")
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="members")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
-    private $groups;
+    private $group;
     
     public function __construct() {
         $this->donations = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
         $this->enabled = false;
     }
     
@@ -142,6 +141,15 @@ class Member
     public function getUser() :?User {
         return $this->user;
     }
+    
+    public function setGroup(Group $group) :self {
+        $this->group = $group;
+        return $this;
+    }
+    
+    public function getGroup() :?Group {
+        return $this->group;
+    }
   
     public function addDonation(Donation $donation) : self {
         if ($this->donations === null || $this->donations->contains($donation) === false){
@@ -157,36 +165,6 @@ class Member
     
     public function getDonations() :? Collection {
         return $this->donations;
-    }
-    
-    
-    public function setGroups (Collection $groups) :self {
-        foreach ($groups as $group) {
-            $this->addGroup($group);
-        }
-        
-        return $this;
-    }
-    
-    public function addGroup(Group $group) :self {
-        if ($this->groups->count() === 0 || $this->groups->contains($group) === false) {
-            $this->groups->add($group);
-            $group->addUser($this);
-        }
-        
-        return $this;
-    }
-    
-    public function removeGroup(Group $group) :self {
-        if ($this->groups->contains($group) === true) {
-            $this->groups->removeElement($group);
-        }
-        
-        return $this;
-    }
-    
-    public function getGroups() :?Collection {
-        return $this->groups;
     }
     
     public function getFullName(int $width = null) :?string {

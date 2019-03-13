@@ -126,7 +126,7 @@ class MemberListener
 	            $this->em->persist($group);
 	        }
 	        
-	        $group->addMember($member);
+	        $member->setGroup($group);
 	        $this->em->flush($group);
 	    }
 	    

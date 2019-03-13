@@ -31,12 +31,7 @@ class Group
     private $description;
     
     /**
-     *
-     * @ORM\ManyToMany(targetEntity="Member", inversedBy="groups")
-     * @ORM\JoinTable(name="member_groups",
-     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="member_id", referencedColumnName="id")}
-     * )
+     * @ORM\OneToMany(targetEntity="Member", mappedBy="group")
      */
     private $members;
     
@@ -75,9 +70,9 @@ class Group
     }
     
     public function addMember(Member $member) :self {
-        if ($this->members->count() === 0 || $this->members->contains($member) === false) {
+        if ($this->members == null || $this->members->contains($member) === false) {
+            $member->setGroup($this);
             $this->members->add($member);
-            $member->addGroup($this);
         }
         
         return $this;

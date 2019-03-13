@@ -69,9 +69,7 @@ class AppController extends Controller
             return $this->redirectToRoute('admin_charity_member_list');
         }
         
-        return $this->render("AdminBundle:Charity:create_member.html.twig", [
-            'form' => $form->createView()
-        ]);
+        return $this->render("AdminBundle:Charity:create_member.html.twig");
     }
     
     /**
@@ -84,7 +82,7 @@ class AppController extends Controller
         /** @var EntityManager $em */
         $em = $this->get('doctrine.orm.entity_manager');
         return $this->render("AppBundle:Charity:show_member.html.twig", array(
-            'cause' => $em->find(Member::class, $id)
+            'member' => $em->find(Member::class, $id)
         ));
     }
     

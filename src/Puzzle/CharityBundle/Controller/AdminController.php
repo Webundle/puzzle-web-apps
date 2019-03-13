@@ -167,6 +167,10 @@ class AdminController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
+            foreach ($group->getMembers() as $member) {
+                $member->setGroup($group);
+            }
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($group);
             $em->flush();
@@ -194,6 +198,10 @@ class AdminController extends Controller
         $form->handleRequest($request);
         
         if ($form->isSubmitted() === true && $form->isValid() === true) {
+            foreach ($group->getMembers() as $member) {
+                $member->setGroup($group);
+            }
+            
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
