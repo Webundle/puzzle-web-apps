@@ -1,0 +1,63 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Curriculum:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "curriculum.applicant.update"|trans|capitalize }} {{ applicant }} {% endblock %}
+
+
+{% block headingactions %}
+<div class="heading_actions">
+    <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+        <a class="uk-text-bold" href="#" data-uk-modal="{ center:true }">
+            {# {{ 'layout.actions'|trans|upper }} #}
+            <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <div class="uk-dropdown">
+            <ul class="uk-nav">
+                <li>
+                    <a href="{{ url('admin_curriculum_work_list', { 'id': applicant.id })}}">
+                        <i class="fa fa-list uk-margin-small-right"></i>
+                        {{ "curriculum.work.title"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('admin_curriculum_training_list', { 'id': applicant.id })}}">
+                        <i class="fa fa-list uk-margin-small-right"></i>
+                        {{ "curriculum.training.title"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_curriculum_applicant_delete', {'id': applicant.id}) }}" data-text="{{ 'curriculum.applicant.delete'|trans({'%applicant%': applicant})}}"  data-label="{{ applicant }}" class="remove-item">
+                        <i class="fa fa-trash-o uk-text-danger"></i>
+                        {{ "button.remove"|trans }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_curriculum_applicant_list') }} ">
+       {{ 'curriculum.applicant.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "curriculum.applicant.update"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Curriculum:form_applicant.html.twig' with {'form': form, 'applicant': applicant} %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $("#birthday").kendoDatePicker({
+           format: "dd-MM-yyyy"
+        });
+    </script>
+{% endblock %}

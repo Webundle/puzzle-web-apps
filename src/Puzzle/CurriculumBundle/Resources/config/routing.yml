@@ -1,0 +1,13 @@
+curriculum_admin:
+    resource: '@CurriculumBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%curriculum'
+    host: '%admin_host%'
+    options:
+        expose: true
+
+curriculum_app:
+    resource: '@CurriculumBundle/Resources/config/routing/app.yml'
+    prefix:   '/curriculum'
+    host: '%host%'
+    options:
+        expose: true

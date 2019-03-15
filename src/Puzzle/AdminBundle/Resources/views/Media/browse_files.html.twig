@@ -41,7 +41,7 @@
                                         {% endif %}
                                         <span class="gallery_image_title uk-text-truncate">{{ file.name }}</span>
                                         <span class="uk-text-muted uk-text-small">
-                                            {{ file.createdAt|date('d-M-y') }} {{ file.sizeConvert }}
+                                            {{ date_time_ago(file.createdAt) }} {{ file.sizeConvert }}
                                         </span>
                                     </a>
                                 </div>

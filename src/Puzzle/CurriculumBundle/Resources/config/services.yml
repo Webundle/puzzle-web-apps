@@ -1,0 +1,8 @@
+services:
+    # Twig extension
+    curriculum.twig.extension:
+        class: Puzzle\CurriculumBundle\Twig\CurriculumExtension
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
+        public: false
+        tags:
+            - { name: twig.extension }

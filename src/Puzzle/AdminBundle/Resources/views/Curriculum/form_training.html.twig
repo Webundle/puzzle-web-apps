@@ -1,0 +1,58 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'class': 'uk-form-stacked'}) }}
+     <section>
+        <div class="uk-grid uk-grid-width-medium-1-1" data-uk-grid-margin>
+            <div class="parsley-row">
+                {{ form_label(form.name, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                {{ form_widget(form.name, {'attr': {'class': 'md-input'}}) }}
+            </div>
+        </div>
+        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+            <div class="parsley-row">
+                <div class="uk-margin-small-bottom">{{ form_label(form.startedAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}</div>
+                {% if training is defined %}
+                    {{ form_widget(form.startedAt, {'attr': {'class':'datepicker'}, 'value': training.startedAt|date('d-m-Y')}) }}
+                {% else %}
+                    {{ form_widget(form.startedAt, {'attr': {'class':'datepicker'}}) }}
+                {% endif %}
+            </div>
+            <div class="parsley-row">
+                <div class="uk-margin-small-bottom">{{ form_label(form.endedAt, null, {'label_attr': {'class' : 'uk-form-label'}}) }}</div>
+                {% if training is defined %}
+                    {{ form_widget(form.endedAt, {'attr': {'class':'datepicker'}, 'value': training.endedAt|date('d-m-Y')}) }}
+                {% else %}
+                    {{ form_widget(form.endedAt, {'attr': {'class':'datepicker'}}) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+            <div class="parsley-row">
+                {{ form_label(form.school, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                {{ form_widget(form.school, {'attr': {'class': 'md-input'}}) }}
+            </div>
+            <div class="parsley-row">
+                {{ form_label(form.address, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                {{ form_widget(form.address, {'attr': {'class': 'md-input'}}) }}
+            </div>
+        </div>
+        <div class="uk-grid uk-grid-width-medium-1-1" data-uk-grid-margin>
+            <div class=" parsley-row">
+                {{ form_label(form.description, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'md-input', 'rows': 3}}) }}
+            </div>
+        </div>
+    </section>
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" class="md-btn md-btn-flat uk-modal-close">{{ "button.close"|trans }}</button>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if training is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}
+

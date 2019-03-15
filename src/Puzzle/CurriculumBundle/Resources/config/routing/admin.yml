@@ -1,0 +1,54 @@
+# Work
+admin_curriculum_work_list:
+    path:     /applicant/{id}/work/list
+    defaults: { _controller: 'CurriculumBundle:Admin:listWorks' }
+
+admin_curriculum_work_create:
+    path:     /applicant/{id}/work/create
+    defaults: { _controller: 'CurriculumBundle:Admin:createWork' }
+
+admin_curriculum_work_show:
+    path:     /work/{id}
+    defaults: { _controller: 'CurriculumBundle:Admin:showWork' }
+
+admin_curriculum_work_update:
+    path:     /work/{id}/update
+    defaults: { _controller: 'CurriculumBundle:Admin:updateWork' }
+    
+admin_curriculum_work_delete:
+    path:     /work/{id}/delete
+    defaults: { _controller: 'CurriculumBundle:Admin:deleteWork' }
+
+# Training
+admin_curriculum_training_list:
+    path:     /applicant/{id}/training/list
+    defaults: { _controller: 'CurriculumBundle:Admin:listTrainings' }
+
+admin_curriculum_training_create:
+    path:     /applicant/{id}/training/create
+    defaults: { _controller: 'CurriculumBundle:Admin:createTraining' }
+    
+admin_curriculum_training_update:
+    path:     /training/{id}/update
+    defaults: { _controller: 'CurriculumBundle:Admin:updateTraining' }
+
+admin_curriculum_training_delete:
+    path:     /training/{id}/delete
+    defaults: { _controller: 'CurriculumBundle:Admin:deleteTraining' }
+
+# Applicant
+admin_curriculum_applicant_list:
+    path:     /applicant/list
+    defaults: { _controller: 'CurriculumBundle:Admin:listApplicants' }
+
+admin_curriculum_applicant_create:
+    path:     /applicant/create
+    defaults: { _controller: 'CurriculumBundle:Admin:createApplicant' }
+    
+admin_curriculum_applicant_update:
+    path:     /applicant/{id}/update
+    defaults: { _controller: 'CurriculumBundle:Admin:updateApplicant' }
+
+admin_curriculum_applicant_delete:
+    path:     /applicant/{id}/delete
+    defaults: { _controller: 'CurriculumBundle:Admin:deleteApplicant' }

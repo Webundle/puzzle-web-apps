@@ -1,0 +1,110 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Curriculum:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "curriculum.work.list"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('admin_curriculum_work_create', {'id': applicant.id}) }}" class="show-modal">
+        <span class="uk-text-bold">{{ "button.add"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_curriculum_applicant_update', {'id': applicant.id}) }} ">
+       {{ 'curriculum.applicant.update'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "curriculum.work.list"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+<div id="page_content_inner">
+    <div class="md-card">
+        {% if works is not empty %}
+            <div class="md-card-toolbar toggle-action uk-hidden">
+                <div class="md-card-toolbar-actions">
+                    <div class="uk-button-dropdown" data-uk-dropdown="{'mode' : 'click', 'position' : 'bottom-right'}">
+                        <a class="uk-text-primary uk-text-bold">
+                            {{ 'layout.multiple_actions'|trans }}
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <div class="uk-dropdown uk-dropdown-small">
+                            <ul class="uk-nav uk-nav-dropdown">
+                                <li>
+                                    <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
+                                        <i class="fa fa-trash-o uk-text-danger"></i> 
+                                        {{ "button.remove"|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{ works|length|default('0') }}" id="toggle-items-count">
+                    <input type="hidden" value="0" id="toggle-items-checked-count">
+                </div>
+            </div>
+        {% endif %}
+        <div class="md-card-content">
+            <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ 'curriculum.work.name'|trans }}</th>
+                    <th>{{ 'curriculum.work.startedAt'|trans }}</th>
+                    <th>{{ 'curriculum.work.endedAt'|trans }}</th>
+                    <th>{{ 'curriculum.work.company'|trans }}</th>
+                    <th>{{ 'curriculum.work.address'|trans }}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for work in works %}
+                        <tr class="toggleable" id="item-{{ work.id }}">
+                            <td>
+                                <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                    <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ work.id }}">&#xE835;</i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url('admin_curriculum_work_update', {'id': work.id}) }}" class="show-modal">
+                                    {{ work.name }}
+                                </a>
+                            </td>
+                            <td><small>{{ work.startedAt|date('d-m-Y') }}</small></td>
+                            <td><small>{{ work.endedAt|date('d-m-Y') }}</small></td>
+                            <td>{{ work.company }}</td>
+                            <td>{{ work.address }}</td>
+                            <td class="uk-text-right">
+                                <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                    <a><i class="fa fa-ellipsis-h"></i></a>
+                                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
+                                        <ul class="uk-nav uk-nav-dropdown">
+                                            <li>
+                                                <a href="{{ url('admin_curriculum_work_update', { 'id': work.id }) }}" class="show-modal">
+                                                    <i class="fa fa-pencil"></i>
+                                                    {{ "button.update"|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_curriculum_work_delete', {'id': work.id}) }}" data-text="{{ 'curriculum.work.delete'|trans({'%workName%': work.name})}}" data-label="{{ work.name }}" class="remove-item">
+                                                    <i class="fa fa-trash-o uk-text-danger"></i>
+                                                    {{ "button.remove"|trans }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

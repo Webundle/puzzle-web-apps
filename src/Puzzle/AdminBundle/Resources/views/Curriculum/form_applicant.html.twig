@@ -1,0 +1,122 @@
+{% trans_default_domain 'messages' %}
+
+{{ form_start(form, {'attr':{ 'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-xLarge-7-10 uk-width-large-7-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <section>
+                        {% if applicant is not defined %}
+                            <div class="parsley-row uk-margin-bottom">
+                                {{ form_label(form.user, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.user, {'attr': {'data-md-selectize' : true}, 'id': 'select-user'}) }}
+                            </div>
+                        {% endif %}
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class="parsley-row">
+                                {{ form_label(form.lastName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.lastName, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'curriculum.applicant.blank'|trans }}</small>
+                            </div>
+                            <div class=" parsley-row">
+                                {{ form_label(form.firstName, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.firstName, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'curriculum.applicant.blank'|trans }}</small>
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                {{ form_label(form.email, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.email, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'curriculum.applicant.blank'|trans }}</small>
+                            </div>
+                            <div class="parsley-row">
+                                {{ form_label(form.phoneNumber, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.phoneNumber, {'attr': {'class': 'md-input'}}) }}
+                                <small>{{ 'curriculum.applicant.blank'|trans }}</small>
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                {{ form_label(form.website, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.website, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="parsley-row">
+                                {{ form_label(form.address, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.address, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-2" data-uk-grid-margin>
+                            <div class="parsley-row">
+                                {{ form_label(form.single, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.single, {'attr': {'class' : 'md-input'}}) }}
+                            </div>
+                            <div class="parsley-row">
+                                {{ form_label(form.childCount, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.childCount, {'attr': {'class': 'md-input'}}) }}
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-1" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                {{ form_label(form.skills, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {% if applicant is defined and applicant.skills is not empty %}
+                                    {{ form_widget(form.skills, {'attr': {'data-role' : 'materialtags'}, 'value': applicant.skills|join(',')}) }}
+                                {% else %}
+                                    {{ form_widget(form.skills, {'attr': {'data-role' : 'materialtags'}}) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-1" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                {{ form_label(form.hobbies, null, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {% if applicant is defined and applicant.hobbies is not empty %}
+                                    {{ form_widget(form.hobbies, {'attr': {'data-role' : 'materialtags'}, 'value': applicant.hobbies|join(',')}) }}
+                                {% else %}
+                                    {{ form_widget(form.hobbies, {'attr': {'data-role' : 'materialtags'}}) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="uk-grid uk-grid-width-medium-1-1" data-uk-grid-margin>
+                            <div class=" parsley-row">
+                                {{ form_label(form.biography, null, {'label_attr': {'class': 'uk-form-label'}}) }}
+                                {{ form_widget(form.biography, {'attr': {'class': 'md-input', 'rows': 5}}) }}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        <div class="uk-margin-small-bottom">{{ form_label(form.birthday, null, {'label_attr': {'class' : 'uk-form-label'}}) }}</div>
+                        {% if applicant is defined %}
+                            {{ form_widget(form.birthday, {'id':'birthday', 'value': applicant.birthday|date('d-m-Y')}) }}
+                        {% else %}
+                            {{ form_widget(form.birthday, {'id':'birthday'}) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': applicant is defined ? applicant.picture : null, 'type': 'picture', 'context': 'curriculum/applicant', 'multiple': false })) }}
+
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.file, 'data': applicant is defined ? applicant.file : null, 'type': 'document', 'context': 'curriculum/applicant', 'multiple': false })) }}
+        </div>
+    </div>
+    <div class="uk-text-center uk-margin-top">
+        <a class="md-btn md-btn-default" href="{{ url('admin_curriculum_applicant_list') }}">
+            <i class="fa fa-arrow-left"></i>
+            {{ 'button.cancel'|trans }}
+        </a>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if applicant is defined %}
+                {{ 'button.update'|trans }}
+            {% else %}
+                {{ 'button.add'|trans }}
+            {% endif %}
+            <i class="fa fa-check"></i>
+        </button>
+    </div>
+{{ form_end(form) }}

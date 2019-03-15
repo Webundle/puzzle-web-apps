@@ -1,0 +1,36 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'AdminBundle:Curriculum:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "curriculum.applicant.create"|trans|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('admin_curriculum_applicant_list') }} ">
+       {{ 'curriculum.applicant.list'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "curriculum.applicant.create"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'AdminBundle:Curriculum:form_applicant.html.twig' with {'form': form} %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('#select-user').change(function(){
+        	console.log($(this).val());
+        	if ($(this).val() != '') {
+        		$('input').removeAttr('required');
+        	}
+        });
+
+        $("#birthday").kendoDatePicker({
+           format: "dd-MM-yyyy"
+        });
+    </script>
+{% endblock %}
