@@ -1,50 +1,54 @@
-# Category
-app_charity_category_list:
-    path:     /category/list
-    defaults: { _controller: 'CharityBundle:App:listCategories' }
+# Work
+app_curriculum_work_list:
+    path:     /applicant/{id}/work/list
+    defaults: { _controller: 'CurriculumBundle:App:listWorks' }
 
-app_charity_category_show:
-    path:     /category/{id}
-    defaults: { _controller: 'CharityBundle:App:showCategory' }
+app_curriculum_work_create:
+    path:     /applicant/{id}/work/create
+    defaults: { _controller: 'CurriculumBundle:App:createWork' }
 
-# Cause
-app_charity_cause_list:
-    path:     /cause/list
-    defaults: { _controller: 'CharityBundle:App:listCauses' }
+app_curriculum_work_show:
+    path:     /work/{id}
+    defaults: { _controller: 'CurriculumBundle:App:showWork' }
+
+app_curriculum_work_update:
+    path:     /work/{id}/update
+    defaults: { _controller: 'CurriculumBundle:App:updateWork' }
     
-app_charity_cause_show:
-    path:     /cause/{id}
-    defaults: { _controller: 'CharityBundle:App:showCause' }
+app_curriculum_work_delete:
+    path:     /work/{id}/delete
+    defaults: { _controller: 'CurriculumBundle:App:deleteWork' }
 
-# Donation
-app_charity_donation_list:
-    path:     /donation/list
-    defaults: { _controller: 'CharityBundle:App:listDonations' }
+# Training
+app_curriculum_training_list:
+    path:     /applicant/{id}/training/list
+    defaults: { _controller: 'CurriculumBundle:App:listTrainings' }
 
-app_charity_donation_update:
-    path:     /donation/{id}
-    defaults: { _controller: 'CharityBundle:App:showDonation' }
-
-# Member
-app_charity_member_list:
-    path:     /member/list
-    defaults: { _controller: 'CharityBundle:App:listMembers' }
-
-app_charity_member_create:
-    path:     /member/create
-    defaults: { _controller: 'CharityBundle:App:createMember' }
-    methods: POST
-
-app_charity_member_show:
-    path:     /member/{id}
-    defaults: { _controller: 'CharityBundle:App:showMember' }
-
-
-# Group
-app_charity_group_list:
-    path:     /group/list
-    defaults: { _controller: 'CharityBundle:App:listGroups' }
+app_curriculum_training_create:
+    path:     /applicant/{id}/training/create
+    defaults: { _controller: 'CurriculumBundle:App:createTraining' }
     
-app_charity_group_show:
-    path:     /group/{id}
-    defaults: { _controller: 'CharityBundle:App:showGroup' }
+app_curriculum_training_update:
+    path:     /training/{id}/update
+    defaults: { _controller: 'CurriculumBundle:App:updateTraining' }
+
+app_curriculum_training_delete:
+    path:     /training/{id}/delete
+    defaults: { _controller: 'CurriculumBundle:App:deleteTraining' }
+
+# Applicant
+app_curriculum_applicant_list:
+    path:     /applicant/list
+    defaults: { _controller: 'CurriculumBundle:App:listApplicants' }
+
+app_curriculum_applicant_create:
+    path:     /applicant/create
+    defaults: { _controller: 'CurriculumBundle:App:createApplicant' }
+    
+app_curriculum_applicant_update:
+    path:     /applicant/{id}/update
+    defaults: { _controller: 'CurriculumBundle:App:updateApplicant' }
+
+app_curriculum_applicant_delete:
+    path:     /applicant/{id}/delete
+    defaults: { _controller: 'CurriculumBundle:App:deleteApplicant' }

@@ -1541,6 +1541,89 @@ security:
 
 ---
 
+## **Curriculum Bundle**
+
+---
+
+### **Step 1: Enable**
+Enable admin bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            new Puzzle\CurriculumBundle\CurriculumBundle(),
+        );
+
+        // ...
+    }
+
+    // ...
+}
+```
+
+### **Step 2: Register default routes**
+Register default routes by adding it in the `app/config/routing.yml` file of your project:
+```yaml
+....
+blog:
+    resource: "@CurriculumBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+See all curriculum routes by typing: `php bin/console debug:router | grep curriculum`
+
+### **Step 3: Configure**
+Configure admin bundle by adding it in the `app/config/config.yml` file of your project:
+```yaml
+admin:
+    ...
+    modules_available: '..,curriculum'
+    navigation:
+        nodes:
+            ...
+            # Curriculum
+            curriculum:
+                label: 'curriculum.title'
+                description: 'curriculum.description'
+                translation_domain: 'messages'
+                attr:
+                    class: 'fa fa-user-secret'
+                parent: ~
+                user_roles: ['ROLE_CURRICULUM']
+                path: 'admin_curriculum_applicant_list'
+                sub_paths: ['admin_curriculum_applicant_create', 'admin_curriculum_applicant_update', 'admin_curriculum_applicant_show']
+```
+
+### **Step 4: Configure role hierarchy and Admin ACL**
+Configure security by adding it in the `app/config/security.yml` file of your project:
+```yaml
+security:
+    ...
+    role_hierarchy:
+        ...
+        # Curriculum
+        ROLE_CURRICULUM: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [..,ROLE_CURRICULUM]
+        ...
+    access_control:
+        ...
+        # Learning
+        - {path: ^%admin_prefix%curriculum, host: "%admin_host%", roles: ROLE_CURRICULUM }
+
+```
+
+
+---
+
 ## **Learning Bundle**
 
 ---
