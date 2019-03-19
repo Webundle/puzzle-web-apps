@@ -37,6 +37,10 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 			
 // 			return new RedirectResponse($this->urlGenerator->generate('app_user_change_password'));
 // 		}
+
+		if ($redirectTo = $request->query->get('redirect_to')) {
+		    return new RedirectResponse($redirectTo);
+		}
 		
 		return parent::onAuthenticationSuccess($request, $token);
 	}

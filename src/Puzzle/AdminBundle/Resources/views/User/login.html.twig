@@ -27,7 +27,8 @@
                         <h2 class="heading_b uk-text-success">{{ 'user.login.title'|trans }}</h2>
 	                </div>
 
-	                <form action="{{ url('login_check') }}" method="POST">
+	                {% set redirectTo = app.request.query.get('redirect_to') %}
+                    <form action="{{ redirectTo is not empty ? url('login_check', {'redirect_to': redirectTo}) : url('login_check')}}" method="POST">
                         {% if error is not empty %}
                             <div class="uk-alert uk-alert-danger" data-uk-alert="">
                                 {{ error.message }}
