@@ -82,17 +82,6 @@ class ContactListener
 	    $contact = $event->getContact();
 	    $data = $event->getData();
 	    
-	    // Contact Request
-	    if (isset($data['subject']) && $data['subject'] && isset($data['message']) && $data['message']) {
-	        $request = new \Puzzle\ContactBundle\Entity\Request();
-	        $request->setSubject($data['subject']);
-	        $request->setMessage($data['message']);
-	        $request->setContact($contact);
-	        
-	        $this->em->persist($request);
-	        $this->em->flush($request);
-	    }
-	    
 	    // Contact Group
 	    if (! empty($data['group'])) {
 	        $group = $this->em->getRepository(Group::class)->find($data['group']);

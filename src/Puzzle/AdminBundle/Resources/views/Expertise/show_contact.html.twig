@@ -1,0 +1,23 @@
+{% trans_default_domain 'messages' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header"><h3>{{ "expertise.contact.show"|trans }}</h3></div>
+    <div class="uk-modal-body">
+	    <div class="uk-margin-small-bottom">
+	    	{{ contact.markedAsRead == false  ? 'expertise.contact.createdAt'|trans : 'expertise.contact.updatedAt'|trans }} 
+	    	{{ contact.markedAsRead == false ? contact.createdAt|date('d-m-Y H:i') : contact.updatedAt|date('d-m-Y H:i') }}, 
+	    	{{ 'expertise.contact.service'|trans|lower }} <a href="{{ url('admin_expertise_show', {'id': contact.service.id}) }}">{{ contact.service.name }}</a>
+	    </div>
+    	<div class="uk-margin-small-bottom">
+	        <p>{{ contact.subject }}</p>
+	    </div>
+	    <div class="uk-margin-small-bottom">
+	        <p>{{ contact.message }}</p>
+	    </div>
+	</div>
+	<div class="uk-modal-footer uk-text-right">
+	    <button type="button" class="md-btn uk-modal-close">
+	        {{ "button.close"|trans }}
+	    </button>
+	</div>
+</div>

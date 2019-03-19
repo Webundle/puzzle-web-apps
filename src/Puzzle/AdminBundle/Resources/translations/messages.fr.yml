@@ -437,6 +437,23 @@ expertise:
         update: 'Modifier l''offre'
         delete: 'Etes-vous sûr de vouloir supprimer l''offre <em>%pricingName%</em>'
         delete_list: 'Etes-vous sûr de vouloir supprimer la sélection d''offres'
+    contact:
+        sidebar: 'Contacts'
+        subject: 'Sujet'
+        message: 'Message'
+        firstName: 'Nom'
+        lastName: 'Prénoms'
+        fullName: 'Nom & Prénoms'
+        markAsRead: 'Marquer comme lu'
+        service: 'Service'
+        createdAt: 'Envoyé le'
+        updatedAt: 'Mis à jour le'
+        list: 'Liste des contacts'
+        show: 'Détails du contact'
+        mark: 'Marquer lu'
+        delete: 'Etes-vous sûr de vouloir supprimer le contact <em>%contactSubject%</em>'
+        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de contacts'
+        success: 'Votre requête a été envoyée avec succès.'
 
 #Contact
 contact:
@@ -479,21 +496,6 @@ contact:
         update: 'Modifier le groupe'
         delete: 'Etes-vous sûr de vouloir supprimer le groupe <em>%groupName%</em>'
         delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
-    request:
-        sidebar: 'Requêtes'
-        subject: 'Sujet'
-        message: 'Message'
-        markAsRead: 'Marquer comme lu'
-        contact: 'Par'
-        createdAt: 'Envoyé le'
-        updatedAt: 'Mis à jour le'
-        list: 'Liste des requêtes'
-        show: 'Détails de la requête'
-        mark: 'Marquer lu'
-        delete: 'Etes-vous sûr de vouloir supprimer la requête <em>%request%</em>'
-        delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de requêtes'
-        success: 'Votre requête a été envoyée avec succès.'
-
 
 # Static
 static:

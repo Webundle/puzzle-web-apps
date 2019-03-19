@@ -47,18 +47,4 @@ admin_contact_group_update:
 admin_contact_group_delete:
     path:     /group/{id}/delete
     defaults: { _controller: ContactBundle:Admin:deleteGroup }
-
-# Request
-admin_contact_request_list:
-    path:     /request/list
-    defaults: { _controller: ContactBundle:Admin:listRequests }
-    
-admin_contact_request_show:
-    path:     /request/{id}/show
-    defaults: { _controller: ContactBundle:Admin:showRequest }
-
-admin_contact_request_delete:
-    path:     /request/{id}/delete
-    defaults: { _controller: ContactBundle:Admin:deleteRequest }
-
     

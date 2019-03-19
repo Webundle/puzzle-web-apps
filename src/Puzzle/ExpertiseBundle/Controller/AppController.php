@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Puzzle\ExpertiseBundle\Entity\Feature;
 use Puzzle\ExpertiseBundle\Entity\Pricing;
+use Puzzle\ExpertiseBundle\Entity\Contact;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>

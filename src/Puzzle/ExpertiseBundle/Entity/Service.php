@@ -50,10 +50,18 @@ class Service
     private $staffs;
     
     /**
+     * @ORM\OneToMany(targetEntity="Contact", mappedBy="service")
+     */
+    private $contacts ;
+    
+    
+    /**
      * Constructor
      */
     public function __construct() {
         $this->projects = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contacts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->staffs = new \Doctrine\Common\Collections\ArrayCollection();
     }
 	
     public function getSluggableFields() {
@@ -106,4 +114,33 @@ class Service
     public function getStaffs() {
         return $this->staffs;
     }
+    
+    public function setContacts (Collection $contacts) :self {
+        foreach ($contacts as $contact) {
+            $this->addContact($contact);
+        }
+        
+        return $this;
+    }
+    
+    public function addContact(Contact $contact) :self {
+        if ($this->contacts->count() === 0 || $this->contacts->contains($contact) === false) {
+            $this->contacts->add($contact);
+        }
+        
+        return $this;
+    }
+    
+    public function removeContact(Contact $contact) :self {
+        if ($this->contacts->contains($contact) === true) {
+            $this->contacts->removeElement($contact);
+        }
+        
+        return $this;
+    }
+    
+    public function getContacts() :?Collection {
+        return $this->contacts;
+    }
+    
 }

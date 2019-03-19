@@ -138,3 +138,16 @@ admin_expertise_pricing_update:
 admin_expertise_pricing_delete:
     path:    /pricing/{id}/delete
     defaults: { _controller: ExpertiseBundle:Admin:deletePricing }
+
+# Contact
+admin_expertise_contact_list:
+    path:     /contact/list
+    defaults: { _controller: ExpertiseBundle:Admin:listContacts }
+    
+admin_expertise_contact_show:
+    path:     /contact/{id}/show
+    defaults: { _controller: ExpertiseBundle:Admin:showContact }
+
+admin_expertise_contact_delete:
+    path:     /contact/{id}/delete
+    defaults: { _controller: ExpertiseBundle:Admin:deleteContact }

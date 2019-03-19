@@ -32,6 +32,8 @@ use Puzzle\ExpertiseBundle\Entity\Pricing;
 use Puzzle\ExpertiseBundle\Form\Type\PricingCreateType;
 use Puzzle\ExpertiseBundle\Form\Type\PricingUpdateType;
 use Puzzle\ExpertiseBundle\Form\Type\ProjectUpdateGalleryType;
+use Puzzle\ExpertiseBundle\Entity\Contact;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -938,5 +940,67 @@ class AdminController extends Controller
         
         $this->addFlash('success', $message);
         return $this->redirectToRoute('admin_expertise_pricing_list');
+    }
+    
+    
+    /***
+     * Show contacts
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listContactsAction(Request $request) {
+        return $this->render("AdminBundle:Expertise:list_contacts.html.twig", array(
+            'contacts' => $this->getDoctrine()->getRepository(Contact::class)->findBy([], [
+                'markAsRead' => 'ASC',
+                'createdAt' => 'DESC',
+            ]),
+        ));
+    }
+    
+    /***
+     * Show contact
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showContactAction(Request $request, $id) {
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        $contact = $em->find(Contact::class, $id);
+        
+        if ($contact) {
+            $contact->markAsRead();
+            $contact->setReadAt(new \DateTime());
+            
+            $em->flush();
+        }
+        
+        return $this->render("AdminBundle:Contact:show_contact.html.twig", array(
+            'contact' => $contact
+        ));
+    }
+    
+    /**
+     * Delete a contact
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteContactAction(Request $request, $id) {
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        $contact = $em->find(Contact::class, $id);
+        
+        $message = $this->get('translator')->trans('success.delete', ['%item%' => $contact->getSubject()], 'messages');
+        
+        $em->remove($contact);
+        $em->flush();
+        
+        if ($request->isXmlHttpRequest() === true) {
+            return new JsonResponse($message);
+        }
+        
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('admin_contact_request_list');
     }
 }

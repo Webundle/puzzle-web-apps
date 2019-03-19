@@ -942,13 +942,6 @@ admin:
                 sub_paths: ['admin_contact_group_create', 'admin_contact_group_update']
                 parent: contact
                 user_roles: ['ROLE_CONTACT']
-            contact_request:
-                label: 'contact.request.sidebar'
-                translation_domain: 'messages'
-                path: 'admin_contact_request_list'
-                sub_paths: ['admin_contact_request_show', 'admin_contact_request_update']
-                parent: contact
-                user_roles: ['ROLE_CONTACT']
 ```
 
 ### **Step 4: Configure role hierarchy and Admin ACL**
@@ -1083,6 +1076,13 @@ admin:
                 translation_domain: 'messages'
                 path: 'admin_expertise_faq_list'
                 sub_paths: ['admin_expertise_faq_create', 'admin_expertise_faq_update']
+                parent: expertise
+                user_roles: ['ROLE_EXPERTISE']
+            expertise_request:
+                label: 'expertise.contact.sidebar'
+                translation_domain: 'messages'
+                path: 'admin_expertise_contact_list'
+                sub_paths: ['admin_expertise_contact_show']
                 parent: expertise
                 user_roles: ['ROLE_EXPERTISE']
 ```

@@ -127,24 +127,30 @@ class AppController extends Controller
             
             $applicant->setBirthday(new \DateTime($data['birthday']));
             
-            $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
-            if ($applicant->getPicture() === null || $applicant->getPicture() !== $picture) {
-                $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $picture,
-                    'context' => MediaUtil::extractContext(Applicant::class),
-                    'user' => $this->getUser(),
-                    'closure' => function($filename) use ($applicant) {$applicant->setPicture($filename);}
-                ]));
+            if (! empty($_FILES['app_curriculum_applicant_create']['name']['picture'])) {
+                $picture = [
+                    'name' => $_FILES['app_curriculum_applicant_create']['name']['picture'],
+                    'type' => $_FILES['app_curriculum_applicant_create']['type']['picture'],
+                    'tmp_name' => $_FILES['app_curriculum_applicant_create']['tmp_name']['picture'],
+                    'error' => $_FILES['app_curriculum_applicant_create']['error']['picture'],
+                    'size' => $_FILES['app_curriculum_applicant_create']['size']['picture'],
+                ];
+                $folder = $this->get('media.file_manager')->createFolder($request->request->get('context') ?? 'curriculum/applicant', $this->getUser());
+                $media = $this->get('media.upload_manager')->prepareUpload([$picture], $folder, $this->getUser());
+                $applicant->setPicture($media[0]->getPath());
             }
             
-            $file = $request->request->get('file') !== null ? $request->request->get('file') : $data['file'];
-            if ($applicant->getFile() === null || $applicant->getFile() !== $file) {
-                $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $file,
-                    'context' => MediaUtil::extractContext(Applicant::class),
-                    'user' => $this->getUser(),
-                    'closure' => function($filename) use ($applicant) {$applicant->setFile($filename);}
-                ]));
+            if (! empty($_FILES['app_curriculum_applicant_create']['name']['file'])) {
+                $file = [
+                    'name' => $_FILES['app_curriculum_applicant_create']['name']['file'],
+                    'type' => $_FILES['app_curriculum_applicant_create']['type']['file'],
+                    'tmp_name' => $_FILES['app_curriculum_applicant_create']['tmp_name']['file'],
+                    'error' => $_FILES['app_curriculum_applicant_create']['error']['file'],
+                    'size' => $_FILES['app_curriculum_applicant_create']['size']['file'],
+                ];
+                $folder = $this->get('media.file_manager')->createFolder($request->request->get('context') ?? 'curriculum/applicant', $this->getUser());
+                $media = $this->get('media.upload_manager')->prepareUpload([$file], $folder, $this->getUser());
+                $applicant->setFile($media[0]->getPath());
             }
             
             $em = $this->getDoctrine()->getManager();

@@ -8,6 +8,7 @@ use Puzzle\UserBundle\Traits\PrimaryKeyTrait;
 use Knp\DoctrineBehaviors\Model\Timestampable\Timestampable;
 use Doctrine\Common\Collections\Collection;
 use Puzzle\UserBundle\Entity\User;
+use Knp\DoctrineBehaviors\Model\Blameable\Blameable;
 
 /**
  * Contact
@@ -18,7 +19,7 @@ use Puzzle\UserBundle\Entity\User;
  */
 class Contact
 {
-    use PrimaryKeyTrait, Timestampable;
+    use PrimaryKeyTrait, Timestampable, Blameable;
     
     /**
      * @var string
@@ -73,11 +74,6 @@ class Contact
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="Request", mappedBy="contact")
-     */
-    private $requests ;
     
     /**
      * @ORM\ManyToMany(targetEntity="Group", mappedBy="contacts")
@@ -196,34 +192,6 @@ class Contact
     
     public function getGroups() :?Collection {
         return $this->groups;
-    }
-    
-    public function setRequests (Collection $requests) :self {
-        foreach ($requests as $request) {
-            $this->addRequest($request);
-        }
-        
-        return $this;
-    }
-    
-    public function addRequest(Request $request) :self {
-        if ($this->requests->count() === 0 || $this->requests->contains($request) === false) {
-            $this->requests->add($request);
-        }
-        
-        return $this;
-    }
-    
-    public function removeRequest(Request $request) :self {
-        if ($this->requests->contains($request) === true) {
-            $this->requests->removeElement($request);
-        }
-        
-        return $this;
-    }
-    
-    public function getRequests() :?Collection {
-        return $this->requests;
     }
     
     public function __toString() {
