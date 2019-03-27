@@ -21,7 +21,8 @@ class UserChangePasswordType extends AbstractUserType
             ->add('currentPassword', PasswordType::class, [
                 'translation_domain' => 'app',
                 'label' => 'user.account.currentPassword',
-                'required' => true
+                'required' => true,
+                'mapped' => false
             ])
             ->remove('phoneNumber')
             ->remove('picture')
@@ -32,6 +33,7 @@ class UserChangePasswordType extends AbstractUserType
             ->remove('credentialsExpiresAt')
             ->remove('enabled')
             ->remove('locked')
+            ->remove('username')
         ;
     }
     

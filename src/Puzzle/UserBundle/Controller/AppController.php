@@ -17,12 +17,13 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security as AnnotationSecurity;
 use Symfony\Component\Security\Core\Security;
 use Puzzle\UserBundle\Util\TokenGenerator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AppController extends Controller
 {   
     /**
      * @param Request $request
-     * AnnotationSecurity("has_role('ROLE_USER')")
+     * @AnnotationSecurity("has_role('ROLE_USER')")
      */
     public function showUserProfileAction(Request $request) {
         return $this->render('AppBundle:User:show_user_profile.html.twig', ['user' => $this->getUser()]);
@@ -31,7 +32,7 @@ class AppController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * AnnotationSecurity("has_role('ROLE_USER')")
+     * @AnnotationSecurity("has_role('ROLE_USER')")
      */
     public function updateUserSettingsAction(Request $request) {
         /** @var User $currentUser */
@@ -47,6 +48,16 @@ class AppController extends Controller
             $em = $this->get('doctrine.orm.default_entity_manager');
             $em->flush();
             
+            $message = $this->get('translator')->trans('success.post', [
+                '%item%' => $user
+            ], 'messages');
+            
+            if ($request->isXmlHttpRequest() === true) {
+                return new JsonResponse($message);
+            }
+            
+            $this->addFlash('success', $message);
+            
             return $this->redirect($this->generateUrl('app_user_show_profile'));
         }
         
@@ -55,7 +66,7 @@ class AppController extends Controller
     
     /**
      * @param Request $request
-     * AnnotationSecurity("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_USER')")
+     * @AnnotationSecurity("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_USER')")
      */
     public function changeUserPasswordAction(Request $request) {
         /** @var User $currentUser */
@@ -70,27 +81,40 @@ class AppController extends Controller
         
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->all()['user_change_password'];
+            $currentPassword = $data['currentPassword'] ?? $request->request->get('currentPassword');
+            
             /** @var \Doctrine\ORM\EntityManager $em */
             $em = $this->get('doctrine.orm.default_entity_manager');
             
             // Update password
             if (isset($data['plainPassword']['first']) === true && $data['plainPassword']['first'] !== "") {
-                /** User $user */
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($currentUser, [
-                    'plainPassword' => $data['plainPassword']['first']
-                ]));
+                if ($currentPassword != $data['plainPassword']['first']) {
+                    /** User $user */
+                    $this->get('event_dispatcher')->dispatch(UserEvents::USER_PASSWORD, new UserEvent($currentUser, [
+                        'plainPassword' => $data['plainPassword']['first']
+                    ]));
+                    $currentUser->setPasswordRequestedAt(null);
+                    $currentUser->setConfirmationToken(null);
+                    $currentUser->setPasswordChanged(true);
+                    $em->flush();
+                }
             }
-            
-            $currentUser->setPasswordRequestedAt(null);
-            $currentUser->setConfirmationToken(null);
-            $currentUser->setPasswordChanged(true);
-            $em->flush();
             
             if ($uri = $request->getSession()->get('change_password.on_success.redirect_to')) {
                 $request->getSession()->remove('change_password.on_success.redirect_to');
             } else {
                 $uri = $this->generateUrl('app_user_show_profile');
             }
+            
+            $message = $this->get('translator')->trans('success.post', [
+                '%item%' => $user
+            ], 'messages');
+            
+            if ($request->isXmlHttpRequest() === true) {
+                return new JsonResponse($message);
+            }
+            
+            $this->addFlash('success', $message);
             
             return $this->redirect($uri);
         }
@@ -106,6 +130,7 @@ class AppController extends Controller
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @AnnotationSecurity("is_granted('IS_AUTHENTICATED_FULLY') and has_role('ROLE_USER')")
      */
     public function updateUserPictureAction(Request $request) {
         $user = $this->getUser();
@@ -126,7 +151,17 @@ class AppController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             
-            return $this->redirectToRoute('app_user_show_profile', ['id' => $user->getId()]);
+            $message = $this->get('translator')->trans('success.post', [
+                '%item%' => $user
+            ], 'messages');
+            
+            if ($request->isXmlHttpRequest() === true) {
+                return new JsonResponse($message);
+            }
+            
+            $this->addFlash('success', $message);
+            
+            return $this->redirectToRoute('app_user_show_profile');
         }
         
         return $this->render("AdminBundle:User:update_user_picture.html.twig", [

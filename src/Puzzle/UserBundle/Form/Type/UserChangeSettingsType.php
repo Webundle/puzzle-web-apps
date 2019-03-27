@@ -21,6 +21,7 @@ class UserChangeSettingsType extends AbstractUserType
 				->remove('credentialsExpiresAt')
 				->remove('enabled')
 				->remove('locked')
+				->remove('plainPassword')
 	    ;
 	}
 	
