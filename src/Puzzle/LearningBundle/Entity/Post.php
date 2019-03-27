@@ -74,6 +74,12 @@ class Post
     private $category;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Archive", inversedBy="posts")
+     * @ORM\JoinColumn(name="archive_id", referencedColumnName="id")
+     */
+    private $archive;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Puzzle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
      */

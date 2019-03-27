@@ -3,52 +3,24 @@ app_curriculum_work_list:
     path:     /applicant/{id}/work/list
     defaults: { _controller: 'CurriculumBundle:App:listWorks' }
 
-app_curriculum_work_create:
-    path:     /applicant/{id}/work/create
-    defaults: { _controller: 'CurriculumBundle:App:createWork' }
-
 app_curriculum_work_show:
     path:     /work/{id}
     defaults: { _controller: 'CurriculumBundle:App:showWork' }
-
-app_curriculum_work_update:
-    path:     /work/{id}/update
-    defaults: { _controller: 'CurriculumBundle:App:updateWork' }
-    
-app_curriculum_work_delete:
-    path:     /work/{id}/delete
-    defaults: { _controller: 'CurriculumBundle:App:deleteWork' }
 
 # Training
 app_curriculum_training_list:
     path:     /applicant/{id}/training/list
     defaults: { _controller: 'CurriculumBundle:App:listTrainings' }
 
-app_curriculum_training_create:
-    path:     /applicant/{id}/training/create
-    defaults: { _controller: 'CurriculumBundle:App:createTraining' }
-    
-app_curriculum_training_update:
-    path:     /training/{id}/update
-    defaults: { _controller: 'CurriculumBundle:App:updateTraining' }
-
-app_curriculum_training_delete:
-    path:     /training/{id}/delete
-    defaults: { _controller: 'CurriculumBundle:App:deleteTraining' }
+app_curriculum_training_show:
+    path:     /training/{id}
+    defaults: { _controller: 'CurriculumBundle:App:showTraining' }
 
 # Applicant
 app_curriculum_applicant_list:
     path:     /applicant/list
     defaults: { _controller: 'CurriculumBundle:App:listApplicants' }
 
-app_curriculum_applicant_create:
-    path:     /applicant/create
-    defaults: { _controller: 'CurriculumBundle:App:createApplicant' }
-    
-app_curriculum_applicant_update:
-    path:     /applicant/{id}/update
-    defaults: { _controller: 'CurriculumBundle:App:updateApplicant' }
-
-app_curriculum_applicant_delete:
-    path:     /applicant/{id}/delete
-    defaults: { _controller: 'CurriculumBundle:App:deleteApplicant' }
+app_curriculum_applicant_show:
+    path:     /applicant/{id}
+    defaults: { _controller: 'CurriculumBundle:App:showApplicant' }

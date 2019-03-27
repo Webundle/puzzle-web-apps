@@ -2,24 +2,11 @@
 namespace Puzzle\CurriculumBundle\Controller;
 
 use Puzzle\CurriculumBundle\Entity\Work;
-use Puzzle\CurriculumBundle\Form\Type\WorkCreateType;
-use Puzzle\CurriculumBundle\Form\Type\WorkUpdateType;
-use Puzzle\MediaBundle\MediaEvents;
-use Puzzle\MediaBundle\Event\FileEvent;
-use Puzzle\MediaBundle\Util\MediaUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Mpdf\Mpdf;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManager;
 use Puzzle\CurriculumBundle\Entity\Applicant;
-use Puzzle\CurriculumBundle\Form\Type\ApplicantUpdateType;
-use Puzzle\CurriculumBundle\Form\Type\ApplicantCreateType;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Puzzle\CurriculumBundle\Entity\Training;
-use Puzzle\CurriculumBundle\Form\Type\TrainingCreateType;
-use Puzzle\CurriculumBundle\Form\Type\TrainingUpdateType;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -39,151 +26,19 @@ class AppController extends Controller
     }
     
     /***
-     * Create Applicant
+     * Show applicant
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createApplicantAction(Request $request){
-        $applicant = new Applicant();
-        $form = $this->createForm(ApplicantCreateType::class, $applicant, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('app_curriculum_applicant_create')
-        ]);
-        $form->handleRequest($request);
+    public function showApplicantAction(Request $request, $id){
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        $applicant = $em->find(Applicant::class, $id);
         
-        if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['app_curriculum_applicant_create'];
-            
-            if ($user = $applicant->getUser()) {
-                $applicant->setEmail($applicant->getEmail() ?? $user->getEmail());
-                $applicant->setFirstName($applicant->getFirstName() ?? $user->getFirstName());
-                $applicant->setLastName($applicant->getLastName() ?? $user->getLastName());
-                $applicant->setPhoneNumber($applicant->getPhoneNumber() ?? $user->getPhoneNumber());
-            }
-            
-            $skills = $applicant->getSkills() !== null ? explode(',', $applicant->getSkills()) : null;
-            $applicant->setSkills($skills);
-            
-            $hobbies = $applicant->getHobbies() !== null ? explode(',', $applicant->getHobbies()) : null;
-            $applicant->setHobbies($hobbies);
-            
-            $applicant->setBirthday(new \DateTime($data['birthday']));
-            
-            $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
-            if ($picture !== null) {
-                $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $picture,
-                    'context' => MediaUtil::extractContext(Applicant::class),
-                    'user' => $this->getUser(),
-                    'closure' => function($filename) use ($applicant) {$applicant->setPicture($filename);}
-                ]));
-            }
-            
-            $file = $request->request->get('file') !== null ? $request->request->get('file') : $data['file'];
-            if ($file !== null) {
-                $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $file,
-                    'context' => MediaUtil::extractContext(Applicant::class),
-                    'user' => $this->getUser(),
-                    'closure' => function($filename) use ($applicant) {$applicant->setFile($filename);}
-                ]));
-            }
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($applicant);
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $applicant->getEmail()], 'messages'));
-            return $this->redirectToRoute('app_curriculum_applicant_update', ['id' => $applicant->getId()]);
-        }
-        
-        return $this->render("AppBundle:Curriculum:create_applicant.html.twig", [
-            'form' => $form->createView()
-        ]);
-    }
-    
-    /***
-     * Update Applicant
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function updateApplicantAction(Request $request, Applicant $applicant){
-        $form = $this->createForm(ApplicantUpdateType::class, $applicant, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('app_curriculum_applicant_update', ['id' => $applicant->getId()])
-        ]);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['app_curriculum_applicant_update'];
-            
-            $skills = $applicant->getSkills() !== null ? explode(',', $applicant->getSkills()) : null;
-            $applicant->setSkills($skills);
-            
-            $hobbies = $applicant->getHobbies() !== null ? explode(',', $applicant->getHobbies()) : null;
-            $applicant->setHobbies($hobbies);
-            
-            $applicant->setBirthday(new \DateTime($data['birthday']));
-            
-            if (! empty($_FILES['app_curriculum_applicant_create']['name']['picture'])) {
-                $picture = [
-                    'name' => $_FILES['app_curriculum_applicant_create']['name']['picture'],
-                    'type' => $_FILES['app_curriculum_applicant_create']['type']['picture'],
-                    'tmp_name' => $_FILES['app_curriculum_applicant_create']['tmp_name']['picture'],
-                    'error' => $_FILES['app_curriculum_applicant_create']['error']['picture'],
-                    'size' => $_FILES['app_curriculum_applicant_create']['size']['picture'],
-                ];
-                $folder = $this->get('media.file_manager')->createFolder($request->request->get('context') ?? 'curriculum/applicant', $this->getUser());
-                $media = $this->get('media.upload_manager')->prepareUpload([$picture], $folder, $this->getUser());
-                $applicant->setPicture($media[0]->getPath());
-            }
-            
-            if (! empty($_FILES['app_curriculum_applicant_create']['name']['file'])) {
-                $file = [
-                    'name' => $_FILES['app_curriculum_applicant_create']['name']['file'],
-                    'type' => $_FILES['app_curriculum_applicant_create']['type']['file'],
-                    'tmp_name' => $_FILES['app_curriculum_applicant_create']['tmp_name']['file'],
-                    'error' => $_FILES['app_curriculum_applicant_create']['error']['file'],
-                    'size' => $_FILES['app_curriculum_applicant_create']['size']['file'],
-                ];
-                $folder = $this->get('media.file_manager')->createFolder($request->request->get('context') ?? 'curriculum/applicant', $this->getUser());
-                $media = $this->get('media.upload_manager')->prepareUpload([$file], $folder, $this->getUser());
-                $applicant->setFile($media[0]->getPath());
-            }
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $applicant->getEmail()], 'messages'));
-            return $this->redirectToRoute('app_curriculum_applicant_update', ['id' => $applicant->getId()]);
-        }
-        
-        return $this->render("AppBundle:Curriculum:update_applicant.html.twig", [
-            'applicant' => $applicant,
-            'form' => $form->createView()
-        ]);
-    }
-    
-    /**
-     * Delete a applicant
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function deleteApplicantAction(Request $request, Applicant $applicant) {
-        $message = $this->get('translator')->trans('success.delete', ['%item%' => $applicant->getEmail()], 'messages');
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($applicant);
-        $em->flush();
-        
-        if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse($message);
-        }
-        
-        $this->addFlash('success', $message);
-        return $this->redirectToRoute('app_curriculum_applicant_list');
+        return $this->render("AppBundle:Curriculum:list_applicants.html.twig", array(
+            'applicant' => $applicant
+        ));
     }
     
     /***
@@ -192,8 +47,12 @@ class AppController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listTrainingsAction(Request $request, Applicant $applicant) {
-        $trainings = $this->getDoctrine()->getRepository(Training::class)->findBy(['applicant' => $applicant->getId()], ['startedAt' => 'ASC']);
+    public function listTrainingsAction(Request $request, $id){
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        
+        $applicant = $em->find(Applicant::class, $id);
+        $trainings = $em->getRepository(Training::class)->findBy(['applicant' => $id], ['startedAt' => 'ASC']);
         
         return $this->render("AppBundle:Curriculum:list_trainings.html.twig", array(
             'applicant' => $applicant,
@@ -202,91 +61,19 @@ class AppController extends Controller
     }
     
     /***
-     * Create training
+     * Show training
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createTrainingAction(Request $request, Applicant $applicant){
-        $training = new Training();
-        $training->setApplicant($applicant);
+    public function showTrainingAction(Request $request, $id){
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        $training = $em->find(Training::class, $id);
         
-        $form = $this->createForm(TrainingCreateType::class, $training, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('app_curriculum_training_create', ['id' => $applicant->getId()])
-        ]);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['app_curriculum_training_create'];
-            
-            $training->setStartedAt(new \DateTime($data['startedAt']));
-            $training->setEndedAt(new \DateTime($data['endedAt']));
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($training);
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $training->getName()], 'messages'));
-            return $this->redirectToRoute('app_curriculum_training_list', ['id' => $applicant->getId()]);
-        }
-        
-        return $this->render("AppBundle:Curriculum:create_training.html.twig", [
-            'form' => $form->createView(),
-        ]);
-    }
-    
-    /***
-     * Update training
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function updateTrainingAction(Request $request, Training $training){
-        $form = $this->createForm(TrainingUpdateType::class, $training, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('app_curriculum_training_update', ['id' => $training->getId()])
-        ]);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['app_curriculum_training_create'];
-            
-            $training->setStartedAt(new \DateTime($data['startedAt']));
-            $training->setEndedAt(new \DateTime($data['endedAt']));
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.put', ['%item%' => $training->getName()], 'messages'));
-            return $this->redirectToRoute('app_curriculum_training_update', ['id' => $training->getId()]);
-        }
-        
-        return $this->render("AppBundle:Curriculum:update_training.html.twig", [
-            'training' => $training,
-            'form' => $form->createView(),
-        ]);
-    }
-    
-    
-    /**
-     * Delete a training
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function deleteTrainingAction(Request $request, Training $training) {
-        $message = $this->get('translator')->trans('success.delete', ['%item%' => $training->getName()], 'messages');
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($training);
-        $em->flush();
-        
-        if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse($message);
-        }
-        
-        $this->addFlash('success', $message);
-        return $this->redirectToRoute('app_curriculum_training_list', ['id' => $training->getApplicant()->getId()]);
+        return $this->render("AppBundle:Curriculum:show_training.html.twig", array(
+            'training' => $training
+        ));
     }
     
     /***
@@ -295,8 +82,12 @@ class AppController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listWorksAction(Request $request, Applicant $applicant) {
-        $works = $this->getDoctrine()->getRepository(Work::class)->findBy(['applicant' => $applicant->getId()], ['startedAt' => 'ASC']);
+    public function listWorksAction(Request $request, $id){
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        
+        $applicant = $em->find(Applicant::class, $id);
+        $works = $em->getRepository(Work::class)->findBy(['applicant' => $id], ['startedAt' => 'ASC']);
         
         return $this->render("AppBundle:Curriculum:list_works.html.twig", array(
             'applicant' => $applicant,
@@ -305,90 +96,18 @@ class AppController extends Controller
     }
     
     /***
-     * Create work
+     * Show work
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createWorkAction(Request $request, Applicant $applicant){
-        $work = new Work();
-        $work->setApplicant($applicant);
+    public function showWorkAction(Request $request, $id){
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine.orm.entity_manager');
+        $work = $em->find(Work::class, $id);
         
-        $form = $this->createForm(WorkCreateType::class, $work, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('app_curriculum_work_create', ['id' => $applicant->getId()])
-        ]);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['app_curriculum_work_create'];
-            
-            $work->setStartedAt(new \DateTime($data['startedAt']));
-            $work->setEndedAt(new \DateTime($data['endedAt']));
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($work);
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $work->getName()], 'messages'));
-            return $this->redirectToRoute('app_curriculum_work_list', ['id' => $applicant->getId()]);
-        }
-        
-        return $this->render("AppBundle:Curriculum:create_work.html.twig", [
-            'form' => $form->createView(),
-        ]);
-    }
-    
-    /***
-     * Update work
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function updateWorkAction(Request $request, Work $work){
-        $form = $this->createForm(WorkUpdateType::class, $work, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('app_curriculum_work_update', ['id' => $work->getId()])
-        ]);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() === true && $form->isValid() === true) {
-            $data = $request->request->all()['app_curriculum_work_update'];
-            
-            $work->setStartedAt(new \DateTime($data['startedAt']));
-            $work->setEndedAt(new \DateTime($data['endedAt']));
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            
-            $this->addFlash('success', $this->get('translator')->trans('success.post', ['%item%' => $work->getName()], 'messages'));
-            return $this->redirectToRoute('app_curriculum_work_list', ['id' => $work->getApplicant()->getId()]);
-        }
-        
-        return $this->render("AppBundle:Curriculum:create_work.html.twig", [
-            'work' => $work,
-            'form' => $form->createView(),
-        ]);
-    }
-    
-    
-    /**
-     * Delete a work
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function deleteWorkAction(Request $request, Work $work) {
-        $message = $this->get('translator')->trans('success.delete', ['%item%' => $work->getName()], 'messages');
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($work);
-        $em->flush();
-        
-        if ($request->isXmlHttpRequest() === true) {
-            return new JsonResponse($message);
-        }
-        
-        $this->addFlash('success', $message);
-        return $this->redirectToRoute('app_curriculum_work_list', ['id' => $work->getApplicant()->getId()]);
+        return $this->render("AppBundle:Curriculum:show_work.html.twig", array(
+            'work' => $work
+        ));
     }
 }
