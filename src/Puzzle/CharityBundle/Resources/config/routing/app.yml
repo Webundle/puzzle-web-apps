@@ -33,7 +33,6 @@ app_charity_member_list:
 app_charity_member_create:
     path:     /member/create
     defaults: { _controller: 'CharityBundle:App:createMember' }
-    methods: POST
 
 app_charity_member_show:
     path:     /member/{id}
