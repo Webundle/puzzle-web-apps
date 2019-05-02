@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Puzzle\ExpertiseBundle\Entity\Feature;
 use Puzzle\ExpertiseBundle\Entity\Pricing;
 use Puzzle\ExpertiseBundle\Entity\Contact;
+use Puzzle\ExpertiseBundle\Event\ContactEvent;
+use Puzzle\ExpertiseBundle\ExpertiseEvents;
 
 /**
  * @author AGNES Gnagne Cedric <cecenho55@gmail.com>
@@ -29,7 +31,7 @@ class AppController extends Controller
             'services' => $this->getDoctrine()->getRepository(Service::class)->findAll()
         ));
     }
-    
+
     /***
      * Show service
      *
@@ -41,7 +43,7 @@ class AppController extends Controller
             'service' => $this->getDoctrine()->getRepository(Service::class)->find($id)
         ));
     }
-    
+
     /***
      * Show Projects
      *
@@ -53,7 +55,7 @@ class AppController extends Controller
             'projects' => $this->getDoctrine()->getRepository(Project::class)->findAll()
         ));
     }
-    
+
     /***
      * Show service
      *
@@ -65,8 +67,8 @@ class AppController extends Controller
             'project' => $this->getDoctrine()->getRepository(Project::class)->find($id)
         ));
     }
-    
-    
+
+
     /***
      * Show Staffs
      *
@@ -78,7 +80,7 @@ class AppController extends Controller
             'staffs' => $this->getDoctrine()->getRepository(Staff::class)->findAll()
         ));
     }
-    
+
     /***
      * Show Partners
      *
@@ -90,8 +92,8 @@ class AppController extends Controller
             'partners' => $this->getDoctrine()->getRepository(Partner::class)->findAll()
         ));
     }
-    
-    
+
+
     /***
      * Show Partner
      *
@@ -103,7 +105,7 @@ class AppController extends Controller
             'partner' => $this->getDoctrine()->getRepository(Partner::class)->find($id)
         ));
     }
-    
+
     /***
      * Show testimonials
      *
@@ -115,7 +117,7 @@ class AppController extends Controller
             'testimonials' => $this->getDoctrine()->getRepository(Testimonial::class)->findAll()
         ));
     }
-    
+
     /***
      * Show testimonial
      *
@@ -127,7 +129,7 @@ class AppController extends Controller
             'testimonial' => $this->getDoctrine()->getRepository(Testimonial::class)->find($id)
         ));
     }
-    
+
     /***
      * Show FAQs
      *
@@ -139,7 +141,7 @@ class AppController extends Controller
             'faqs' => $this->getDoctrine()->getRepository(Faq::class)->findAll()
         ));
     }
-    
+
     /***
      * Show FAQ
      *
@@ -151,7 +153,7 @@ class AppController extends Controller
             'faq' => $this->getDoctrine()->getRepository(Faq::class)->find($id)
         ));
     }
-    
+
     /***
      * List features
      *
@@ -163,7 +165,7 @@ class AppController extends Controller
             'features' => $this->getDoctrine()->getRepository(Feature::class)->findAll()
         ));
     }
-    
+
     /***
      * Show feature
      *
@@ -175,7 +177,7 @@ class AppController extends Controller
             'feature' => $this->getDoctrine()->getRepository(Feature::class)->find($id)
         ));
     }
-    
+
     /***
      * List pricings
      *
@@ -187,7 +189,7 @@ class AppController extends Controller
             'pricings' => $this->getDoctrine()->getRepository(Pricing::class)->findAll()
         ));
     }
-    
+
     /***
      * Show pricing
      *
@@ -198,5 +200,60 @@ class AppController extends Controller
         return $this->render("AppBundle:Expertise:show_pricing.html.twig", array(
             'pricing' => $this->getDoctrine()->getRepository(Pricing::class)->find($id)
         ));
+    }
+
+    /**
+     * Create contact
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createContactAction(Request $request)
+    {
+        $data = $request->request->all();
+        $redirectUri = $request->query->get('redirect_uri');
+        $em = $this->getDoctrine()->getManager();
+
+        $contact = new Contact();
+        $em->persist($contact);
+
+        if (isset($data['name']) && $data['name']) {
+            $names = explode(' ', $data['name']);
+            $contact->setLastName($names[0]);
+            $contact->setFirstName(trim(str_replace($names[0], '', $data['name'])));
+        }
+
+        if (isset($data['email']) && $data['email']) {
+            $contact->setEmail($data['email']);
+        }
+
+        if (isset($data['phoneNumber']) && $data['phoneNumber']) {
+            $contact->setPhoneNumber($data['phoneNumber']);
+        }
+
+        if (isset($data['subject']) && $data['subject']) {
+            $contact->setSubject($data['subject']);
+        }
+
+        if (isset($data['message']) && $data['message']) {
+            $contact->setPhoneNumber($data['message']);
+        }
+
+        if (isset($data['service']) && $data['service']) {
+            $service = $em->find(Service::class, $data['service']);
+            $contact->setService($service);
+        }
+
+        $em->flush();
+
+        $this->get('event_dispatcher')->dispatch(ExpertiseEvents::EXPERTISE_CONTACT_CREATED, new ContactEvent($contact));
+
+        $message = $this->get('translator')->trans('app.expertise.contact.create.created', [], 'app');
+        if ($request->isXmlHttpRequest() === true){
+            return new JsonResponse($message);
+        }
+
+        $this->addFlash('success', $message);
+        return $this->redirect($redirectUri);
     }
 }

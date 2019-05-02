@@ -9,4 +9,9 @@ services:
         public: false
         tags:
             - { name: twig.extension }
-    
+# Listeners
+    expertise.contact_listener:
+        class: Puzzle\ExpertiseBundle\Listener\ContactListener
+        arguments: [ "@mailer", "%expertise.contact.enable_mail_channel%", "%expertise.contact.email_address%"]
+        tags:
+            - { name: kernel.event_listener, event: "expertise.contact.created", method: onCreated }

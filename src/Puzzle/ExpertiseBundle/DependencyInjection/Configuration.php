@@ -19,7 +19,18 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('expertise');
-		
+        $rootNode
+	        ->children()
+            ->arrayNode('contact')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('enable_mail_channel')->defaultFalse()->end()
+                    ->scalarNode('email_address')->defaultNull()->end()
+                ->end()
+            ->end()
+          ->end()
+        ;
+
         return $treeBuilder;
     }
 }

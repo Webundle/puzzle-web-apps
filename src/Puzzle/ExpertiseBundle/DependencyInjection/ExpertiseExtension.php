@@ -25,5 +25,9 @@ class ExpertiseExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('parameters.yml');
+
+        $container->setParameter('expertise', $config);
+        $container->setParameter('expertise.contact.enable_mail_channel', $config['contact']['enable_mail_channel']);
+        $container->setParameter('expertise.contact.email_address', $config['contact']['email_address']);
     }
 }

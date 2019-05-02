@@ -26,7 +26,7 @@
                             <ul class="uk-nav uk-nav-dropdown">
                                 <li>
                                     <a href="#" class="remove-list" data-uk-modal="{target:'#remove_list_modal'}">
-                                        <i class="fa fa-trash-o uk-text-danger"></i> 
+                                        <i class="fa fa-trash-o uk-text-danger"></i>
                                         {{ "button.remove"|trans }}
                                     </a>
                                 </li>
@@ -46,6 +46,7 @@
                     <th>{{ 'expertise.contact.subject'|trans }}</th>
                     <th>{{ 'expertise.contact.fullName'|trans }}</th>
                     <th>{{ 'expertise.contact.service'|trans }}</th>
+                    <th>{{ 'expertise.contact.readAt'|trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -62,8 +63,15 @@
                                     {{ contact.subject }}
                                 </a>
                             </td>
-                            <td>{{ contact.expertise.fullName }}</td>
+                            <td>{{ contact.fullName }}</td>
                             <td>{{ contact.service.name }}</td>
+                            <td>
+                              {% if contact.readAt is not empty %}
+                                  <span class="uk-badge uk-badge-primary">{{ date_time_ago(contact.readAt) }}</span>
+                              {% else %}
+                                  <span class="uk-badge md-bg-grey-400">{{ 'expertise.contact.markedAsRead.un_marked'|trans }}</span>
+                              {% endif %}
+                            </td>
                             <td class="uk-text-right">
                                 <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
                                     <a><i class="fa fa-ellipsis-h"></i></a>
@@ -76,7 +84,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_contact_delete', {'id': contact.id}) }}" data-text="{{ 'expertise.contact.delete'|trans({'%contact%': contact.subject})}}" data-label="{{ contact.subject }}" class="remove-item">
+                                                <a href="#" alt="{{ "button.remove"|trans }}" data-route="{{ url('admin_expertise_contact_delete', {'id': contact.id}) }}" data-text="{{ 'expertise.contact.delete'|trans({'%contactSubject%': contact.subject})}}" data-label="{{ contact.subject }}" class="remove-item">
                                                     <i class="fa fa-trash-o uk-text-danger"></i>
                                                     {{ "button.remove"|trans }}
                                                 </a>

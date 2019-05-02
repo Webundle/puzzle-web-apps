@@ -6,7 +6,7 @@
 	    <div class="uk-margin-small-bottom">
 	    	{{ contact.markedAsRead == false  ? 'expertise.contact.createdAt'|trans : 'expertise.contact.updatedAt'|trans }} 
 	    	{{ contact.markedAsRead == false ? contact.createdAt|date('d-m-Y H:i') : contact.updatedAt|date('d-m-Y H:i') }}, 
-	    	{{ 'expertise.contact.service'|trans|lower }} <a href="{{ url('admin_expertise_show', {'id': contact.service.id}) }}">{{ contact.service.name }}</a>
+	    	{{ 'expertise.contact.service'|trans|lower }} <a href="{{ url('admin_expertise_service_show', {'id': contact.service.id}) }}">{{ contact.service.name }}</a>
 	    </div>
     	<div class="uk-margin-small-bottom">
 	        <p>{{ contact.subject }}</p>

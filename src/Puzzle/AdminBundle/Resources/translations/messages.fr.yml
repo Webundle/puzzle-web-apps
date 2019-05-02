@@ -9,7 +9,7 @@ layout:
 locale:
     fr: 'Français'
     en: 'Anglais'
-    
+
 button:
     add: 'Ajouter'
     show: 'Voir les détails'
@@ -37,13 +37,13 @@ success:
     post: 'Créé'
     put: 'Mis à jour'
     delete: 'Supprimé'
-    
+
 #Admin
 admin:
     title : 'Adminstration'
     role: 'Administrateur'
     navigation:
-        dashboard: 
+        dashboard:
             title: 'Tableau de bord'
             tooltip: ''
         setting: 'Réglages'
@@ -450,7 +450,11 @@ expertise:
         updatedAt: 'Mis à jour le'
         list: 'Liste des contacts'
         show: 'Détails du contact'
-        mark: 'Marquer lu'
+        markedAsRead:
+          title: 'Marquer comme lu'
+          marked: 'Lu'
+          un_marked: 'Non lu'
+        readAt: 'Lu le'
         delete: 'Etes-vous sûr de vouloir supprimer le contact <em>%contactSubject%</em>'
         delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de contacts'
         success: 'Votre requête a été envoyée avec succès.'
@@ -612,15 +616,15 @@ user:
         check_email: |
             Un e-mail a été envoyé. Il contient un lien sur lequel il vous faudra cliquer pour réinitialiser votre mot de passe.
             Remarque: Vous ne pouvez demander un nouveau mot de passe que toutes les %tokenLifetime% heures.
-            
+
             Si vous ne recevez pas un e-mail, vérifiez votre dossier spam ou essayer à nouveau.
         email:
             subject: 'Réinitialisation de votre mot de passe'
             message: |
                 Bonjour %username% !
-                
+
                 Pour réinitialiser votre mot de passe, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>
-                
+
                 Cordialement,
                 L'équipe
     registration:
@@ -632,7 +636,7 @@ user:
             subject: 'Activation de votre compte'
             message: |
                 Bonjour %username% ! <br/>
-                
+
                 Pour activer votre compte, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>.<br∕>
 
                 Pour vous connecter, utilisez vos paramètres de ci-dessous:<br/><br/>
@@ -640,7 +644,7 @@ user:
                 nom d'utilisateur: <b>%username%</b><br/>
 
                 mot de passe: <b>%plainPassword%</b><br/>
-                
+
                 Cordialement, <br/>
                 L'équipe
     account:
@@ -680,7 +684,7 @@ user:
         update: 'Modifier le groupe'
         delete: 'Etes-vous sûr de vouloir supprimer le groupe <em>%groupName%</em>'
         delete_list: 'Etes-vous sûr de vouloir supprimer la sélection de groupes'
-            
+
 #Calendar
 calendar:
     title: 'Calendrier'
@@ -717,13 +721,13 @@ calendar:
         members: 'Membres'
         visibility:
             name: 'Visibilité'
-            private: 
+            private:
                 title: 'Privé'
                 description: 'Seulement Moi'
             share:
                 title: 'Partagé'
                 description: 'Moi et les personnes associées'
-            public: 
+            public:
                 title: 'Public'
                 description: 'Tout le monde'
     agenda:
@@ -738,20 +742,20 @@ calendar:
         members: 'Membres'
         visibility:
             name: 'Visibilité'
-            private: 
+            private:
                 title: 'Privé'
                 description: 'Seulement Moi'
             share:
                 title: 'Partagé'
                 description: 'Moi et les personnes associées'
-            public: 
+            public:
                 title: 'Public'
                 description: 'Tout le monde'
-    
+
 #Scheduling
 scheduling:
-    property: 
-        recurrence: 
+    property:
+        recurrence:
             intervale: 'Répeter chaque'
             unity:
                 title: 'Unité'
@@ -787,7 +791,7 @@ charity:
         lastName: 'Nom'
         email: 'E-mail'
         phoneNumber: 'Numéro de Téléphone'
-        enabled: 
+        enabled:
             title: 'Etat'
             activate: 'Actif'
             deactivate: 'Non actif'
@@ -815,7 +819,7 @@ charity:
         category: 'Catégorie'
         totalAmount: 'Montant Total'
         paidAmount: 'Montant réçu'
-        expiresAt: 
+        expiresAt:
             title: 'Expire le'
             undefined: 'Non définie'
         picture: 'Image'
@@ -824,7 +828,7 @@ charity:
         donations: 'Contributions'
         tags: 'Etiquettes'
         amountRatio: 'Pourcentage de dons'
-        status: 
+        status:
             title: 'Etat'
             close: 'Fermée'
             in_progress: 'En cours'
@@ -879,11 +883,11 @@ charity:
     donationLine:
         donatedAt: 'Date'
         amount: 'Montant'
-        status: 
+        status:
             title: 'Etat'
             paid: 'Payé'
             unpaid: 'Intention'
-            
+
 # Curriculum
 curriculum:
     title: 'Profil professionnel'
@@ -896,7 +900,7 @@ curriculum:
         lastName: 'Nom'
         email: 'E-mail'
         phoneNumber: 'Numéro de Téléphone'
-        single: 
+        single:
             title: 'Status'
             married: 'Marié'
             not_married: 'Célibataire'

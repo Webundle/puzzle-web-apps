@@ -976,7 +976,7 @@ class AdminController extends Controller
             $em->flush();
         }
         
-        return $this->render("AdminBundle:Contact:show_contact.html.twig", array(
+        return $this->render("AdminBundle:Expertise:show_contact.html.twig", array(
             'contact' => $contact
         ));
     }
@@ -1001,6 +1001,6 @@ class AdminController extends Controller
         }
         
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('admin_contact_request_list');
+        return $this->redirectToRoute('admin_expertise_contact_list');
     }
 }
